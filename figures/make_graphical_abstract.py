@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Graphical abstract for the JEDC submission.
+"""Graphical abstract for the manuscript.
 
 Canvas equals the Elsevier printed size (13 x 5.3 cm = 5.12 x 2.15 in). Drawing
 on a large canvas and scaling it down later would shrink the labels: a 13 in
@@ -117,7 +117,7 @@ ax[2].set_ylim(0.0, 0.95)
 ax[2].set_xlim(0, 79)
 
 for ext in ("pdf", "png"):
-    fig.savefig(os.path.join(OUT, "JEDC_graphical_abstract." + ext),
+    fig.savefig(os.path.join(OUT, "graphical_abstract." + ext),
                 dpi=(280 if ext == "png" else None), facecolor="white")
 
 for name in ("Workfare corner", "No policy"):

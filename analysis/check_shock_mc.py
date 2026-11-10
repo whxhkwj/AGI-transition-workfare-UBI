@@ -38,10 +38,10 @@ Params, simulate, welfare = ns['Params'], ns['simulate_v6'], ns['welfare']
 
 
 def mc(tau, pe, pm, sigma, rho=0.5, n=None, seed=7, eta_sd=0.0, mu_sd=0.0):
-    # 200 draws per cell in the paper. Set JEDC_MC_DRAWS to a small number for a
+    # 200 draws per cell in the paper. Set MC_DRAWS to a small number for a
     # quick smoke test; the default stays at the published 200.
     if n is None:
-        n = int(_os.environ.get("JEDC_MC_DRAWS", "200"))
+        n = int(_os.environ.get("MC_DRAWS", "200"))
     rng = np.random.default_rng(seed)
     out = []
     for i in range(n):

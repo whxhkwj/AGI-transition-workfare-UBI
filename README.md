@@ -3,8 +3,7 @@
 **Anatomy of a Smooth Transition: A Task-Based Macroeconomic Model of AGI
 Displacement with Fiscal and Social Safety Nets**
 
-DUAN Fang (Huaqiao University) — prepared for submission to the *Journal of
-Economic Dynamics and Control*.
+DUAN Fang (Huaqiao University).
 
 This repository reproduces every number that appears in the manuscript: the
 simulation engine, the analysis scripts behind the tables and the sensitivity
@@ -39,11 +38,11 @@ so the build also works on a TeX distribution that does not carry it:
 
 ```bash
 cd paper
-pdflatex JEDC_core_chapters.tex
-pdflatex JEDC_core_chapters.tex      # second pass for cross-references
+pdflatex manuscript.tex
+pdflatex manuscript.tex      # second pass for cross-references
 ```
 
-The result is the submitted PDF: 46 pages, no errors, no overfull boxes. This
+The result is the compiled PDF: 47 pages, no errors, no overfull boxes. This
 was verified from a clean copy of the repository on TeX Live 2022.
 
 ## Quick check
@@ -149,7 +148,7 @@ python figures/make_graphical_abstract.py  # -> paper/, 1433 x 602 px
 ```
 
 Both read the same engine and the same calibration as the manuscript, and both
-write into `paper/`, so `paper/JEDC_core_chapters.tex` picks the new figures up
+write into `paper/`, so `paper/manuscript.tex` picks the new figures up
 directly through `\graphicspath{{figures/}}`.
 
 ## Runtime
@@ -168,7 +167,7 @@ the grid sweeps take minutes:
 results use the default of 200:
 
 ```bash
-JEDC_MC_DRAWS=20 python analysis/check_shock_mc.py
+MC_DRAWS=20 python analysis/check_shock_mc.py
 ```
 
 ## Licence
