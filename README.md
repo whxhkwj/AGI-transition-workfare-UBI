@@ -19,7 +19,7 @@ against the values printed in the paper.
 simulation/   the model, one file per refinement step (v4 -> v5 -> v6 -> v12)
 analysis/     one script per number in the paper; each prints the value it checks
 figures/      the six manuscript figures and the graphical abstract
-paper/        LaTeX source, compiled PDF, cover letter, graphical abstract
+paper/        LaTeX source, compiled PDF, graphical abstract
 ```
 
 Nothing in the repository depends on an absolute path: every script resolves
