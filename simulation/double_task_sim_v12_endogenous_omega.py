@@ -56,7 +56,7 @@ def simulate_v12(par):
     b = np.zeros(T); w_real = np.zeros(T); omega_arr = np.zeros(T)
     EP = np.zeros(T); Urem = np.zeros(T); TM = np.zeros(T)
     Eplan = np.zeros(T); shortfall = np.zeros(T); cap_share = np.zeros(T)
-    skill = np.zeros(T); stress = np.zeros(T)
+    skill = np.zeros(T); stress = np.zeros(T); net_b_arr = np.zeros(T)
 
     It[0], Nt[0], nlab[0] = par.I0, par.N0, par.N0 - par.I0
     LD[0] = par.LS * v4.clamp(nlab[0] / Nt[0], 0, 1)
@@ -92,11 +92,17 @@ def simulate_v12(par):
         cap = par.A0 * (1 + par.gA) ** t
         Sh = par.S0 * max(0.0, 1.0 - par.lambda_h * (It[t - 1] / Nt[t - 1]))
         dN = par.kappa_N_h * Sh + par.kappa_N_AI * cap * par.M0
-        dI = par.kappa_I * cap
-        dnlab = omega_t * dN * skill[t - 1] - dI
-        It[t] = It[t - 1] + dI
+        dI_auto_gross = par.kappa_I * cap
+        # 闭合任务会计：新任务按劳动捕获效率 eff=omega_t·skill 在劳动与 AI 间分配，
+        # 劳动得 eff·dN、AI 得 (1-eff)·dN；直接自动化受限于当前劳动任务。
+        # 由此 n=N-I 恒等式逐期严格成立，内生复职/技能机制完整保留。
+        eff = v4.clamp(omega_t * skill[t - 1], 0.0, 1.0)
+        dN_L = eff * dN
+        dN_AI = (1.0 - eff) * dN
+        dI_auto = min(dI_auto_gross, nlab[t - 1] + dN_L)
         Nt[t] = Nt[t - 1] + dN
-        nlab[t] = max(0.0, nlab[t - 1] + dnlab)
+        It[t] = It[t - 1] + dN_AI + dI_auto
+        nlab[t] = max(0.0, Nt[t] - It[t])
         LD[t] = par.LS * v4.clamp(nlab[t] / Nt[t], 0, 1)
         sL[t] = LD[t] / par.LS
         u[t] = 1 - LD[t] / par.LS
@@ -134,13 +140,17 @@ def simulate_v12(par):
         i_arr[t] = max(0.0, par.rn + pi[t])
         rd[t] = i_arr[t] - pi[t]
         w_real[t] = max(0.35, w_real[t - 1] * (1 + par.gW - par.lambda_w * u[t]))
-        D[t] = D[t - 1] * (1 + i_arr[t]) + max(0.0, Cfe - C[t - 1]) * par.debt_share
+        # 家庭资产负债表（存量-流量闭环）：净借贷统一决策，受银行授信硬上限约束。
+        Yd = (w_real[t] * LD[t] + par.wP * EP[t] + par.mu_TM * TM[t]
+              - par.mu * max(0.0, rd[t]))
+        D_rolled = D[t - 1] * (1 + i_arr[t])
+        desired_net = (par.debt_share * max(0.0, Cfe - Yd)
+                       - par.chi_amort * max(0.0, D_rolled - par.bbar * P[t]))
+        D[t] = v4.clamp(D_rolled + desired_net, 0.0, par.b_credit * P[t])
+        net_b = D[t] - D_rolled
+        net_b_arr[t] = net_b
         b[t] = D[t] / P[t]
-
-        debt_drag = par.zeta * min(max(0.0, b[t] - par.bbar), 0.8)
-        C[t] = w_real[t] * LD[t] + par.wP * EP[t] + par.mu_TM * TM[t] \
-               - debt_drag - par.mu * max(0.0, rd[t])
-        C[t] = max(0.0, C[t])
+        C[t] = max(0.0, Yd + net_b / P[t])
 
     Cmin = par.q * par.w * par.LS
     reached = sL[-1] < par.term_thresh
@@ -169,9 +179,9 @@ def simulate_v12(par):
         crash_type = 'none'
     return dict(It=It, Nt=Nt, nlab=nlab, LD=LD, sL=sL, C=C, GDP=GDP,
                 cap_inc=cap_inc, tax=tax, cap_share=cap_share, shortfall=shortfall,
-                P=P, pi=pi, phi=phi, u=u, b=b, rd=rd, i_arr=i_arr, w_real=w_real,
+                P=P, D=D, pi=pi, phi=phi, u=u, b=b, rd=rd, i_arr=i_arr, w_real=w_real,
                 EP=EP, Urem=Urem, TM=TM, Eplan=Eplan, skill=skill, stress=stress,
-                omega=omega_arr,
+                net_b=net_b_arr, omega=omega_arr,
                 Cmin=Cmin, outcome=outcome, sL_end=sL[-1], C_end=C[-1],
                 neg_streak=neg_streak, b_end=b[-1],
                 crash_type=crash_type, social_crash=social_crash,

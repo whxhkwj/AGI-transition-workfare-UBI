@@ -3,12 +3,12 @@
 load-bearing paragraph of Section 5.2.
 
 Six values of omega, two policy settings, two public-employment shares.
-Paper claims:
-  * standard (tau=0.16, phi_max=0.65), p_E=0.45: workfare survives 4 of 6
-    (omega=0.02 and 0.05 miss the floor at min C = 0.293 and 0.2999);
+Paper claims (balance-sheet-consistent engine, hard credit ceiling):
+  * standard (tau=0.16, phi_max=0.65), p_E=0.45: workfare survives all six
+    (min C = 0.3511 at omega=0.02 and 0.3577 at omega=0.05);
   * standard, pure UBI p_E=0.00: all six crash;
-  * corner (tau=0.15, phi_max=0.02), p_E=0.45: all six survive, min C = 0.304-0.310;
-  * corner, p_E=0.30: all six crash, min C = 0.197-0.218.
+  * corner (tau=0.15, phi_max=0.02), p_E=0.45: all six survive, min C = 0.352-0.357;
+  * corner, p_E=0.30: all six crash, min C = 0.244-0.265.
 """
 import os as _os
 
@@ -64,22 +64,22 @@ for (om, a), (_, b) in zip(w_std, u_std):
 
 # ---- checks against the numbers printed in the paper ----
 checks = [
-    ("standard workfare survives 4 of 6",
-     sum(1 for _, r in w_std if r["outcome"] in ("smooth", "not_reached")) == 4),
+    ("standard workfare survives 6 of 6",
+     sum(1 for _, r in w_std if r["outcome"] in ("smooth", "not_reached")) == 6),
     ("standard pure UBI survives 0 of 6",
      sum(1 for _, r in u_std if r["outcome"] in ("smooth", "not_reached")) == 0),
     ("corner p_E=0.45 survives 6 of 6",
      sum(1 for _, r in w_cor if r["outcome"] in ("smooth", "not_reached")) == 6),
     ("corner p_E=0.30 survives 0 of 6",
      sum(1 for _, r in w_c30 if r["outcome"] in ("smooth", "not_reached")) == 0),
-    ("workfare omega=0.05 min C = 0.2999", abs(w_std[1][1]["minC"] - 0.2999) < 5e-4),
-    ("workfare omega=0.02 min C = 0.2929", abs(w_std[0][1]["minC"] - 0.2929) < 5e-4),
-    ("corner p_E=0.45 range 0.304..0.310",
-     abs(min(r["minC"] for _, r in w_cor) - 0.3040) < 5e-4
-     and abs(max(r["minC"] for _, r in w_cor) - 0.3098) < 5e-4),
-    ("corner p_E=0.30 range 0.197..0.218",
-     abs(min(r["minC"] for _, r in w_c30) - 0.1968) < 5e-4
-     and abs(max(r["minC"] for _, r in w_c30) - 0.2178) < 5e-4),
+    ("workfare omega=0.05 min C = 0.3577", abs(w_std[1][1]["minC"] - 0.3577) < 5e-4),
+    ("workfare omega=0.02 min C = 0.3511", abs(w_std[0][1]["minC"] - 0.3511) < 5e-4),
+    ("corner p_E=0.45 range 0.352..0.357",
+     abs(min(r["minC"] for _, r in w_cor) - 0.3517) < 5e-4
+     and abs(max(r["minC"] for _, r in w_cor) - 0.3573) < 5e-4),
+    ("corner p_E=0.30 range 0.244..0.265",
+     abs(min(r["minC"] for _, r in w_c30) - 0.2445) < 5e-4
+     and abs(max(r["minC"] for _, r in w_c30) - 0.2653) < 5e-4),
     ("workfare loss lower at every omega",
      all(a["total"] < b["total"] for (_, a), (_, b) in zip(w_std, u_std))),
 ]

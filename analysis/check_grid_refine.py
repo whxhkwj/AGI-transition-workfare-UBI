@@ -50,7 +50,7 @@ print('\ngrid=%d feasible=%d' % (tot, ok))
 print('global best: tau=%.2f pE=%.2f phi=%.3f total=%.3f minC=%.4f' % best)
 
 # The manuscript additionally reports the scan that fixes the ceiling at
-# phi^max = 0.15 and returns (0.18, 0.40, 0.15) with loss 67.20.
+# phi^max = 0.15 and returns (0.18, 0.40, 0.15) with loss 63.53.
 print('\n=== C. fixed ceiling phi_max=0.15 (Section 5) ===')
 print('  tau    pE     phi    outcome    min C    total loss')
 for tau in [0.15, 0.16, 0.18, 0.20]:
@@ -58,5 +58,5 @@ for tau in [0.15, 0.16, 0.18, 0.20]:
     print('  %.2f  %.2f  %.2f   %-8s  %.4f  %9.2f' % (
         tau, 0.40, 0.15, r['outcome'], w['minC'], w['total']))
 r, w = run(0.18, 0.40, 0.15)
-print('  reported cell (0.18, 0.40, 0.15): total = %.4f  (manuscript 67.20)' % w['total'])
-assert abs(w['total'] - 67.20) < 0.02, w['total']
+print('  reported cell (0.18, 0.40, 0.15): total = %.4f  (manuscript 63.53)' % w['total'])
+assert abs(w['total'] - 63.53) < 0.02, w['total']

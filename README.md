@@ -3,7 +3,8 @@
 **Anatomy of a Smooth Transition: A Task-Based Macroeconomic Model of AGI
 Displacement with Fiscal and Social Safety Nets**
 
-DUAN Fang (Huaqiao University).
+DUAN Fang (Huaqiao University) — prepared for submission to the *Structural
+Change and Economic Dynamics*.
 
 This repository reproduces every number that appears in the manuscript: the
 simulation engine, the analysis scripts behind the tables and the sensitivity
@@ -19,7 +20,7 @@ against the values printed in the paper.
 simulation/   the model, one file per refinement step (v4 -> v5 -> v6 -> v12)
 analysis/     one script per number in the paper; each prints the value it checks
 figures/      the six manuscript figures and the graphical abstract
-paper/        LaTeX source, compiled PDF, graphical abstract
+paper/        LaTeX source, compiled PDF, cover letter, graphical abstract
 ```
 
 Nothing in the repository depends on an absolute path: every script resolves
@@ -42,7 +43,7 @@ pdflatex manuscript.tex
 pdflatex manuscript.tex      # second pass for cross-references
 ```
 
-The result is the compiled PDF: 47 pages, no errors, no overfull boxes. This
+The result is the submitted PDF: 51 pages, no errors, no overfull boxes. This
 was verified from a clean copy of the repository on TeX Live 2022.
 
 ## Quick check
@@ -55,7 +56,7 @@ Expected tail:
 
 ```
 checks against the manuscript
-  standard workfare survives 4 of 6              PASS
+  standard workfare survives 6 of 6              PASS
   standard pure UBI survives 0 of 6              PASS
   corner p_E=0.45 survives 6 of 6                PASS
   corner p_E=0.30 survives 0 of 6                PASS
@@ -113,10 +114,10 @@ spec.loader.exec_module(v6)          # spec.loader.exec_module, not module_from_
 
 | Manuscript | Script | Key values |
 |---|---|---|
-| Table 2, Standard / Pure UBI / corner | `analysis/check_table2.py` | 0.2999, 0.2100, 0.309266 |
-| "Workfare vs UBI", 4/6 not crashed vs 6/6 | `analysis/replicate_workfare_vs_ubi.py` | six omega values, both settings |
-| Section 5.2, load-bearing paragraph | `analysis/replicate_workfare_vs_ubi.py` | corner 0.304–0.310 at p_E=0.45, 0.197–0.218 at p_E=0.30 |
-| 0.309 vs 0.305 attribution | `analysis/check_phi_gap.py` | phi_max floor |
+| Table 2, Standard / Pure UBI / corner | `analysis/check_table2.py` | 0.3577, 0.2589, 0.3568 |
+| "Workfare vs UBI", 6/6 not crashed vs 6/6 | `analysis/replicate_workfare_vs_ubi.py` | six omega values, both settings |
+| Section 5.2, load-bearing paragraph | `analysis/replicate_workfare_vs_ubi.py` | corner 0.352–0.357 at p_E=0.45, 0.244–0.265 at p_E=0.30 |
+| 0.357 vs 0.353 attribution | `analysis/check_phi_gap.py` | phi_max floor |
 | phi_max lower bound | `analysis/check_phi_floor.py` | 0.02 boundary |
 | Horizon, T = 80 vs 200 | `analysis/check_horizon.py` | exogenous and endogenous |
 
@@ -124,21 +125,21 @@ spec.loader.exec_module(v6)          # spec.loader.exec_module, not module_from_
 
 | Manuscript | Script | Key values |
 |---|---|---|
-| Grid minima and identification | `analysis/check_grid_refine.py` | (0.18, 0.40, 0.15) = 67.20; dense grid (0.13, 0.44, 0.001) = 66.70, min C 0.3004 |
-| Alternative omega functional forms | `analysis/check_omega_form.py` | min C 0.3046-0.3058 across exp / rational / clip; no form changes the outcome |
-| Shock Monte Carlo (absorption counts) | `analysis/check_shock_mc.py` | crash counts 0/1/6, minima 0.3046, 0.2738 |
-| g_A and eta sensitivity | `analysis/check_ga_eta.py` | 0.283 / 0.228 / 0.166 / 0.150 |
-| Feasible share of the parameter box | `analysis/check_feasible_share.py` | 29/64 = 45.3%, 6/64 = 9.4%, 122/384 = 31.8% |
+| Grid minima and identification | `analysis/check_grid_refine.py` | (0.18, 0.40, 0.15) = 63.53; dense grid (0.10, 0.40, 0.001) = 62.81, min C 0.3071 |
+| Alternative omega functional forms | `analysis/check_omega_form.py` | min C 0.3522-0.3540 across exp / rational / clip; no form changes the outcome |
+| Shock Monte Carlo (absorption counts) | `analysis/check_shock_mc.py` | headline crash counts 0/0/0, minima 0.3546, 0.3330 |
+| g_A and eta sensitivity | `analysis/check_ga_eta.py` | 0.344 / 0.294 / 0.237 / 0.222 |
+| Feasible share of the parameter box | `analysis/check_feasible_share.py` | 41/64 = 64.1%, 17/64 = 26.6%, 208/384 = 54.2% |
 | Social-threshold bounds, alpha_s crit | `analysis/check_soc_bounds.py` | varsigma_th 0.32/0.33 boundary, alpha_s 0.90/0.92 boundary (crit 0.909) |
-| Two calibrated configurations | `analysis/check_two_configs.py` | 0.2999 at p_E=0.45, 0.2758 at p_E=0.30 |
-| Welfare weights (384 combinations) | `analysis/check_welfare_weights.py` | wide-grid best (0.15, 0.45, 0.02) = 66.86 under baseline weights |
+| Two calibrated configurations | `analysis/check_two_configs.py` | 0.3577 at p_E=0.45 (smooth), 0.3326 at p_E=0.30 (smooth) |
+| Welfare weights (384 combinations) | `analysis/check_welfare_weights.py` | wide-grid best (0.10, 0.40, 0.02) = 62.84 under baseline weights |
 | BEB and the policy that avoids the crash | `analysis/check_v12_beb.py` | endogenous re-employment |
-| p_E* crossing | `analysis/check_beb_crossing.py` | 0.4388, omega_c = 0.5667 |
+| p_E* crossing | `analysis/check_beb_crossing.py` | 0.3552, omega_c = 0.5667 |
 | Static bifurcation diagram, long horizon | `analysis/check_static_bifurcation.py` | sympy, no path dependence |
 | Reversal of the policy ranking | `analysis/check_reversal.py` | parameter region |
 | Fold region diagnostics | `analysis/check_fold_region.py` | local fold locus |
 | Cross-checks between tables | `analysis/check_tables_cross.py` | internal consistency |
-| Graphical-abstract annotation | `analysis/check_ga_panel.py` | 0.309 |
+| Graphical-abstract annotation | `analysis/check_ga_panel.py` | corner 0.357, no-policy 0.068 |
 
 ### Figures
 
@@ -167,7 +168,7 @@ the grid sweeps take minutes:
 results use the default of 200:
 
 ```bash
-MC_DRAWS=20 python analysis/check_shock_mc.py
+SCED_MC_DRAWS=20 python analysis/check_shock_mc.py
 ```
 
 ## Licence
@@ -178,5 +179,5 @@ copyright; the MIT licence covers the code in `simulation/`, `analysis/` and
 
 ## Contact
 
-DUAN Fang — duan.fang@hqu.edu.cn, School of Information Science and
+DUAN Fang — duan.fang@hqu.edu.cn, College of Information Science and
 Engineering, Huaqiao University, Xiamen, China.
