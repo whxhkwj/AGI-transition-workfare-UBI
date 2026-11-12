@@ -17,7 +17,7 @@ against the values printed in the paper.
 ## Layout
 
 ```
-simulation/   the model, one file per refinement step (v4 -> v5 -> v6 -> v12)
+simulation/   the unified engine (one physical law); v6/v12 are thin wrappers
 analysis/     one script per number in the paper; each prints the value it checks
 figures/      the six manuscript figures and the graphical abstract
 paper/        LaTeX source, compiled PDF, cover letter, graphical abstract
@@ -43,8 +43,8 @@ pdflatex manuscript.tex
 pdflatex manuscript.tex      # second pass for cross-references
 ```
 
-The result is the submitted PDF: 51 pages, no errors, no overfull boxes. This
-was verified from a clean copy of the repository on TeX Live 2022.
+The result is the submitted PDF: 54 pages, no errors, no undefined references.
+This was verified from a clean copy of the repository on TeX Live 2022.
 
 ## Quick check
 
@@ -91,22 +91,32 @@ r = v6.run_case(v6.Params(omega=0.05, tau=0.15, phi_max=0.02, pE=0.45,
 
 ## Engine chain
 
-`double_task_sim_v6.py` loads `v5` from disk, and `v5` loads `v4`. Keep the
-three files together. `v12_endogenous_omega.py` loads `v6` the same way and adds
-the endogenous re-employment channel used in Section 4; `v9`, `v10` and `v11`
-are the targeted sweeps cited in the robustness passages.
+`double_task_sim_unified.py` is the single physical engine and depends only on
+`v4`, which supplies the base `Params` and the accounting primitives. The
+reinstatement rate follows one competitive logistic law,
+`logit(omega_t) = ell0 + Gamma_t - beta_A * g_t`, where `Gamma_t` is the policy
+reattachment stock and `g_t = log(A_t/A_0)` is the AGI capability gain.
+`double_task_sim_v6.py` and `double_task_sim_v12_endogenous_omega.py` are thin
+compatibility wrappers over the same engine: `simulate_v6` forces the exogenous
+special case, `omega_t = omega`, and `simulate_v12` forces the endogenous law.
+There is no separate physics in either wrapper. Setting `beta_A=0` gives the
+policy-only limit. Keep the three files together; the targeted sweep scripts
+cited in the robustness passages run against this same engine.
 
 ```python
 import importlib.util
-spec = importlib.util.spec_from_file_location("v6", "simulation/double_task_sim_v6.py")
-v6 = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(v6)          # spec.loader.exec_module, not module_from_spec alone
+spec = importlib.util.spec_from_file_location("uni", "simulation/double_task_sim_unified.py")
+uni = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(uni)          # spec.loader.exec_module, not module_from_spec alone
 ```
 
-`v6.run_case(par)` returns a dict with `outcome` (`smooth` / `crash` /
+The endogenous defaults are `omega_0=0.05`, `gamma_PE=4.5`, `gamma_TM=3.0`,
+`gamma_R=2.25`, `beta_A=1.0`, with a skill floor of `0.30`.
+
+`uni.run_case(par)` returns a dict with `outcome` (`smooth` / `crash` /
 `not_reached`), `crash_type` (`econ` / `both`), `minC`, `total` and `sL_end`.
-`v6.simulate_v6(par)` returns the full path; `v6.welfare(path, par)` returns
-`minC`, `total` and the decomposition.
+`uni.simulate_unified(par)` returns the full path; `uni.welfare(path, par)`
+returns `minC`, `total` and the decomposition.
 
 ## Where each number comes from
 
@@ -126,7 +136,7 @@ spec.loader.exec_module(v6)          # spec.loader.exec_module, not module_from_
 | Manuscript | Script | Key values |
 |---|---|---|
 | Grid minima and identification | `analysis/check_grid_refine.py` | (0.18, 0.40, 0.15) = 63.53; dense grid (0.10, 0.40, 0.001) = 62.81, min C 0.3071 |
-| Alternative omega functional forms | `analysis/check_omega_form.py` | min C 0.3522-0.3540 across exp / rational / clip; no form changes the outcome |
+| Link-function sensitivity (logistic vs probit) | `analysis/check_beb_crossing.py` | min C 0.3562 vs 0.3571; link does not change the outcome |
 | Shock Monte Carlo (absorption counts) | `analysis/check_shock_mc.py` | headline crash counts 0/0/0, minima 0.3546, 0.3330 |
 | g_A and eta sensitivity | `analysis/check_ga_eta.py` | 0.344 / 0.294 / 0.237 / 0.222 |
 | Feasible share of the parameter box | `analysis/check_feasible_share.py` | 41/64 = 64.1%, 17/64 = 26.6%, 208/384 = 54.2% |
@@ -135,7 +145,7 @@ spec.loader.exec_module(v6)          # spec.loader.exec_module, not module_from_
 | Two calibrated configurations | `analysis/check_two_configs.py` | 0.3577 at p_E=0.45 (smooth), 0.3326 at p_E=0.30 (smooth) |
 | Welfare weights (384 combinations) | `analysis/check_welfare_weights.py` | wide-grid best (0.10, 0.40, 0.02) = 62.84 under baseline weights |
 | BEB and the policy that avoids the crash | `analysis/check_v12_beb.py` | endogenous re-employment |
-| p_E* crossing | `analysis/check_beb_crossing.py` | 0.3552, omega_c = 0.5667 |
+| p_E* crossing | `analysis/check_beb_crossing.py` | 0.3661, omega_c = 0.5667 |
 | Static bifurcation diagram, long horizon | `analysis/check_static_bifurcation.py` | sympy, no path dependence |
 | Reversal of the policy ranking | `analysis/check_reversal.py` | parameter region |
 | Fold region diagnostics | `analysis/check_fold_region.py` | local fold locus |
@@ -160,7 +170,7 @@ the grid sweeps take minutes:
 
 | Script | Cost |
 |---|---|
-| `check_table2`, `check_pestar`, `check_phi_gap`, `check_omega_form`, ... | < 10 s |
+| `check_table2`, `check_pestar`, `check_phi_gap`, `check_beb_crossing`, ... | < 10 s |
 | `check_feasible_share` (384 cases) | ~10 min |
 | `check_grid_refine` (540 cells) | ~15 min |
 | `check_shock_mc` (10 cells x 200 draws) | ~50 min |

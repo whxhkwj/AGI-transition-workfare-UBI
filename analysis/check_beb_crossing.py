@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
-"""Locate the real BEB crossing on the corner path and separate it from the
-nominal crossing produced by the static threshold. Also bisect the public-
-employment intensity that defends consumption (min_t C_t >= Cmin)."""
+"""Locate the real BEB crossing on the corner path and bisect the public-
+employment intensity that defends consumption (min_t C_t >= Cmin).
+
+Under the unified logistic engine the corner path (retrain=0) has no nominal or
+real crossing because skill depreciation binds; the script reports that and
+keeps the p_E* consumption-floor bisection, which does not require a crossing.
+"""
 import os as _os
 _HERE = _os.path.dirname(_os.path.abspath(__file__))
 _ROOT = _os.path.dirname(_HERE)
@@ -19,20 +23,21 @@ par = v12.Params(eta=0.40, mu_TM=0.50, T=200, tau=0.15, pE=0.45,
 r = v12.simulate_v12(par)
 om, skill, sL, C = r['omega'], r['skill'], r['sL'], r['C']
 
-# nominal crossing: static threshold (skill implicitly 1)
+# nominal crossing: static threshold (skill implicitly 1); real crossing: eff.
 nom_t = next((t for t in range(1, 200) if om[t] >= dt.EFF_CRIT), None)
-# real crossing: effective capture omega*skill reaches the critical value
 real_t = dt.first_real_crossing(om, skill)
-dyn = dt.dynamic_threshold(skill)
 print(f"nominal crossing (static omega_c={dt.EFF_CRIT:.4f}): t={nom_t}")
 print(f"real crossing (effective capture)               : t={real_t}")
-print(f"dynamic threshold at nominal crossing t={nom_t}: {dyn[nom_t]:.4f}, "
-      f"eff there={dt.effective_capture(om, skill)[nom_t]:.4f}")
+if nom_t is None:
+    print("corner has no crossing at any date: the effective-capture peak is "
+          f"{float(np.max(om[1:]*skill[:-1])):.4f} < {dt.EFF_CRIT:.4f}.")
 
 print("\n t    omega   skill(prev)  dynamic_crit   eff     sL       C")
-for t in range(nom_t - 3, nom_t + 4):
-    print(f"{t:3d} {om[t]:7.4f} {skill[t-1]:7.4f}    {dyn[t]:.4f}      "
-          f"{dt.effective_capture(om, skill)[t]:.4f} {sL[t]:.4f} {C[t]:.4f}")
+for t in (10, 20, 30, 40, 60, 80):
+    dyn_t = dt.dynamic_threshold(skill)[t]
+    eff_t = dt.effective_capture(om, skill)[t]
+    print(f"{t:3d} {om[t]:7.4f} {skill[t-1]:7.4f}    {dyn_t:.4f}      "
+          f"{eff_t:.4f} {sL[t]:.4f} {C[t]:.4f}")
 
 print("\n=== bisection: pE that defends consumption (minC >= Cmin) ===")
 def minC_of(pE):
