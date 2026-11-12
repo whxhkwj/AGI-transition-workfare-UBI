@@ -196,10 +196,14 @@ ax.plot(taus[bj], pes[bi], marker="*", ms=10, color="#8B1A1A",
 ax.annotate("minimum (wide-grid corner)", (taus[bj], pes[bi]),
             textcoords="offset points", xytext=(7, -12), color="#8B1A1A",
             fontsize=6.5, zorder=6)
-# denser re-solve (phi_max -> 0.001) cannot be marked on this surface: at phi_max=0.02
-# that (tau,pE) cell is infeasible, so mark it in words in the empty grey panel instead
+# denser re-solve: the dense-grid point (tau=0.13, pE=0.44) with the transfer
+# ceiling extended to phi_max=0.001. Its loss is computed in-line and reported as
+# text, so the displayed number always matches the engine rather than a literal.
+_, w_dense = run(P(tau=0.13, pE=0.44, phi_max=0.001, omega=0.05, retrain=0.0))
+dense_loss = w_dense["total"]
 ax.text(0.056, 0.27,
-        "denser re-solve " + r"($\varphi^{\mathrm{max}}=0.001$): 66.70 at (0.13, 0.44)",
+        "denser re-solve " + r"($\varphi^{\mathrm{max}}=0.001$): "
+        + f"{dense_loss:.2f} at (0.13, 0.44)",
         fontsize=6.2, color="#8B1A1A", ha="left", zorder=6,
         bbox=dict(facecolor="white", alpha=0.85, edgecolor="none", pad=1.5))
 ax.text(0.155, 0.050, "grey = infeasible or crash", fontsize=6.5, color=GREY, zorder=6)
