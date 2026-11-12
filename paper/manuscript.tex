@@ -106,10 +106,11 @@ L_t^D=\barL\cdot\min\{1,\;\max\{0,\,n_t/N_t\}\},\qquad s_t=L_t^D/\barL.
 
 \textbf{Skill stock (retraining vs.\ public employment).}
 \begin{equation}
+\label{eq:skill}
 \sigma_t=\sigma_{t-1}\Big(1-\delta_\sigma\,\tfrac{U_t^{rem}}{\barL}\,\big(1-\rho_{ret}\,\beta_{ret}\big)\Big),\qquad
 \sigma_t\ge\underline{\sigma}=0.30.
 \end{equation}
-Skills are preserved only by retraining $\rho_{ret}\in[0,1]$; $\beta_{ret}\in[0,1]$ scales how effectively retraining offsets skill decay, and public employment (workfare) does not preserve skills.
+Retraining is the only instrument that actively preserves skill, with $\rho_{ret}\in[0,1]$ controlling its scale and $\beta_{ret}\in[0,1]$ how effectively it offsets decay: depreciation in equation~\eqref{eq:skill} is applied only to the unemployed residual $U_t^{rem}$. Public employment does not actively raise skill and is not a substitute for retraining, but it preserves skill indirectly. A worker on a public job belongs to the employed share rather than to $U_t^{rem}$, so that worker's skill does not depreciate. Workfare therefore keeps the existing skill stock alive by keeping workers attached to a job, even though it creates no new skill and no market-valued output.
 
 \textbf{Output.}
 \begin{equation}
@@ -484,7 +485,7 @@ The fast-subsystem boundary condition derived in Section~\ref{sec:bifurcation} i
 \end{proof}
 
 \subsection{Dynamic verification and the critical policy intensity}
-The mechanism is verified on the full switching system. Figure~\ref{fig:beb-policy} contrasts three policy regimes. With no policy, the effective capture never reaches the critical value, the market employment share is absorbed toward zero and consumption breaks through its floor. Under the workfare corner, the nominal rate rises past the static value at $t=38$, but the effective capture peaks at $0.501$ and never reaches $0.567$, because the dynamic threshold rises with skill depreciation. The market employment share is consequently absorbed to zero while public employment holds consumption at its floor: the corner defends consumption but does not restore the labor engine. Under the strong social floor, retraining retains skill, the dynamic threshold stays near its static value and the effective capture crosses at $t=1$; the employment share is retained above one half with consumption well above the floor.
+The mechanism is verified on the full switching system. Figure~\ref{fig:beb-policy} contrasts three policy regimes. With no policy, the effective capture never reaches the critical value, the market employment share is absorbed toward zero and consumption breaks through its floor. Under the workfare corner, the nominal rate rises past the static value at $t=37$, but the effective capture peaks at $0.498$ and never reaches $0.567$, because the dynamic threshold rises with skill depreciation. The market employment share is consequently absorbed to zero while public employment holds consumption at its floor: the corner defends consumption but does not restore the labor engine. Under the strong social floor, retraining retains skill, the dynamic threshold stays near its static value and the effective capture crosses at $t=1$; the employment share is retained above one half with consumption well above the floor.
 
 \begin{figure}[htbp]
 \centering
@@ -498,7 +499,7 @@ A bisection on the public-employment intensity gives the sharp threshold at whic
 p_E^{*}=0.3552,
 \label{eq:beb-pestar}
 \end{equation}
-below which the economy crashes and above which consumption is held at its floor. This is a consumption threshold, not a high-employment threshold: at $p_E^*$ the effective capture does not reach the critical value, so consumption is defended by the fiscal buffer without a restoration of market employment. The long-horizon run ($T=200$) confirms the distinction: with no policy the employment share reaches zero and $\min C=0.057$, whereas under the corner with transfers closed ($\phi^{\max}\to0$) the outcome is smooth with $\min C=0.350$, and under the strong floor the employment share ends at $0.505$ with $\min C=0.466$ and $\omega=0.914$.
+below which the economy crashes and above which consumption is held at its floor. This is a consumption threshold, not a high-employment threshold: at $p_E^*$ the effective capture does not reach the critical value, so consumption is defended by the fiscal buffer without a restoration of market employment. The long-horizon run ($T=200$) confirms the distinction: with no policy the employment share reaches zero and $\min C=0.057$, whereas under the corner with transfers closed ($\phi^{\max}\to0$) the outcome is smooth with $\min C=0.350$, and under the strong floor the employment share ends at $0.501$ with $\min C=0.467$ and $\omega=0.914$.
 
 \subsection{Slow--fast dynamics and the finite-rate lag}
 The endogenous rate is a slow variable and the employment share is a fast variable,
@@ -696,7 +697,7 @@ Two things follow. First, neither configuration produces an economic crash acros
 Policy & outcome & crash type & $\min C$ & peak stress & social crash \\
 \midrule
 Corner $(0.15,0.45,0.02)$ & smooth & none & 0.357 & 0.330 & no \\
-Standard $(0.16,0.45,0.65)$ & smooth & none & 0.3577 & 0.330 & no \\
+Standard $(0.16,0.45,0.65)$ & smooth & none & 0.3576 & 0.330 & no \\
 Pure transfer $(0.16,0,0.65)$ & crash & both & 0.2589 & 0.600 & yes \\
 \bottomrule
 \end{tabular}

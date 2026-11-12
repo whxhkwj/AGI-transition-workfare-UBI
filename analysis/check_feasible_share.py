@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Reproduce the feasible-share counts in the recalibration table:
-29/64 at pE=0.45, 6/64 at pE=0.30, and 122/384 overall.
+41/64 at pE=0.45, 17/64 at pE=0.30, and 208/384 overall.
 Grid = v9c wide grid: 8 tau x 8 phi_max, at fixed pE."""
 import os as _os
 _HERE = _os.path.dirname(_os.path.abspath(__file__))

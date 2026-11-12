@@ -7,7 +7,7 @@ The workfare and pure-transfer runs share the same tax rate and transfer
 ceiling, differing only in p_E, so the comparison is same-fiscal.
 Paper claims (balance-sheet-consistent engine, hard credit ceiling):
   * standard (tau=0.16, phi_max=0.65), p_E=0.45: workfare survives all six
-    (min C = 0.3511 at omega=0.02 and 0.3577 at omega=0.05);
+    (min C = 0.3510 at omega=0.02 and 0.3576 at omega=0.05);
   * standard, pure transfer p_E=0.00: all six crash;
   * corner (tau=0.15, phi_max=0.02), p_E=0.45: all six survive, min C = 0.352-0.357;
   * corner, p_E=0.30: all six crash, min C = 0.244-0.265.
@@ -74,14 +74,14 @@ checks = [
      sum(1 for _, r in w_cor if r["outcome"] in ("smooth", "not_reached")) == 6),
     ("corner p_E=0.30 survives 0 of 6",
      sum(1 for _, r in w_c30 if r["outcome"] in ("smooth", "not_reached")) == 0),
-    ("workfare omega=0.05 min C = 0.3577", abs(w_std[1][1]["minC"] - 0.3577) < 5e-4),
-    ("workfare omega=0.02 min C = 0.3511", abs(w_std[0][1]["minC"] - 0.3511) < 5e-4),
+    ("workfare omega=0.05 min C = 0.3576", abs(w_std[1][1]["minC"] - 0.3576) < 1e-4),
+    ("workfare omega=0.02 min C = 0.3510", abs(w_std[0][1]["minC"] - 0.3510) < 1e-4),
     ("corner p_E=0.45 range 0.352..0.357",
-     abs(min(r["minC"] for _, r in w_cor) - 0.3517) < 5e-4
-     and abs(max(r["minC"] for _, r in w_cor) - 0.3573) < 5e-4),
+     abs(min(r["minC"] for _, r in w_cor) - 0.3517) < 1e-4
+     and abs(max(r["minC"] for _, r in w_cor) - 0.3573) < 1e-4),
     ("corner p_E=0.30 range 0.244..0.265",
-     abs(min(r["minC"] for _, r in w_c30) - 0.2445) < 5e-4
-     and abs(max(r["minC"] for _, r in w_c30) - 0.2653) < 5e-4),
+     abs(min(r["minC"] for _, r in w_c30) - 0.2445) < 1e-4
+     and abs(max(r["minC"] for _, r in w_c30) - 0.2653) < 1e-4),
     ("workfare loss lower at every omega",
      all(a["total"] < b["total"] for (_, a), (_, b) in zip(w_std, u_std))),
 ]

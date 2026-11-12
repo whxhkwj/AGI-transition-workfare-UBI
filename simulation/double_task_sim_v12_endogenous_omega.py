@@ -113,19 +113,30 @@ def simulate_v12(par):
         Urem_plan = max(0.0, u[t] * par.LS - EP_plan)
         TM_plan = phi[t] * par.w * Urem_plan
         Eplan[t] = par.wP * EP_plan + TM_plan
-        Urem[t] = Urem_plan
         if Eplan[t] <= tax[t - 1] + 1e-9:
             EP[t], TM[t] = EP_plan, TM_plan
             shortfall[t] = 0.0
             cap_share[t] = 1.0
         else:
+            # Budget binds: both the public-employment wage bill and the transfer are
+            # scaled by the same pro-rata factor. Planned jobs that are not funded
+            # do not disappear from the population; those workers remain unemployed.
             shrink = tax[t - 1] / Eplan[t]
             EP[t], TM[t] = EP_plan * shrink, TM_plan * shrink
             shortfall[t] = Eplan[t] - tax[t - 1]
             cap_share[t] = shrink
+        # Closed population accounting: residual unemployment is measured against
+        # actual (funded) public employment, so LD + EP + Urem = LS in every period.
+        Urem[t] = max(0.0, u[t] * par.LS - EP[t])
 
-        skill[t] = skill[t - 1] * (1 - par.delta_skill * (Urem[t] / par.LS)
-                                   * (1 - par.retrain * par.retain_retrain))
+        # Skill is an explicit population-weighted average. Market and public
+        # workers keep their skill (coefficient 1): public employment preserves
+        # skill indirectly by keeping workers out of unemployment, while only the
+        # unemployed residual depreciates; retraining offsets that depreciation.
+        dep = par.delta_skill * (1.0 - par.retrain * par.retain_retrain)
+        employed = (LD[t] + EP[t]) / par.LS
+        unemployed = Urem[t] / par.LS
+        skill[t] = skill[t - 1] * (employed + unemployed * (1.0 - dep))
         skill[t] = max(0.30, skill[t])
 
         disp = (It[t] - par.I0) / par.N0

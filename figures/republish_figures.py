@@ -26,6 +26,44 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
+
+def _restore_native_findfont():
+    """Use matplotlib's own font resolver instead of the sandbox CJK bridge.
+
+    The AIO sandbox installs a startup patch (_aio_mpl_fontconfig, via a
+    .pth file) whose CJK fallback injection replaces every Western-only
+    font request with Noto Sans CJK SC, even when the requested family is
+    explicitly DejaVu Sans. These figures contain no CJK text, so the
+    injection is unwanted and changes the embedded font from DejaVu Sans
+    (CID TrueType) to Noto Sans CJK (CID Type 0C), which poppler flags as
+    a font-type mismatch. Re-load the font manager from its own source to
+    recover the unpatched class-level findfont and bind it back. This
+    affects only the current process; no system file is modified.
+    """
+    import matplotlib.font_manager as _fm
+    if not getattr(_fm.fontManager.findfont, "_aio_mpl_fontconfig_patched", False):
+        return
+    _spec = importlib.util.spec_from_file_location("_fm_clean", _fm.__file__)
+    _clean = importlib.util.module_from_spec(_spec)
+    sys.modules["_fm_clean"] = _clean
+    _spec.loader.exec_module(_clean)
+    _native = _clean.FontManager.findfont
+    _fm.FontManager.findfont = _native
+    _bound = _native.__get__(_fm.fontManager, _fm.FontManager)
+    _fm.fontManager.findfont = _bound
+    _fm.findfont = _bound
+    # Some submodules (notably matplotlib._mathtext) bind the module-level
+    # findfont at import time and keep using the patched reference even after
+    # font_manager is restored. Replace every such captured reference.
+    for _name, _mod in list(sys.modules.items()):
+        if _mod is None or not _name.startswith("matplotlib"):
+            continue
+        if getattr(_mod, "findfont", None) is not None:
+            _mod.findfont = _bound
+
+
+_restore_native_findfont()
+
 # ---------- one shared style ----------
 plt.rcParams.update({
     "font.size": 8,
@@ -161,12 +199,12 @@ ax.annotate("minimum (wide-grid corner)", (taus[bj], pes[bi]),
 # denser re-solve (phi_max -> 0.001) cannot be marked on this surface: at phi_max=0.02
 # that (tau,pE) cell is infeasible, so mark it in words in the empty grey panel instead
 ax.text(0.056, 0.27,
-        "denser re-solve " + r"($\phi^{\mathrm{max}}=0.001$): 66.70 at (0.13, 0.44)",
+        "denser re-solve " + r"($\varphi^{\mathrm{max}}=0.001$): 66.70 at (0.13, 0.44)",
         fontsize=6.2, color="#8B1A1A", ha="left", zorder=6,
         bbox=dict(facecolor="white", alpha=0.85, edgecolor="none", pad=1.5))
 ax.text(0.155, 0.050, "grey = infeasible or crash", fontsize=6.5, color=GREY, zorder=6)
 ax.set_title("Loss surface over the capital-tax and workfare-share grid "
-             r"($\phi^{\mathrm{max}}=0.02$, $\omega=0.05$)")
+             r"($\varphi^{\mathrm{max}}=0.02$, $\omega=0.05$)")
 ax.set_xlabel(r"capital tax $\tau$"); ax.set_ylabel(r"workfare share $p_E$")
 fig.tight_layout()
 save(fig, "fig_loss_surface")

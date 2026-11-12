@@ -8,7 +8,8 @@
   (1) 公共就业 = 以工代赈 / Workfare / Job Guarantee（缓冲+尊严）
       政府创造"谁都能做"的岗位，付工资（>纯救济），不追求岗位生产率价值。
       价值 = 消费缓冲（需求侧）+ 社会可接受性（尊严 → 降低社会失稳风险）。
-      —— 不保留技能、不创造市场价值（用户定义）。
+      不主动提升技能、不创造市场价值；但工人在岗即不进入失业折旧，
+      因而间接保留现有技能（区别于再培训的主动技能投资）。
 
   (2) 技能保留 = 再培训 / Retraining（价值 ∝ 复职失灵强度 ω）
       投资技能，经济价值 = 帮工人抓住"新任务归劳动"的机会。
@@ -118,20 +119,30 @@ def simulate_v6(par):
         Urem_plan = max(0.0, u[t] * par.LS - EP_plan)
         TM_plan = phi[t] * par.w * Urem_plan
         Eplan[t] = par.wP * EP_plan + TM_plan
-        Urem[t] = Urem_plan
         if Eplan[t] <= tax[t-1] + 1e-9:
             EP[t], TM[t] = EP_plan, TM_plan
             shortfall[t] = 0.0
             cap_share[t] = 1.0
         else:
+            # Budget binds: the public-employment wage bill and the transfer are
+            # scaled by the same pro-rata factor. Unfunded planned jobs do not
+            # vanish from the population; those workers stay unemployed.
             shrink = tax[t-1] / Eplan[t]
             EP[t], TM[t] = EP_plan * shrink, TM_plan * shrink
             shortfall[t] = Eplan[t] - tax[t-1]
             cap_share[t] = shrink
+        # Closed population accounting: residual unemployment uses actual funded
+        # public employment, so LD + EP + Urem = LS in every period.
+        Urem[t] = max(0.0, u[t] * par.LS - EP[t])
 
-        # 技能：由再培训 retrain 保留（公共就业不保技能）
-        skill[t] = skill[t-1] * (1 - par.delta_skill * (Urem[t] / par.LS)
-                                 * (1 - par.retrain * par.retain_retrain))
+        # Explicit population-weighted skill. Market and public workers keep
+        # their skill (coefficient 1): public employment preserves skill
+        # indirectly by avoiding unemployment; only the unemployed depreciate,
+        # and retraining offsets that depreciation.
+        dep = par.delta_skill * (1.0 - par.retrain * par.retain_retrain)
+        employed = (LD[t] + EP[t]) / par.LS
+        unemployed = Urem[t] / par.LS
+        skill[t] = skill[t-1] * (employed + unemployed * (1.0 - dep))
         skill[t] = max(0.30, skill[t])
 
         disp = (It[t] - par.I0) / par.N0
