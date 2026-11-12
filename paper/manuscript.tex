@@ -179,8 +179,8 @@ The consumption drag of deleveraging is therefore identical to the real net repa
 
 \textbf{Planned spending.}
 \begin{equation}
-E_t^{plan}=w^P E_t^P+\phi_t\,w\,U_t^{rem},\qquad
-E_t^P=\min\{p_E\,u_t\barL,\;u_t\barL\},\qquad U_t^{rem}=u_t\barL-E_t^P.
+E_t^{plan}=w^P E_t^{P,plan}+\phi_t\,w\,U_t^{rem,plan},\qquad
+E_t^{P,plan}=\min\{p_E\,u_t\barL,\;u_t\barL\},\qquad U_t^{rem,plan}=u_t\barL-E_t^{P,plan}.
 \end{equation}
 
 \textbf{Balanced budget / fiscal feasibility:}
@@ -188,6 +188,15 @@ E_t^P=\min\{p_E\,u_t\barL,\;u_t\barL\},\qquad U_t^{rem}=u_t\barL-E_t^P.
 \text{actual spending}=\min\{E_t^{plan},\;\text{tax}_{t-1}\},\quad
 \text{shortfall}\Rightarrow \text{proportional scaling }\rho=\text{tax}_{t-1}/E_t^{plan}.
 \end{equation}
+The scaling factor $\rho\in(0,1]$ applies to both components, so the financed public-job headcount and the actual unemployed remainder are
+\begin{equation}
+E_t^{P,act}=\rho\,E_t^{P,plan},\qquad
+U_t^{rem}=u_t\barL-E_t^{P,act},\qquad
+L_t^D+E_t^{P,act}+U_t^{rem}=\barL.
+\end{equation}
+The remainder is therefore recomputed against the financed headcount rather than the planned one: an unfunded position does not absorb a worker, and the social pressure and skill depreciation equations below use this actual $U_t^{rem}$, so promised-but-unpaid jobs provide no protection. The population partition closes to machine precision in every period (verified by \texttt{analysis/verify\_population\_accounting.py}).
+
+\smallskip\noindent\textbf{Period-five residual in the two implementations.} On the baseline corner path the actual unemployed remainder at $t=5$ is $0.18550$. The pre-repair implementation held the remainder at its planned value of $0.13715$; recomputed against the financed headcount the same path gives $0.18673$. The current unified engine, whose closed task accounting alters the market-employment path (period-five unemployment moving from $0.24936$ to $0.24892$), reports $0.18550$. The $0.0012$ gap to the recomputed pre-repair value is the same order of magnitude and not a substantive change, and it satisfies the population identity exactly.
 Appropriations in period $t$ are funded by taxes already collected in $t-1$: the government budgets against last period's realized revenue, so the fiscal constraint uses $\text{tax}_{t-1}$ rather than the current-period tax. This is a within-period rule with no fiscal reserve account: surpluses are not carried forward and deficits are not rolled into debt, so the fiscal account is separate from the household consumption debt $D_t$. When revenue is insufficient, spending is scaled down proportionally rather than borrowed. A financing-constraint collapse occurs when the scaled spending is too small to fund the floor, consumption falls below the subsistence level, and the economy crashes.
 
 \smallskip\noindent\textbf{Naming the transfer.} The transfer $\phi_t w U_t^{rem}$ is paid only to the unemployed remainder $U_t^{rem}$, is conditional on joblessness and bounded by the ceiling $\phi^{\max}$. It is therefore an unemployment transfer rather than a universal basic income: a UBI would be paid unconditionally to the whole population, including the employed, which this model does not implement. We use ``unemployment transfer'' (and ``pure transfer'' for the $p_E=0$ limit) throughout and reserve ``UBI'' for the external policy literature.
