@@ -216,12 +216,12 @@ Assume (A1) $\kappa_I>0$, $A_t=A_0(1+g_A)^t$, $A_0>0$, $g_A>0$ (a strictly monot
 then $n_t$ is strictly decreasing, there is a finite $T^*$ with $n_{T^*}=0$, and $s_t=0$ for all $t\ge T^*$.
 \end{theorem}
 \begin{proof}
-(i) The premise holds on the endogenous path. Decompose the new-task flow into its bounded human component and the capability-driven term, $\dd N_t=h_t+q A_t$, where $h_t=\kappa_N^h S_t^h\le\overline h$ and $q=\kappa_N^{AI}M_0$. In the cap-slack region the labor-task drift is
+(i) The premise holds on the endogenous path. Decompose the new-task flow into its bounded human component and the capability-driven term, $\dd N_t=h_t+q_A A_t$, where $h_t=\kappa_N^h S_t^h\le\overline h$ and $q_A=\kappa_N^{AI}M_0$. In the cap-slack region the labor-task drift is
 \[
-\dd n_t=\omega_t\sigma_{t-1}(h_t+q A_t)-\kappa_I A_t
-=\omega_t\sigma_{t-1}h_t-\bigl(\kappa_I-\omega_t\sigma_{t-1}q\bigr)A_t.
+\dd n_t=\omega_t\sigma_{t-1}(h_t+q_A A_t)-\kappa_I A_t
+=\omega_t\sigma_{t-1}h_t-\bigl(\kappa_I-\omega_t\sigma_{t-1}q_A\bigr)A_t.
 \]
-At the baseline calibration $\kappa_I-\omega_0 q=0.0175>0$, and $\omega_t\le\omega_0$ on the no-policy path, so $\kappa_I-\omega_t q\ge0.0175$ in every period. The first term is bounded, $\omega_t\sigma_{t-1}h_t\le\omega_0\overline h$, whereas the second grows exponentially with $A_t$. There is therefore a finite $t_0$ after which the second term dominates and $\dd n_t<0$.
+At the baseline calibration $\kappa_I-\omega_0 q_A=0.0175>0$, and $\omega_t\le\omega_0$ on the no-policy path, so $\kappa_I-\omega_t q_A\ge0.0175$ in every period. The first term is bounded, $\omega_t\sigma_{t-1}h_t\le\omega_0\overline h$, whereas the second grows exponentially with $A_t$. There is therefore a finite $t_0$ after which the second term dominates and $\dd n_t<0$.
 (ii) Uniform negative drift. By A1, $A_t$ grows exponentially; by A2, $\dd N_t\le\overline{\dd N}$ and $\sigma_{t-1}\le1$. Define
 \[
 t_1=\max\!\left\{0,\ \left\lceil\frac{\ln(2\omega_0\overline{\dd N}/(\kappa_I A_0))}{\ln(1+g_A)}\right\rceil\right\}.
@@ -373,13 +373,13 @@ The switching system of Section~\ref{sec:model} is solved numerically and its pr
 \subsection{The fast subsystem: a quadratic vector field}
 Freeze the slowly evolving state, normalize the state variables
 \begin{equation}
-k_h\equiv\frac{\kappa_N^h}{N},\qquad q\equiv\kappa_N^{AI}M_0,\qquad
+k_h\equiv\frac{\kappa_N^h}{N},\qquad q_A\equiv\kappa_N^{AI}M_0,\qquad
 \mu\equiv\frac{A}{N},\qquad s\equiv\frac{n}{N},\qquad \sigma\equiv\text{skill},
 \label{eq:bif-norm}
 \end{equation}
 and write the growth of the task stock and of the labor tasks as
 \begin{equation}
-\frac{\dot N}{N}=k_hS_0\bigl(1-\lambda_h(1-s)\bigr)+q\mu,\qquad
+\frac{\dot N}{N}=k_hS_0\bigl(1-\lambda_h(1-s)\bigr)+q_A\mu,\qquad
 \frac{\dot n}{N}=\omega\sigma\,\frac{\dot N}{N}-\kappa_I\mu.
 \label{eq:bif-growth}
 \end{equation}
@@ -391,8 +391,8 @@ This reduction uses the direct automation flow before the availability cap binds
 with coefficients
 \begin{align}
 C&=k_hS_0\lambda_h>0, & \Xi&=k_hS_0(1-\lambda_h)<0,\nonumber\\
-B&=C\omega\sigma-\Xi-q\mu, &
-A&=\omega\sigma(\Xi+q\mu)-\kappa_I\mu.
+B&=C\omega\sigma-\Xi-q_A\mu, &
+A&=\omega\sigma(\Xi+q_A\mu)-\kappa_I\mu.
 \label{eq:bif-coeff}
 \end{align}
 The decisive structural fact is
@@ -415,7 +415,7 @@ s_{\text{floor}}=1-\frac1{\lambda_h}.
 \end{equation}
 For $0\le s<s_{\text{floor}}$ the human share is identically zero, only the AI-driven component remains, and the fast field in this second region is linear:
 \begin{equation}
-\dot s=f_2(s)=\mu\bigl(\omega\sigma q-\kappa_I-q\,s\bigr).
+\dot s=f_2(s)=\mu\bigl(\omega\sigma q_A-\kappa_I-q_A\,s\bigr).
 \label{eq:bif-f2}
 \end{equation}
 The two fields join continuously on the manifold, $f_1(s_{\text{floor}})=f_2(s_{\text{floor}})$, but their slopes differ. Direct subtraction gives the constant jump
@@ -432,34 +432,34 @@ The fast subsystem is therefore a continuous, piecewise-smooth ($C^0$ but not $C
 \label{thm:beb}
 For $\mu>0$ and with $\sigma$ fixed, a boundary equilibrium bifurcation~\citep{Sotomayor1973,Kuznetsov2023} occurs at
 \begin{equation}
-\boxed{\ \omega_c=\frac1\sigma\left(\frac{\kappa_I}{q}+s_{\text{floor}}\right).\ }
+\boxed{\ \omega_c=\frac1\sigma\left(\frac{\kappa_I}{q_A}+s_{\text{floor}}\right).\ }
 \label{eq:beb-critical}
 \end{equation}
-The crossing is transverse, $\partial_\omega f_1(s_{\text{floor}})=\mu q\sigma>0$. For $\omega<\omega_c$ the region-I root is virtual (it lies outside the physical region) and the field on the manifold points toward the absorbing boundary $s=0$; for $\omega>\omega_c$ an interior equilibrium $s^+>s_{\text{floor}}$ exists and is stable whenever the persistence condition $q\mu>C\kappa_I/q$ derived below holds.
+The crossing is transverse, $\partial_\omega f_1(s_{\text{floor}})=\mu q_A\sigma>0$. For $\omega<\omega_c$ the region-I root is virtual (it lies outside the physical region) and the field on the manifold points toward the absorbing boundary $s=0$; for $\omega>\omega_c$ an interior equilibrium $s^+>s_{\text{floor}}$ exists and is stable whenever the persistence condition $q_A\mu>C\kappa_I/q_A$ derived below holds.
 \end{theorem}
 \begin{proof}
 By continuity, on the manifold
 \begin{equation}
 f_1(s_{\text{floor}})=f_2(s_{\text{floor}})
-=\mu\bigl(\omega\sigma q-\kappa_I-q\,s_{\text{floor}}\bigr).
+=\mu\bigl(\omega\sigma q_A-\kappa_I-q_A\,s_{\text{floor}}\bigr).
 \label{eq:beb-proof1}
 \end{equation}
 Since $\mu>0$, the condition $f_1(s_{\text{floor}})=0$ is equivalent to
-$\omega\sigma=\kappa_I/q+s_{\text{floor}}$, which gives~\eqref{eq:beb-critical}. Differentiating~\eqref{eq:beb-proof1} in $\omega$ gives $\mu q\sigma>0$, establishing transversality. The unique region-II equilibrium of $f_2$ is
+$\omega\sigma=\kappa_I/q_A+s_{\text{floor}}$, which gives~\eqref{eq:beb-critical}. Differentiating~\eqref{eq:beb-proof1} in $\omega$ gives $\mu q_A\sigma>0$, establishing transversality. The unique region-II equilibrium of $f_2$ is
 \begin{equation}
-s^{**}=\omega\sigma-\frac{\kappa_I}{q},
+s^{**}=\omega\sigma-\frac{\kappa_I}{q_A},
 \label{eq:beb-s2star}
 \end{equation}
-which equals $s_{\text{floor}}$ exactly at $\omega=\omega_c$ and lies below the manifold for $\omega<\omega_c$. The larger root of $f_1$ likewise equals $s_{\text{floor}}$ at $\omega_c$ and moves above it for $\omega>\omega_c$. At the boundary equilibrium the region-II slope is $f_2'(s_{\text{floor}})=-q\mu<0$, and using~\eqref{eq:bif-jump} with $\omega\sigma=\kappa_I/q+s_{\text{floor}}$ the region-I slope is
+which equals $s_{\text{floor}}$ exactly at $\omega=\omega_c$ and lies below the manifold for $\omega<\omega_c$. The larger root of $f_1$ likewise equals $s_{\text{floor}}$ at $\omega_c$ and moves above it for $\omega>\omega_c$. At the boundary equilibrium the region-II slope is $f_2'(s_{\text{floor}})=-q_A\mu<0$, and using~\eqref{eq:bif-jump} with $\omega\sigma=\kappa_I/q_A+s_{\text{floor}}$ the region-I slope is
 \[
-f_1'(s_{\text{floor}})=-q\mu+\frac{C\kappa_I}{q}.
+f_1'(s_{\text{floor}})=-q_A\mu+\frac{C\kappa_I}{q_A}.
 \]
-It is negative exactly under $q\mu>C\kappa_I/q$. When this persistence condition holds, both one-sided slopes are negative and the equilibrium crosses the manifold with its stability preserved, which is the persistence-type BEB rather than a fold with annihilation. If the condition fails, the region-I branch is repelling and the event is not of persistence type. The calibrated parameters satisfy the condition throughout the reported horizon (Section~\ref{subsec:connection}).
+It is negative exactly under $q_A\mu>C\kappa_I/q_A$. When this persistence condition holds, both one-sided slopes are negative and the equilibrium crosses the manifold with its stability preserved, which is the persistence-type BEB rather than a fold with annihilation. If the condition fails, the region-I branch is repelling and the event is not of persistence type. The calibrated parameters satisfy the condition throughout the reported horizon (Section~\ref{subsec:connection}).
 \end{proof}
 
 The hard lower boundary $s=0$ contributes a second, structurally simpler event. From~\eqref{eq:beb-s2star}, the region-II equilibrium enters the physical domain when
 \begin{equation}
-\omega_0^{(\text{entry})}=\frac1\sigma\frac{\kappa_I}{q},
+\omega_0^{(\text{entry})}=\frac1\sigma\frac{\kappa_I}{q_A},
 \label{eq:beb-entry}
 \end{equation}
 at which $s^{**}=0$. Below this value the physical state space contains no equilibrium at all and the trajectory is absorbed at $s=0$, which is the collapse. The complete static picture is therefore three regimes: absorption for $\omega<\omega_0^{(\text{entry})}$, a stable low-employment region-II equilibrium between the two thresholds, and a stable high-employment region-I equilibrium above $\omega_c$. Figure~\ref{fig:beb-static} depicts this three-regime branch structure and the transverse crossing of the field on the manifold.
@@ -467,7 +467,7 @@ at which $s^{**}=0$. Below this value the physical state space contains no equil
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\textwidth]{fig_beb_static.pdf}
-\caption{Boundary equilibrium bifurcation of the fast subsystem, static slice with skill fixed at one. Left: the physical equilibrium branch is absorbing at $s=0$ for $\omega<\kappa_I/q$, rises as a stable region-II (low-employment) equilibrium between $\kappa_I/q$ and $\omega_c$, and persists through the switching manifold $s_{\text{floor}}$ at $\omega_c=0.567$ into the stable region-I (high-employment) branch; virtual and non-physical roots are shown light. Right: the field on the manifold $f(s_{\text{floor}})$ crosses zero transversely at $\omega_c$. On a dynamic path skill depreciates, so the effective threshold is the time-varying $\omega_c(t)$ reported in Figure~\ref{fig:beb-policy}.}
+\caption{Boundary equilibrium bifurcation of the fast subsystem, static slice with skill fixed at one. Left: the physical equilibrium branch is absorbing at $s=0$ for $\omega<\kappa_I/q_A$, rises as a stable region-II (low-employment) equilibrium between $\kappa_I/q_A$ and $\omega_c$, and persists through the switching manifold $s_{\text{floor}}$ at $\omega_c=0.567$ into the stable region-I (high-employment) branch; virtual and non-physical roots are shown light. Right: the field on the manifold $f(s_{\text{floor}})$ crosses zero transversely at $\omega_c$. On a dynamic path skill depreciates, so the effective threshold is the time-varying $\omega_c(t)$ reported in Figure~\ref{fig:beb-policy}.}
 \label{fig:beb-static}
 \end{figure}
 
@@ -491,12 +491,12 @@ This specification has the required properties. The logistic keeps $\omega_t\in(
 \label{prop:endog-cross}
 The real bifurcation is governed by the effective capture $\omega_t\,\text{skill}_{t-1}$, not by $\omega_t$ alone. The instantaneous threshold on the nominal rate is
 \[
-\omega_c(t)=\frac{\kappa_I/q+s_{\text{floor}}}{\text{skill}_{t-1}},
+\omega_c(t)=\frac{\kappa_I/q_A+s_{\text{floor}}}{\text{skill}_{t-1}},
 \]
-which rises as skill falls. A real crossing into the high-employment region requires the effective capture to reach $\kappa_I/q+s_{\text{floor}}$, and is therefore conditional on skill being retained. The partial effects of the two competing terms are opposite and bounded, $\partial\omega_t/\partial\Gamma_t=\omega_t(1-\omega_t)>0$ and $\partial\omega_t/\partial g_t=-\beta_A\omega_t(1-\omega_t)<0$.
+which rises as skill falls. A real crossing into the high-employment region requires the effective capture to reach $\kappa_I/q_A+s_{\text{floor}}$, and is therefore conditional on skill being retained. The partial effects of the two competing terms are opposite and bounded, $\partial\omega_t/\partial\Gamma_t=\omega_t(1-\omega_t)>0$ and $\partial\omega_t/\partial g_t=-\beta_A\omega_t(1-\omega_t)<0$.
 \end{proposition}
 \begin{proof}
-The fast-subsystem boundary condition is $\omega_t\,\text{skill}_{t-1}=\kappa_I/q+s_{\text{floor}}$; dividing by the lagged skill gives the stated $\omega_c(t)$. Differentiating the logistic in~\eqref{eq:endog-omega} gives the two log-odds derivatives, using the logistic density $\Lambda'(x)=\Lambda(x)(1-\Lambda(x))$. Since $\text{skill}_{t-1}\le1$ on a depreciation path, $\omega_c(t)\ge\omega_c$, so a nominal rate at the static value cannot by itself satisfy the effective condition.
+The fast-subsystem boundary condition is $\omega_t\,\text{skill}_{t-1}=\kappa_I/q_A+s_{\text{floor}}$; dividing by the lagged skill gives the stated $\omega_c(t)$. Differentiating the logistic in~\eqref{eq:endog-omega} gives the two log-odds derivatives, using the logistic density $\Lambda'(x)=\Lambda(x)(1-\Lambda(x))$. Since $\text{skill}_{t-1}\le1$ on a depreciation path, $\omega_c(t)\ge\omega_c$, so a nominal rate at the static value cannot by itself satisfy the effective condition.
 \end{proof}
 
 \subsection{Dynamic verification and the critical policy intensity}
@@ -527,7 +527,7 @@ Away from the switching manifold the critical manifold $f=0$ is normally hyperbo
 
 \subsection{Connection to the calibrated model}
 \label{subsec:connection}
-The high-employment region-I equilibrium corresponds structurally to the strong social floor at an intensity sufficient for an effective crossing, while the workfare corner corresponds to the fiscally defended state in which consumption is held at its floor as market employment vanishes, and the absorbing regime corresponds to the no-policy and pure-transfer collapses. The coefficients $\gamma_{PE},\gamma_{TM},\gamma_R$, the baseline $\omega_0$ and the capability sensitivity $\beta_A$ are structural parameters of the reduced subsystem, not externally estimated quantities, and the policy threshold $p_E^{*}=0.3661$ is a dimensionless output of the calibrated model under those baseline parameters, illustrative rather than an empirical estimate. The logistic law is the standard share form of a discrete-choice comparison between labor and AGI, so its microfoundation is the competition over new tasks stated in equation~\eqref{eq:omega-law}; a quantitative mapping from the analytic thresholds to an estimated time path remains future work. On the reported corner path the persistence condition of Theorem~\ref{thm:beb} holds at every period: the region-I slope $f_1'(s_{\text{floor}})$ stays in $[-0.025,-0.014]$ and is strictly negative, because $q\mu$ exceeds $C\kappa_I/q$ by an order of magnitude. The persistence-type classification is therefore supported by the calibrated parameters rather than asserted for all $\mu>0$.
+The high-employment region-I equilibrium corresponds structurally to the strong social floor at an intensity sufficient for an effective crossing, while the workfare corner corresponds to the fiscally defended state in which consumption is held at its floor as market employment vanishes, and the absorbing regime corresponds to the no-policy and pure-transfer collapses. The coefficients $\gamma_{PE},\gamma_{TM},\gamma_R$, the baseline $\omega_0$ and the capability sensitivity $\beta_A$ are structural parameters of the reduced subsystem, not externally estimated quantities, and the policy threshold $p_E^{*}=0.3661$ is a dimensionless output of the calibrated model under those baseline parameters, illustrative rather than an empirical estimate. The logistic law is the standard share form of a discrete-choice comparison between labor and AGI, so its microfoundation is the competition over new tasks stated in equation~\eqref{eq:omega-law}; a quantitative mapping from the analytic thresholds to an estimated time path remains future work. On the reported corner path the persistence condition of Theorem~\ref{thm:beb} holds at every period: the region-I slope $f_1'(s_{\text{floor}})$ stays in $[-0.025,-0.014]$ and is strictly negative, because $q_A\mu$ exceeds $C\kappa_I/q_A$ by an order of magnitude. The persistence-type classification is therefore supported by the calibrated parameters rather than asserted for all $\mu>0$.
 
 \smallskip\noindent\textbf{Functional form of the share law.}
 Equation~\eqref{eq:endog-omega} is a modelling choice, so we re-solve the corner with the probit share, $\omega_t=\Phi(\ell_0+\Gamma_t-\beta_A g_t)$ where $\Phi$ is the standard normal cumulative distribution, which shares the logistic form's endpoints, monotonicity and smoothness but a different tail shape. Both forms keep the corner smooth and without a real crossing: the effective capture peaks at $0.121$ under the logistic and $0.041$ under the probit. The buffer conclusion is nevertheless unchanged, with $\min_t C_t$ moving only from $0.3562$ to $0.3571$, a gap below $0.001$. The binding constraint remains skill depreciation rather than the choice of link function, so the functional form is not the margin that decides the outcome. The capability sensitivity $\beta_A$ is the more consequential choice and is treated separately as a sensitivity sweep.
@@ -593,7 +593,7 @@ $\mu_d$ & monetary drag on disposable flow & 0.06 & $-\mu_d\max\{0,r_t^d\}$ \emp
 $\bar b$ & debt burden target & 0.35 & target real debt in the amortization rule \emph{[model-set / calibration convention]} \\
 $D_0$ & initial nominal debt (normalized) & 0.30 & initial balance sheet \emph{[model-set / calibration convention]} \\
 \midrule
-\multicolumn{4}{@{}p{6.3in}@{}}{\textit{Baseline policy levers.} $\tau=0.15$ (loss-minimizing corner on the reported grid), $p_E=0.45$ (workfare-dominant), $\phi^{\max}=0.02$ (the grid floor; transfers effectively closed under the baseline loss weights).} \\
+\multicolumn{4}{@{}p{6.3in}@{}}{\textit{Baseline policy levers (headline corner).} $\tau=0.15$, $p_E=0.45$ (workfare-dominant), $\phi^{\max}=0.02$ (the grid floor; transfers effectively closed under the baseline loss weights). This is the reported headline, which retains a buffer; the grid's mathematical minimum under the baseline weights sits at $(\tau,p_E)=(0.10,0.40)$, as explained below.} \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -638,7 +638,7 @@ Figure~\ref{fig:baseline} reports the baseline path under the corner configurati
 Result & Calibrated outcome & Conclusion \\
 \midrule
 Policy delay $d$ & corner ($\phi^{\max}{=}0.02$): $d{=}0$ and $d{=}12$ both smooth (0.357); standard ($\phi^{\max}{=}0.65$): $d{=}0$ and $d{=}12$ both smooth (0.358 and 0.366) & delay immaterial at the corner and under the standard setting \\
-Isolation gain $\Delta$ vs $\omega$ & $0.02\to0.49$ & monotone, robust \\
+Isolation gain $\Delta$ vs $\omega$ & $0.018\to0.514$ & monotone, robust \\
 Workfare vs pure transfer & $6/6$ not crashed vs $6/6$ crashed & workfare $>$ transfer at every $\omega$ \\
 Minimum-loss point (grid) & $(0.10,0.40,0.02)$ & corner: workfare-dominant, close transfers, low tax \\
 Feasible share, $p_E{=}0.45$ vs $0.30$ & $64.1\%$ vs $26.6\%$ & advantage retained \\
@@ -664,9 +664,9 @@ No-policy / pure-transfer & crash / all crash & buffering and financing necessar
 \label{fig:policy-compare}
 \end{figure}
 
-\smallskip\noindent\textbf{Grid minima and identification.} Figure~\ref{fig:loss-surface} visualizes the loss surface. Three minima are reported. A scan that fixed $\phi^{\max}=0.15$ returns $(0.18,0.40,0.15)$ with loss $63.53$; the wide grid, which extends $\phi^{\max}$ down to $0.02$, returns the corner $(0.15,0.45,0.02)$ with loss $63.14$; and a denser grid that extends $\phi^{\max}$ to $0.001$ returns $(0.10,0.40,0.001)$ with loss $62.81$, taken up below. The three are ordered monotonically in the ceiling---the lower the cap on transfers, the lower the minimized loss---with a total spread of about $1.1\%$. The loss surface is locally flat, so the exact coordinates are grid-dependent rather than sharply identified. We report the wide-grid corner as the headline because it retains a visible buffer.
+\smallskip\noindent\textbf{Grid minima and identification.} Figure~\ref{fig:loss-surface} visualizes the loss surface. Three minima are reported. A scan that fixed $\phi^{\max}=0.15$ returns $(0.18,0.40,0.15)$ with loss $63.53$; the wide grid, which extends $\phi^{\max}$ down to $0.02$, has its mathematical minimum at $(0.10,0.40,0.02)$ with loss $62.84$; and a denser grid that extends $\phi^{\max}$ to $0.001$ returns $(0.10,0.40,0.001)$ with loss $62.81$, taken up below. The three are ordered monotonically in the ceiling---the lower the cap on transfers, the lower the minimized loss---with a total spread of about $1.1\%$. The loss surface is locally flat, so the exact coordinates are grid-dependent rather than sharply identified. The wide-grid minimum $(0.10,0.40,0.02)$ clears the floor by only four thousandths ($\min_t C_t=0.304$ against a floor of $0.300$), so we report the better-buffered corner $(0.15,0.45,0.02)$ with loss $63.14$ and $\min_t C_t=0.357$ as the headline; this is a deliberately conservative choice rather than the grid's mathematical minimum, and the solid star in Figure~\ref{fig:loss-surface} marks the actual minimum $(0.10,0.40)$.
 
-A refinement test addresses the boundary directly. Re-solving on a denser grid---capital-tax step $0.01$, workfare step $0.02$, and $\phi^{\max}$ extended down to $0.001$---moves the minimizer to $(0.10,0.40,0.001)$ with loss $62.81$, against $63.14$ on the wide grid, a relative difference of $0.52\%$. The transfer ceiling is monotone in the same direction: holding $(\tau,p_E)=(0.15,0.45)$, lowering $\phi^{\max}$ from $0.10$ to $0.001$ lowers the loss from $63.19$ to $63.13$ and $\min_tC_t$ from $0.371$ to $0.353$. Closing transfers is therefore a preference of the objective rather than a grid-resolution artifact, but two caveats remain. The exact corner coordinates are not identified, and the denser solution carries a thin buffer: $\min_tC_t=0.3071$ against a floor of $0.300$, so it clears by about seven thousandths. The refined solution is reported here to show what the objective does once the grid stops being the binding constraint.
+A refinement test addresses the boundary directly. Re-solving on a denser grid---capital-tax step $0.01$, workfare step $0.02$, and $\phi^{\max}$ extended down to $0.001$---moves the minimizer to $(0.10,0.40,0.001)$ with loss $62.81$. Against the buffered headline corner $63.14$ this is a relative difference of $0.52\%$, whereas the wide grid's mathematical minimum is $62.84$ at the same $(0.10,0.40)$ coordinates, so the extra refinement changes the loss only in the third decimal once the headline buffer is set aside. The transfer ceiling is monotone in the same direction: holding $(\tau,p_E)=(0.15,0.45)$, lowering $\phi^{\max}$ from $0.10$ to $0.001$ lowers the loss from $63.19$ to $63.13$ and $\min_tC_t$ from $0.371$ to $0.353$. Closing transfers is therefore a preference of the objective rather than a grid-resolution artifact, but two caveats remain. The exact corner coordinates are not identified, and the denser solution carries a thin buffer: $\min_tC_t=0.3071$ against a floor of $0.300$, so it clears by about seven thousandths. The refined solution is reported here to show what the objective does once the grid stops being the binding constraint.
 
 \begin{figure}[htbp]
 \centering
@@ -688,12 +688,12 @@ The weights in \eqref{eq:loss} are conventions, so we report what they do and do
 Configuration & buffer & $\sigma{=}0.01$ & $\sigma{=}0.02$ & $\sigma{=}0.03$ & $\min_tC_t$, 5\% \\
 \midrule
 Headline $(0.15,0.45,0.02)$ & $0.057$ & $0/200$ & $0/200$ & $0/200$ & $0.3546$ \\
-Denser $(0.10,0.40,0.001)$ & $0.007$ & $0/200$ & $0/200$ & $0/200$ & $0.3330$ \\
+Denser $(0.10,0.40,0.001)$ & $0.007$ & $0/200$ & $0/200$ & $0/200$ & $0.335$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Two things follow. First, neither configuration produces an economic crash across the shock sizes considered, because the balance-sheet-consistent household block keeps the debt stock bounded and the financed buffer defends consumption. At $\sigma=0.03$, however, $26$ of the $200$ paths fail to drive the labor share to its absorbing value within $T$ because the shock raises the frontier, which we count as neither survival nor crash. Second, the margin still separates the two configurations even though neither crashes. The headline corner, with a buffer of $0.057$, holds its fifth-percentile minimum consumption at $0.355$; the denser minimum-loss configuration, which clears the floor by only $0.007$, sees its fifth-percentile minimum consumption fall to $0.333$. Minimizing the loss therefore pushes the design toward the floor and leaves a thinner cushion against shocks, even though the bounded debt block prevents a hard crash at the scales tested. This is the quantitative counterpart of the qualitative statement above: the buffer buys time, and its thickness determines how much. Demand-side, monetary and policy-implementation shocks are not modelled, and a fully stochastic version of the model remains for future work (Section~\ref{sec:conclusion}).
+Two things follow. First, neither configuration produces an economic crash across the shock sizes considered, because the balance-sheet-consistent household block keeps the debt stock bounded and the financed buffer defends consumption. At $\sigma=0.03$, however, $69$ of the $200$ paths fail to drive the labor share to its absorbing value within $T$ because the shock raises the frontier, which we count as neither survival nor crash. Second, the margin still separates the two configurations even though neither crashes. The headline corner, with a buffer of $0.057$, holds its fifth-percentile minimum consumption at $0.355$; the denser minimum-loss configuration, which clears the floor by only $0.007$, sees its fifth-percentile minimum consumption fall to $0.335$. Minimizing the loss therefore pushes the design toward the floor and leaves a thinner cushion against shocks, even though the bounded debt block prevents a hard crash at the scales tested. This is the quantitative counterpart of the qualitative statement above: the buffer buys time, and its thickness determines how much. Demand-side, monetary and policy-implementation shocks are not modelled, and a fully stochastic version of the model remains for future work (Section~\ref{sec:conclusion}).
 
 \smallskip\noindent\textbf{Two configurations, not one.} The smooth headline depends on the public-employment intensity rather than on the transfer ceiling. At the baseline $\omega=0.05$, the wide-grid corner $(0.15,0.45,\phi^{\max}=0.02)$ runs smooth with $\min C=0.357>C^{min}=0.30$. Under the standard setting $(\tau=0.16,p_E=0.45,\phi^{\max}=0.65)$ used in the social-channel comparison of Table~\ref{tab:socbase}, the point $(0.16,0.30,0.65)$ runs smooth at $\min C=0.333$, while $(0.16,0.45,0.65)$ runs smooth at $\min C=0.358$. The binding condition is therefore the workfare share $p_E$, not a tight transfer ceiling: under the standard setting both workfare shares clear the floor, and a higher share raises the consumption margin. The sharp threshold separating smooth from crash for this standard calibration is $p_E=0.167$, below the $0.30$ point.
 
@@ -815,7 +815,7 @@ This paper has built a task-based macroeconomic model of the AGI labor transitio
 
 The policy implications follow, within this calibrated model, rather than as universal claims. A smooth transition is not automatic: it requires an explicit policy buffer, and that buffer must be financed. Under the calibrated parameters and at the baseline frontier growth $g_A=0.010$, the loss-minimizing design on the reported grid is workfare-dominant (a public-employment floor that converts relief recipients into dignified jobs), financed by a minimal sufficient capital tax, with transfers closed because their MPC leakage makes them costlier than workfare. We report the variant that retains a buffer rather than the marginally cheaper one that exhausts it, because the shock test of Section~\ref{sec:calibration} shows that the buffer, not the last hundredth of loss, decides survival. Within this model, the pure transfer and no-policy regimes are infeasible: they violate the financing constraint and trigger the modeled social or economic collapse channels. The sufficiency of the design is conditional on the pace of automation: at $g_A=0.10$ the consumption floor is breached and the path crashes, so the buffer buys time rather than immunity. For sufficiently fast automation, no demand-side buffer within this model can suffice, so policy must reach the supply side: slowing displacement, strengthening the reinstatement engine, or steering the direction of technical change.
 
-Six limitations point to future work. First, the social-instability channel is reduced-form; a microfoundation in dignity and acceptability (mapping relief to social pressure) would firm up Proposition~\ref{prop5}. Second, the reinstatement rate $\omega$ and the automation-frontier growth $g_A$ require sharper empirical calibration (the race between hardware-cost decline and reinstatement). Third, the model is closed-economy and does not model monetary policy beyond the zero lower bound; a monetary-fiscal interaction with active policy, and open-economy capital flows, are natural extensions. Fourth, the core model is deterministic. The frontier-growth shock experiment (Table~\ref{tab:shock}) tests one margin and finds the headline configuration robust at innovations up to $\sigma=0.03$ precisely because it carries a buffer, while the denser minimum-loss configuration loses most of its paths; demand-side, monetary and policy-implementation shocks are still absent, and a full stochastic version of the model is left to future work. Fifth, the social-instability parameters still lack strict direct external identification. No study offers a cutoff mappable to the normalized $[0,1]$ stress variable; $\alpha_s$ is only partially anchored, since crime semi-elasticities, kept in consistent units and combined with the model's own conversion $k=1-p_E=0.55$, reverse-engineer a wide illustrative interval of about $1.0$--$6.6$, with the baseline $0.60$ sitting below its lower end as a deliberately conservative setting; and $J=10$ is a mean/upper-tail anchor drawn from crisis recovery and civil-war durations rather than an estimated exceedance window. The dedicated empirical-range sweep (Section~\ref{sec:social-anchor}) bounds the resulting fragility: the workfare-over-transfer ranking holds across the full interval, but the corner remains smooth only through $\alpha_s=0.90$, turning to a social crash once $\alpha_s$ exceeds $0.91$ or $\varsigma^{th}$ falls below $0.33$. The baseline values should therefore be read as conservative calibrations not rejected by the available evidence, not as externally estimated quantities, and the empirical samples underlying them (low-income African countries, European welfare states, and cross-country crisis episodes) differ institutionally from the modeled setting. Sixth, the boundary equilibrium bifurcation is a local analysis of the piecewise-smooth fast subsystem: the endogenous-reinstatement coefficients $\gamma_{PE},\gamma_{TM},\gamma_R$, the baseline $\omega_0$ and the capability sensitivity $\beta_A$ are structural rather than externally estimated, and the policy threshold $p_E^*$ carries the same status as in Section~\ref{subsec:connection}, a dimensionless output of the calibrated model, illustrative rather than an empirical estimate. The logistic law is given the discrete-choice microfoundation of equation~\eqref{eq:omega-law}, but a quantitative mapping from the analytic critical rate to an estimated time path remains a calibration task left to future work.
+Six limitations point to future work. First, the social-instability channel is reduced-form; a microfoundation in dignity and acceptability (mapping relief to social pressure) would firm up Proposition~\ref{prop5}. Second, the reinstatement rate $\omega$ and the automation-frontier growth $g_A$ require sharper empirical calibration (the race between hardware-cost decline and reinstatement). Third, the model is closed-economy and does not model monetary policy beyond the zero lower bound; a monetary-fiscal interaction with active policy, and open-economy capital flows, are natural extensions. Fourth, the core model is deterministic. The frontier-growth shock experiment (Table~\ref{tab:shock}) tests one margin and finds the headline configuration robust at innovations up to $\sigma=0.03$ precisely because it carries a buffer, while the denser minimum-loss configuration, with its thinner cushion, sees about a third of its paths fail to reach the employment target; demand-side, monetary and policy-implementation shocks are still absent, and a full stochastic version of the model is left to future work. Fifth, the social-instability parameters still lack strict direct external identification. No study offers a cutoff mappable to the normalized $[0,1]$ stress variable; $\alpha_s$ is only partially anchored, since crime semi-elasticities, kept in consistent units and combined with the model's own conversion $k=1-p_E=0.55$, reverse-engineer a wide illustrative interval of about $1.0$--$6.6$, with the baseline $0.60$ sitting below its lower end as a deliberately conservative setting; and $J=10$ is a mean/upper-tail anchor drawn from crisis recovery and civil-war durations rather than an estimated exceedance window. The dedicated empirical-range sweep (Section~\ref{sec:social-anchor}) bounds the resulting fragility: the workfare-over-transfer ranking holds across the full interval, but the corner remains smooth only through $\alpha_s=0.90$, turning to a social crash once $\alpha_s$ exceeds $0.91$ or $\varsigma^{th}$ falls below $0.33$. The baseline values should therefore be read as conservative calibrations not rejected by the available evidence, not as externally estimated quantities, and the empirical samples underlying them (low-income African countries, European welfare states, and cross-country crisis episodes) differ institutionally from the modeled setting. Sixth, the boundary equilibrium bifurcation is a local analysis of the piecewise-smooth fast subsystem: the endogenous-reinstatement coefficients $\gamma_{PE},\gamma_{TM},\gamma_R$, the baseline $\omega_0$ and the capability sensitivity $\beta_A$ are structural rather than externally estimated, and the policy threshold $p_E^*$ carries the same status as in Section~\ref{subsec:connection}, a dimensionless output of the calibrated model, illustrative rather than an empirical estimate. The logistic law is given the discrete-choice microfoundation of equation~\eqref{eq:omega-law}, but a quantitative mapping from the analytic critical rate to an estimated time path remains a calibration task left to future work.
 
 % ============================================================================
 \section*{Funding}

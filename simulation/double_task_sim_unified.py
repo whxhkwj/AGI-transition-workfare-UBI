@@ -58,6 +58,9 @@ class Params(v4.Params):
         self.alpha_s = 0.60
         self.stress_thresh = 0.50
         self.soc_period = 10
+        # ---- 论文权威标定（覆盖 v4 遗留默认 .35/.70）----
+        self.eta = 0.40             # 资本税增长抑制
+        self.mu_TM = 0.50           # 转移支付的总消费 MPC
         # ---- 统一内生复职率字段 ----
         self.omega_mode = "endogenous"
         self.omega0 = 0.05          # 无政策、初始能力基线（= 外生标定值）
