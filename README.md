@@ -43,7 +43,7 @@ pdflatex manuscript.tex
 pdflatex manuscript.tex      # second pass for cross-references
 ```
 
-The result is the submitted PDF: 54 pages, no errors, no undefined references.
+The result is the submitted PDF: 55 pages, no errors, no undefined references.
 This was verified from a clean copy of the repository on TeX Live 2022.
 
 ## Quick check
@@ -68,20 +68,20 @@ The script exits non-zero if any check fails.
 
 ## Calibration: read this before running anything by hand
 
-The engine files are the ones the paper was produced with, and their
-`Params` defaults carry two values left over from an earlier exploratory run:
+The engine files are the ones the paper was produced with, and their `Params`
+defaults already carry the paper calibration:
 
 | parameter | engine default | paper calibration |
 |---|---|---|
-| `mu_TM` | 0.70 | **0.50** |
-| `eta`   | 0.35 | **0.40** |
+| `mu_TM` | 0.50 | **0.50** |
+| `eta`   | 0.40 | **0.40** |
 
 (`tau=0.3`, `pE=0.30`, `phi_max=0.65` and `phi_base=0.15` are scenario
 parameters and are always set explicitly by the callers.)
 
-If you instantiate `Params()` without passing `mu_TM=0.50, eta=0.40` you will
-get numbers that differ from the paper in the third digit. Every script in
-`analysis/` passes them explicitly; do the same in any experiment of your own:
+A fresh `Params()` therefore matches the paper without overriding these two.
+Every script in `analysis/` still passes them explicitly for clarity; do the
+same in any experiment of your own:
 
 ```python
 CAL = dict(mu_TM=0.50, eta=0.40)
@@ -124,7 +124,7 @@ returns `minC`, `total` and the decomposition.
 
 | Manuscript | Script | Key values |
 |---|---|---|
-| Table 2, Standard / Pure transfer / corner | `analysis/check_table2.py` | 0.3577, 0.2589, 0.3568 |
+| Table 2, Standard / Pure transfer / corner | `analysis/check_table2.py` | 0.3576, 0.2589, 0.3568 |
 | Workfare vs transfer, same fiscal, 6/6 not crashed vs 6/6 | `analysis/replicate_workfare_vs_ubi.py` | six omega values, both settings |
 | Section 5.2, load-bearing paragraph | `analysis/replicate_workfare_vs_ubi.py` | corner 0.352–0.357 at p_E=0.45, 0.244–0.265 at p_E=0.30 |
 | 0.357 vs 0.353 attribution | `analysis/check_phi_gap.py` | phi_max floor |
@@ -135,14 +135,14 @@ returns `minC`, `total` and the decomposition.
 
 | Manuscript | Script | Key values |
 |---|---|---|
-| Grid minima and identification | `analysis/check_grid_refine.py` | (0.18, 0.40, 0.15) = 63.53; dense grid (0.10, 0.40, 0.001) = 62.81, min C 0.3071 |
-| Link-function sensitivity (logistic vs probit) | `analysis/check_beb_crossing.py` | min C 0.3562 vs 0.3571; link does not change the outcome |
-| Shock Monte Carlo (absorption counts) | `analysis/check_shock_mc.py` | headline crash counts 0/0/0, minima 0.3546, 0.3330 |
+| Grid minima and identification | `analysis/check_grid_refine.py` | (0.18, 0.40, 0.15) = 63.53; dense grid (0.10, 0.40, 0.001) = 62.82, min C 0.3070 |
+| Link-function sensitivity (logistic vs probit) | `analysis/check_link_function.py` | min C 0.3562 vs 0.3571; link does not change the outcome |
+| Shock Monte Carlo (absorption counts) | `analysis/check_shock_mc.py` | headline crash counts 0/0/0, minima 0.3540, 0.3348 |
 | g_A and eta sensitivity | `analysis/check_ga_eta.py` | 0.344 / 0.294 / 0.237 / 0.222 |
 | Feasible share of the parameter box | `analysis/check_feasible_share.py` | 41/64 = 64.1%, 17/64 = 26.6%, 208/384 = 54.2% |
 | Social-threshold bounds, alpha_s crit | `analysis/check_soc_bounds.py` | varsigma_th 0.32/0.33 boundary, alpha_s 0.90/0.92 boundary (crit 0.909) |
 | Empirical-range alpha_s sweep (0.30–6.62) | `analysis/empirical_range_alpha_sweep.py` | ranking robust on full interval; corner smooth through 0.90, social crash at 0.91 |
-| Two calibrated configurations | `analysis/check_two_configs.py` | 0.3577 at p_E=0.45 (smooth), 0.3326 at p_E=0.30 (smooth) |
+| Two calibrated configurations | `analysis/check_two_configs.py` | 0.3576 at p_E=0.45 (smooth), 0.3326 at p_E=0.30 (smooth) |
 | Welfare weights (384 combinations) | `analysis/check_welfare_weights.py` | wide-grid best (0.10, 0.40, 0.02) = 62.84 under baseline weights |
 | BEB and the policy that avoids the crash | `analysis/check_v12_beb.py` | endogenous re-employment |
 | p_E* crossing | `analysis/check_beb_crossing.py` | 0.3661, omega_c = 0.5667 |
@@ -150,7 +150,7 @@ returns `minC`, `total` and the decomposition.
 | Reversal of the policy ranking | `analysis/check_reversal.py` | parameter region |
 | Fold region diagnostics | `analysis/check_fold_region.py` | local fold locus |
 | Cross-checks between tables | `analysis/check_tables_cross.py` | internal consistency |
-| Graphical-abstract annotation | `analysis/check_ga_panel.py` | corner 0.357, no-policy 0.068 |
+| Graphical-abstract annotation | `analysis/check_ga_panel.py` | corner 0.357, no-policy 0.057 |
 
 ### Figures
 
