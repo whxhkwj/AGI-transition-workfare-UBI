@@ -57,7 +57,7 @@ Expected tail:
 ```
 checks against the manuscript
   standard workfare survives 6 of 6              PASS
-  standard pure UBI survives 0 of 6              PASS
+  standard pure transfer survives 0 of 6         PASS
   corner p_E=0.45 survives 6 of 6                PASS
   corner p_E=0.30 survives 0 of 6                PASS
   ...
@@ -114,8 +114,8 @@ spec.loader.exec_module(v6)          # spec.loader.exec_module, not module_from_
 
 | Manuscript | Script | Key values |
 |---|---|---|
-| Table 2, Standard / Pure UBI / corner | `analysis/check_table2.py` | 0.3577, 0.2589, 0.3568 |
-| "Workfare vs UBI", 6/6 not crashed vs 6/6 | `analysis/replicate_workfare_vs_ubi.py` | six omega values, both settings |
+| Table 2, Standard / Pure transfer / corner | `analysis/check_table2.py` | 0.3577, 0.2589, 0.3568 |
+| Workfare vs transfer, same fiscal, 6/6 not crashed vs 6/6 | `analysis/replicate_workfare_vs_ubi.py` | six omega values, both settings |
 | Section 5.2, load-bearing paragraph | `analysis/replicate_workfare_vs_ubi.py` | corner 0.352–0.357 at p_E=0.45, 0.244–0.265 at p_E=0.30 |
 | 0.357 vs 0.353 attribution | `analysis/check_phi_gap.py` | phi_max floor |
 | phi_max lower bound | `analysis/check_phi_floor.py` | 0.02 boundary |
@@ -168,7 +168,7 @@ the grid sweeps take minutes:
 results use the default of 200:
 
 ```bash
-SCED_MC_DRAWS=20 python analysis/check_shock_mc.py
+MC_DRAWS=20 python analysis/check_shock_mc.py
 ```
 
 ## Licence

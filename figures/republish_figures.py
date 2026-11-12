@@ -193,7 +193,9 @@ save(fig, "fig_skill_omega")
 
 # ---------- Figures 1-2: BEB (v12 endogenous omega) ----------
 sys.path.insert(0, SIM)
+sys.path.insert(0, os.path.join(_ROOT, "analysis"))
 import double_task_sim_v12_endogenous_omega as v12
+import dynamic_threshold as dth
 
 OMEGA_C = 0.5667
 SF = 1 - 1 / 1.20
@@ -238,7 +240,7 @@ a.annotate("BEB\n" + r"$\omega_c=0.567$", (OMEGA_C, SF),
            xytext=(OMEGA_C - 0.26, 0.30), fontsize=6.5, color=PURPLE)
 a.set_xlabel(r"reinvestment rate $\omega$")
 a.set_ylabel(r"equilibrium employment share $s$")
-a.set_title("(a) Boundary equilibrium bifurcation of the fast subsystem")
+a.set_title("(a) Fast-subsystem BEB, static slice (skill = 1)")
 a.set_ylim(-0.5, 0.85); a.legend(loc="upper left")
 
 a = ax[1]
@@ -252,7 +254,7 @@ a.fill_between(om_grid, f_sf, 0, where=f_sf >= 0, color=BLUE, alpha=0.10,
                label="stable interior equilibrium exists")
 a.set_xlabel(r"reinvestment rate $\omega$")
 a.set_ylabel(r"vector field on the manifold $f(s_{floor})$")
-a.set_title(r"(b) Transversality of the vector field at $\omega_c$")
+a.set_title(r"(b) Transversality at $\omega_c$, static slice (skill = 1)")
 a.legend(loc="upper left", frameon=True, facecolor="white", edgecolor="none",
          framealpha=0.9)
 fig.tight_layout()
@@ -275,14 +277,21 @@ fig, ax = plt.subplots(1, 3, figsize=(7.6, 2.9))
 for name, rr in res.items():
     c, ls = styles12[name]
     ax[0].plot(t12, rr["omega"], color=c, ls=ls, lw=1.3, label=name)
+    # instantaneous BEB threshold for this path: EFF_CRIT / skill[t-1]
+    dyn = dth.dynamic_threshold(rr["skill"])
+    ax[0].plot(t12, dyn, color=c, lw=0.7, ls=(0, (2, 2)), alpha=0.65)
+    real_t = dth.first_real_crossing(rr["omega"], rr["skill"])
+    if real_t is not None:
+        ax[0].plot(real_t, rr["omega"][real_t], marker="*", ms=8,
+                   color="black", zorder=6)
     ax[1].plot(t12, rr["sL"], color=c, ls=ls, lw=1.3, label=name)
     ax[2].plot(t12, rr["C"], color=c, ls=ls, lw=1.3, label=name)
-ax[0].axhline(OMEGA_C, color=PURPLE, ls=":", lw=1.0)
-ax[0].annotate(r"$\omega_c=0.567$", xy=(62, OMEGA_C), xytext=(0.58, 0.44),
-               textcoords="axes fraction", fontsize=6.5, color=PURPLE,
-               arrowprops=dict(arrowstyle="-", lw=0.5, color=PURPLE))
-ax[0].set_title(r"(a) Endogenous $\omega_t$"); ax[0].set_xlabel("period $t$")
+ax[0].set_title(r"(a) Endogenous $\omega_t$ and dynamic $\omega_c(t)$")
+ax[0].set_xlabel("period $t$")
 ax[0].set_ylabel("reinvestment rate")
+ax[0].annotate("dotted: dynamic threshold; $*$ = real crossing",
+               xy=(0.03, 0.96), xycoords="axes fraction",
+               fontsize=5.8, color=GREY)
 ax[1].set_title(r"(b) Employment share $L^D/L^S$"); ax[1].set_xlabel("period $t$")
 ax[1].set_ylabel("employment share")
 ax[2].axhline(0.30, color=RED, ls="--", lw=0.9)

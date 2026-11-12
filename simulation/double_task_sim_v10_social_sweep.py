@@ -8,7 +8,7 @@
 两组政策：
   角点 CORNER：τ=0.15, pE=0.45, φmax=0.02, retrain=0
   标准 STANDARD：τ=0.16, φmax=0.65, pE=0.45, retrain=0
-  另附纯 UBI（pE=0）作为社会通道极端对照。
+  另附纯转移（pE=0）作为社会通道极端对照。
 报告：outcome / crash_type / minC / social_crash / 最大超阈连续期 / 首次持续超阈触发期。
 """
 import os, importlib.util
@@ -22,7 +22,7 @@ CALIB = dict(eta=0.40, mu_TM=0.50, omega=0.05)   # ★ 修正校准（用户锁�
 POLICIES = {
     'CORNER':   dict(CALIB, tau=0.15, pE=0.45, phi_max=0.02, retrain=0.0),
     'STANDARD': dict(CALIB, tau=0.16, pE=0.45, phi_max=0.65, retrain=0.0),
-    'PURE_UBI': dict(CALIB, tau=0.16, pE=0.00, phi_max=0.65, retrain=0.0),
+    'PURE_TRANSFER': dict(CALIB, tau=0.16, pE=0.00, phi_max=0.65, retrain=0.0),
 }
 
 

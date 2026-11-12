@@ -214,7 +214,7 @@ MODES = {
     '再培训优先': dict(pE=0.15, retrain=0.8),
     '以工代赈优先': dict(pE=0.45, retrain=0.0),
     '混合': dict(pE=0.30, retrain=0.5),
-    '纯UBI': dict(pE=0.0, retrain=0.0),
+    '纯转移': dict(pE=0.0, retrain=0.0),
 }
 
 
@@ -271,8 +271,8 @@ def print_isolation(rows):
 
 def plot_omega_scan(rows):
     omegas = sorted({r['omega'] for r in rows})
-    modes = ['再培训优先', '以工代赈优先', '混合', '纯UBI']
-    colors = {'再培训优先': '#1f77b4', '以工代赈优先': '#2ca02c', '混合': '#ff7f0e', '纯UBI': '#d62728'}
+    modes = ['再培训优先', '以工代赈优先', '混合', '纯转移']
+    colors = {'再培训优先': '#1f77b4', '以工代赈优先': '#2ca02c', '混合': '#ff7f0e', '纯转移': '#d62728'}
     fig, ax = plt.subplots(figsize=(11, 6))
     for mode in modes:
         xs = [r['omega'] for r in rows if r['mode'] == mode]
@@ -341,12 +341,12 @@ if __name__ == '__main__':
     # 命题B：以工代赈价值稳健
     wf = [r for r in rows if r['mode'] == '以工代赈优先']
     wf_ok = sum(1 for r in wf if r['outcome'] in ('smooth', 'not_reached'))
-    ubi = [r for r in rows if r['mode'] == '纯UBI']
+    ubi = [r for r in rows if r['mode'] == '纯转移']
     ubi_crash = sum(1 for r in ubi if r['outcome'] == 'crash')
-    print(f"B) 以工代赈优先在 {wf_ok}/{len(wf)} 个ω场景未崩（稳健缓冲）；纯UBI在 {ubi_crash}/{len(ubi)} 个ω场景崩溃")
+    print(f"B) 以工代赈优先在 {wf_ok}/{len(wf)} 个ω场景未崩（稳健缓冲）；纯转移在 {ubi_crash}/{len(ubi)} 个ω场景崩溃")
     # 命题C：社会失稳
-    ubi0 = [r for r in rows if r['mode'] == '纯UBI' and r['omega'] == 0.05][0]
-    print(f"C) 社会失稳通道：纯UBI(无以工代赈)在 ω=0.05 崩溃类型={ubi0['crash_type']}"
+    ubi0 = [r for r in rows if r['mode'] == '纯转移' and r['omega'] == 0.05][0]
+    print(f"C) 社会失稳通道：纯转移(无以工代赈)在 ω=0.05 崩溃类型={ubi0['crash_type']}"
           f"（含社会失稳=纯救济人口过高的尊严/可接受性危机）")
 
     # 4) 绘图

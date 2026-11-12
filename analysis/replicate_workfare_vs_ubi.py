@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-"""Reproduce the "Workfare vs UBI" row of the results table and the
+"""Reproduce the workfare-versus-transfer row of the results table and the
 load-bearing paragraph of Section 5.2.
 
 Six values of omega, two policy settings, two public-employment shares.
+The workfare and pure-transfer runs share the same tax rate and transfer
+ceiling, differing only in p_E, so the comparison is same-fiscal.
 Paper claims (balance-sheet-consistent engine, hard credit ceiling):
   * standard (tau=0.16, phi_max=0.65), p_E=0.45: workfare survives all six
     (min C = 0.3511 at omega=0.02 and 0.3577 at omega=0.05);
-  * standard, pure UBI p_E=0.00: all six crash;
+  * standard, pure transfer p_E=0.00: all six crash;
   * corner (tau=0.15, phi_max=0.02), p_E=0.45: all six survive, min C = 0.352-0.357;
   * corner, p_E=0.30: all six crash, min C = 0.244-0.265.
 """
@@ -47,17 +49,17 @@ def sweep(tau, phi_max, pE, label):
 
 
 print("=" * 68)
-print("Workfare vs pure UBI, six omega values")
+print("Workfare vs pure transfer, six omega values (same fiscal setting)")
 print("calibration: mu_TM=0.50, eta=0.40  (engine defaults 0.70/0.35 are NOT used)")
 print("=" * 68)
 
 w_std = sweep(0.16, 0.65, 0.45, "[1] standard setting, workfare")
-u_std = sweep(0.16, 0.65, 0.00, "[2] standard setting, pure UBI")
+u_std = sweep(0.16, 0.65, 0.00, "[2] standard setting, pure transfer")
 w_cor = sweep(0.15, 0.02, 0.45, "[3] corner, workfare at p_E=0.45")
 w_c30 = sweep(0.15, 0.02, 0.30, "[4] corner, workfare at p_E=0.30")
 
-print("\n[5] total loss, workfare (p_E=0.45) vs pure UBI (p_E=0.00), standard setting")
-print("  omega  workfare   pure UBI   difference")
+print("\n[5] total loss, workfare (p_E=0.45) vs pure transfer (p_E=0.00), standard setting")
+print("  omega  workfare   pure transfer  difference")
 for (om, a), (_, b) in zip(w_std, u_std):
     print("  %5.2f  %9.2f  %9.2f  %+10.2f" % (om, a["total"], b["total"],
                                              a["total"] - b["total"]))
@@ -66,7 +68,7 @@ for (om, a), (_, b) in zip(w_std, u_std):
 checks = [
     ("standard workfare survives 6 of 6",
      sum(1 for _, r in w_std if r["outcome"] in ("smooth", "not_reached")) == 6),
-    ("standard pure UBI survives 0 of 6",
+    ("standard pure transfer survives 0 of 6",
      sum(1 for _, r in u_std if r["outcome"] in ("smooth", "not_reached")) == 0),
     ("corner p_E=0.45 survives 6 of 6",
      sum(1 for _, r in w_cor if r["outcome"] in ("smooth", "not_reached")) == 6),

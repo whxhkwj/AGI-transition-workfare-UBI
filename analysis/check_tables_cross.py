@@ -20,7 +20,7 @@ CALIB = dict(eta=0.40, mu_TM=0.50, omega=0.05)
 POL = {
     'CORNER':   dict(CALIB, tau=0.15, pE=0.45, phi_max=0.02, retrain=0.0),
     'STANDARD': dict(CALIB, tau=0.16, pE=0.45, phi_max=0.65, retrain=0.0),
-    'PURE_UBI': dict(CALIB, tau=0.16, pE=0.00, phi_max=0.65, retrain=0.0),
+    'PURE_TRANSFER': dict(CALIB, tau=0.16, pE=0.00, phi_max=0.65, retrain=0.0),
 }
 
 print("=== tab:socbase  (v6 exogenous omega, T=80) ===")

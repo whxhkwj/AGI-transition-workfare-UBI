@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""核对表 2：CORNER / STANDARD / PURE_UBI 的 minC 全精度与 crash 判定来源。"""
+"""核对表 2：CORNER / STANDARD / PURE_TRANSFER 的 minC 全精度与 crash 判定来源。"""
 import os as _os
 _HERE = _os.path.dirname(_os.path.abspath(__file__))
 _ROOT = _os.path.dirname(_HERE)
@@ -16,7 +16,7 @@ CALIB = dict(eta=0.40, mu_TM=0.50, omega=0.05)
 POL = {
     'CORNER':   dict(CALIB, tau=0.15, pE=0.45, phi_max=0.02, retrain=0.0),
     'STANDARD': dict(CALIB, tau=0.16, pE=0.45, phi_max=0.65, retrain=0.0),
-    'PURE_UBI': dict(CALIB, tau=0.16, pE=0.00, phi_max=0.65, retrain=0.0),
+    'PURE_TRANSFER': dict(CALIB, tau=0.16, pE=0.00, phi_max=0.65, retrain=0.0),
 }
 
 print("%-9s %-11s %-6s %-18s %-9s %-9s %s" % ("policy", "outcome", "crash", "minC(full)", "Cmin", "margin", "sL_end"))

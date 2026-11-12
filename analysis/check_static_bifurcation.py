@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 """Static bifurcation structure of the v12 fast subsystem and long-run dynamics.
+
+The fast subsystem freezes the slow variable sigma (skill) at one, so the value
+omega_c = 0.5667 reported here is the skill=1 static slice. On the full dynamic
+path skill depreciates and crossing must be judged with the instantaneous
+threshold in dynamic_threshold.py, not with this static value.
+
 (1) For each fixed omega, locate equilibria of f(s) and verify the BEB:
     omega < omega_c => no physical interior equilibrium;
     omega > omega_c => stable equilibrium s+ in region I.
