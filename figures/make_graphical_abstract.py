@@ -8,7 +8,7 @@ giving 1433 x 602 px, above the required 1328 x 531 (w x h).
 
 Panels (b)(c) come from the same v6 engine and the same corner configuration as
 Figure 3 (omega = 0.05), so the printed buffer equals the manuscript's headline
-min_t C_t = 0.309 rather than the endogenous-omega variant 0.305.
+min_t C_t = 0.357; the endogenous-omega v12 engine gives 0.353.
 """
 import os as _os
 _HERE = _os.path.dirname(_os.path.abspath(__file__))
@@ -20,6 +20,35 @@ import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
+
+def _restore_native_findfont():
+    """Recover matplotlib's own font resolver (sandbox CJK patch bypass).
+
+    The sandbox startup patch replaces every Western font request with Noto
+    Sans CJK SC. This figure has no CJK text, so bind back the unpatched
+    class-level findfont before any figure is drawn. Process-local only.
+    """
+    import matplotlib.font_manager as _fm
+    if not getattr(_fm.fontManager.findfont, "_aio_mpl_fontconfig_patched", False):
+        return
+    _spec = importlib.util.spec_from_file_location("_fm_clean", _fm.__file__)
+    _clean = importlib.util.module_from_spec(_spec)
+    sys.modules["_fm_clean"] = _clean
+    _spec.loader.exec_module(_clean)
+    _native = _clean.FontManager.findfont
+    _fm.FontManager.findfont = _native
+    _bound = _native.__get__(_fm.fontManager, _fm.FontManager)
+    _fm.fontManager.findfont = _bound
+    _fm.findfont = _bound
+    for _name, _mod in list(sys.modules.items()):
+        if _mod is None or not _name.startswith("matplotlib"):
+            continue
+        if getattr(_mod, "findfont", None) is not None:
+            _mod.findfont = _bound
+
+
+_restore_native_findfont()
 
 SIM = _SIMDIR
 OUT = _os.path.join(_ROOT, "paper")
@@ -53,7 +82,7 @@ fig, ax = plt.subplots(1, 3, figsize=(5.12, 2.15),
                        gridspec_kw=dict(width_ratios=[0.92, 1.04, 1.04]))
 fig.subplots_adjust(left=0.075, right=0.985, top=0.845, bottom=0.15, wspace=0.40)
 
-# ---------------- (a) the stable branch is destroyed ----------------
+# ---------------- (a) the stable branch crosses the boundary ----------------
 om = np.linspace(0.05, 1.0, 700)
 sp = []
 for o in om:
@@ -63,13 +92,16 @@ for o in om:
     sp.append((B + np.sqrt(D)) / (2 * Cc) if D >= 0 else np.nan)
 sp = np.array(sp)
 phys = sp >= SF
+virt = (sp >= 0) & (sp < SF)
 ax[0].axvspan(0.05, OMEGA_C, color=GREY, alpha=0.16, lw=0, zorder=0)
+ax[0].plot(np.ma.array(om, mask=~virt), np.ma.array(sp, mask=~virt),
+           color=ORANGE, lw=1.4, ls="--", zorder=3)
 ax[0].plot(np.ma.array(om, mask=~phys), np.ma.array(sp, mask=~phys),
            color=BLUE, lw=1.7, zorder=3)
 ax[0].axhline(SF, color="black", lw=0.6, alpha=0.5)
 ax[0].axvline(OMEGA_C, color=PURPLE, ls="--", lw=0.9, zorder=2)
 ax[0].plot(OMEGA_C, SF, marker="*", ms=6.5, color="black", zorder=5)
-ax[0].text(0.075, 0.66, "no interior\nequilibrium", fontsize=6.0,
+ax[0].text(0.075, 0.66, "absorbing\nlow-employment", fontsize=6.0,
            color="#444444", ha="left", va="center", zorder=4)
 ax[0].annotate(r"$\omega_c$", (OMEGA_C, SF), xytext=(OMEGA_C - 0.19, 0.44),
                fontsize=7.0, color=PURPLE,
@@ -78,7 +110,7 @@ ax[0].set_xlim(0.05, 1.02)
 ax[0].set_ylim(0.06, 0.82)
 ax[0].set_xlabel(r"$\omega$")
 ax[0].set_ylabel(r"$s$")
-ax[0].set_title("(a) the branch is destroyed")
+ax[0].set_title("(a) the branch crosses the boundary")
 
 # ---------------- (b)(c) two regimes ----------------
 configs = {
