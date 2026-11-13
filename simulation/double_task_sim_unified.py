@@ -58,6 +58,7 @@ class Params(v4.Params):
         self.alpha_s = 0.60
         self.stress_thresh = 0.50
         self.soc_period = 10
+        self.stress_fb = 0.0       # pressure-to-output feedback (0 = channel off)
         # ---- 论文权威标定（覆盖 v4 遗留默认 .35/.70）----
         self.eta = 0.40             # 资本税增长抑制
         self.mu_TM = 0.50           # 转移支付的总消费 MPC
@@ -173,10 +174,13 @@ def simulate_unified(par):
         skill[t] = max(0.30, skill[t])
 
         disp = (It[t] - par.I0) / par.N0
-        GDP[t] = (1 + g_eff) ** t * (1 + par.gDisp * disp)
+        stress[t] = par.alpha_s * (Urem[t] / par.LS)
+        # Optional pressure feedback: social disruption contracts output and hence
+        # the capital income and tax base. Inactive at the default stress_fb=0.
+        fb = 1.0 - par.stress_fb * stress[t]
+        GDP[t] = (1 + g_eff) ** t * (1 + par.gDisp * disp) * fb
         cap_inc[t] = max(0.0, GDP[t] - w_real[t - 1] * LD[t])
         tax[t] = par.tau * cap_inc[t]
-        stress[t] = par.alpha_s * (Urem[t] / par.LS)
 
         pi[t] = max(par.pi_lb, par.gamma_p * (C[t - 1] / Cfe - 1.0))
         P[t] = P[t - 1] * (1 + pi[t])
