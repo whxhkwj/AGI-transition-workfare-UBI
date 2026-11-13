@@ -24,7 +24,7 @@
 
   omega_mode="exogenous"（退化特例）
       omega_t = omega（常数），即把复职率当作固定结构参数，用于对照与稳健性。
-      此外 beta_A=0 给出"只随政策上升"的内生特例（对应旧 v12 方向）。
+      此外 beta_A=0 给出"只随政策上升"的内生特例（对应 v12 内生方向）。
 
 任务会计（eff=clamp(omega_t skill,0,1)，dN 分劳动/AI，dI 受可用劳动任务约束，
 n=N-I 恒等式逐期严格成立）、人口核算（LD+EP+Urem=L^S）、财政平衡预算与家庭
@@ -59,15 +59,16 @@ class Params(v4.Params):
         self.stress_thresh = 0.50
         self.soc_period = 10
         self.stress_fb = 0.0       # pressure-to-output feedback (0 = channel off)
+        # ---- 转型路径约束（最小转型时间 / 早期可行性）----
+        self.early_window = 10     # 早期调整窗口长度，与后期统计窗口对齐
+        self.early_labor_floor = 0.50  # 早期窗口市场就业份额下限：禁止瞬时清空
         # ---- 论文权威标定（覆盖 v4 遗留默认 .35/.70）----
         self.eta = 0.40             # 资本税增长抑制
         self.mu_TM = 0.50           # 转移支付的总消费 MPC
         # ---- 统一内生复职率字段 ----
         self.omega_mode = "endogenous"
         self.omega0 = 0.05          # 无政策、初始能力基线（= 外生标定值）
-        # 政策 -> 再附着 log-odds。logistic 份额在深基线下的中程响应弱于旧指数
-        # 饱和形式，故相对旧 v12 的 (3,2,1.5) 放大 1.5 倍，使强政策在无 AGI
-        # 侵蚀（beta_A=0）时仍能把有效捕获推过临界、恢复市场就业。
+        # 政策 -> 再附着 log-odds 系数：logistic 份额对各政策杠杆的结构敏感度。
         self.gamma_PE = 4.5         # 公共就业 -> 再附着 log-odds
         self.gamma_TM = 3.0         # 以工代赈 -> 再附着 log-odds
         self.gamma_R = 2.25         # 再培训 -> 再附着 log-odds
@@ -200,28 +201,43 @@ def simulate_unified(par):
         C[t] = max(0.0, Yd + net_b / P[t])
 
     Cmin = par.q * par.w * par.LS
+    ew = par.early_window
     reached = sL[-1] < par.term_thresh
-    C_below = np.min(C[10:]) < Cmin
-    neg = pi[10:] < -0.001
+    # 后期消费可行性（t>=early_window）。
+    C_below = np.min(C[ew:]) < Cmin
+    # 早期窗口消费可行性：排除 t=0 初始条件，检查 t=1..ew-1，防止早期瞬时崩溃被窗口忽略。
+    C_early_below = np.min(C[1:ew]) < Cmin
+    neg = pi[ew:] < -0.001
     neg_streak = 0; streak = 0
     for x in neg:
         streak = streak + 1 if x else 0
         neg_streak = max(neg_streak, streak)
     debt_up = b[-1] > b[np.argmin(b)] + 1e-6
     spiral = reached and (neg_streak >= par.spiral_period) and debt_up and C_below
-    over = stress[10:] > par.stress_thresh
+    over = stress[ew:] > par.stress_thresh
     soc_streak = 0; sstreak = 0
     for x in over:
         sstreak = sstreak + 1 if x else 0
         soc_streak = max(soc_streak, sstreak)
     social_crash = soc_streak >= par.soc_period
-    econ_crash = C_below
-    crash = econ_crash or social_crash
+    # 转型路径约束：早期窗口内市场就业不得瞬时清空（最小转型时间）。
+    early_collapse = np.min(sL[1:ew]) < par.early_labor_floor
+    econ_crash = C_below or C_early_below
+    path_crash = early_collapse
+    crash = econ_crash or social_crash or path_crash
     smooth = reached and not crash
     outcome = "smooth" if smooth else ("crash" if crash else "not_reached")
     if crash:
-        crash_type = ("social" if social_crash and not econ_crash else
-                      "econ" if econ_crash and not social_crash else "both")
+        flags = []
+        if social_crash: flags.append("social")
+        if econ_crash: flags.append("econ")
+        if path_crash: flags.append("path")
+        if flags == ["social", "econ"]:
+            crash_type = "both"
+        elif len(flags) == 1:
+            crash_type = flags[0]
+        else:
+            crash_type = "+".join(flags)
     else:
         crash_type = "none"
     return dict(It=It, Nt=Nt, nlab=nlab, LD=LD, sL=sL, C=C, GDP=GDP,
@@ -232,6 +248,8 @@ def simulate_unified(par):
                 Cmin=Cmin, outcome=outcome, sL_end=sL[-1], C_end=C[-1],
                 neg_streak=neg_streak, b_end=b[-1], spiral=spiral,
                 crash_type=crash_type, social_crash=social_crash,
+                C_early_below=bool(C_early_below), early_collapse=bool(early_collapse),
+                path_crash=bool(path_crash),
                 tax_sum=float(tax.sum()), short_sum=float(shortfall.sum()),
                 skill_end=float(skill[-1]), omega_end=float(omega_arr[-1]))
 

@@ -9,7 +9,7 @@ v12 保留为"内生复职率"入口：simulate_v12 强制 omega_mode='endogenou
     logit(omega_t) = ell0 + Gamma_t - beta_A * g_t
 
 其中 AGI 能力 g_t 上升压低劳动新任务捕获份额，政策存量 Gamma_t 对抗该下降。
-beta_A=0 退化为只随政策上升的旧 v12 方向；外生常数情形见 v6 兼容层。
+beta_A=0 退化为只随政策上升的 v12 内生方向；外生常数情形见 v6 兼容层。
 =================================================================================
 """
 import os, importlib.util

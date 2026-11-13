@@ -51,7 +51,7 @@ print("\n动态阈值 omega_c(t) = %.4f / skill[t-1]" % (0.020/0.050 + sf_n))
 
 # 独立核对：第38期 skill=0.8785 时动态阈值
 sk37 = 0.8785
-print("第38期动态阈值 = %.4f (论文/审稿 0.6452)" %
+print("第38期动态阈值 = %.4f (skill=0.8785)" %
       ((0.020/0.050 + sf_n) / sk37))
 
 # 验证 transversality：df(s_floor)/d omega
