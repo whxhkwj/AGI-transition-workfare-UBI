@@ -137,6 +137,7 @@ returns `minC`, `total` and the decomposition.
 |---|---|---|
 | Grid minima and identification | `analysis/check_grid_refine.py` | (0.18, 0.40, 0.15) = 63.53; dense grid (0.10, 0.40, 0.001) = 62.82, min C 0.3070 |
 | Link-function sensitivity (logistic vs probit) | `analysis/check_link_function.py` | min C 0.3562 vs 0.3571; link does not change the outcome |
+| Deflation nesting (consumption-smooth) | `analysis/check_deflation_nesting.py` | longest negative run 79, real debt capped at 0.80, min C 0.3562 |
 | Shock Monte Carlo (absorption counts) | `analysis/check_shock_mc.py` | headline crash counts 0/0/0, minima 0.3540, 0.3348 |
 | g_A and eta sensitivity | `analysis/check_ga_eta.py` | 0.344 / 0.294 / 0.237 / 0.222 |
 | Feasible share of the parameter box | `analysis/check_feasible_share.py` | 41/64 = 64.1%, 17/64 = 26.6%, 208/384 = 54.2% |
