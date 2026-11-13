@@ -43,7 +43,7 @@ pdflatex manuscript.tex
 pdflatex manuscript.tex      # second pass for cross-references
 ```
 
-The result is the submitted PDF: 58 pages, no errors, no undefined references.
+The result is the submitted PDF: 59 pages, no errors, no undefined references.
 This was verified from a clean copy of the repository on TeX Live 2022.
 
 ## Quick check
