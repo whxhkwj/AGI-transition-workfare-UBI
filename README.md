@@ -43,7 +43,7 @@ pdflatex manuscript.tex
 pdflatex manuscript.tex      # second pass for cross-references
 ```
 
-The result is the submitted PDF: 55 pages, no errors, no undefined references.
+The result is the submitted PDF: 58 pages, no errors, no undefined references.
 This was verified from a clean copy of the repository on TeX Live 2022.
 
 ## Quick check
@@ -141,7 +141,7 @@ returns `minC`, `total` and the decomposition.
 | Shock Monte Carlo (absorption counts) | `analysis/check_shock_mc.py` | headline crash counts 0/0/0, minima 0.3540, 0.3348 |
 | g_A and eta sensitivity | `analysis/check_ga_eta.py` | 0.344 / 0.294 / 0.237 / 0.222 |
 | Feasible share of the parameter box | `analysis/check_feasible_share.py` | 41/64 = 64.1%, 17/64 = 26.6%, 208/384 = 54.2% |
-| Social-threshold bounds, alpha_s crit | `analysis/check_soc_bounds.py` | varsigma_th 0.32/0.33 boundary, alpha_s 0.90/0.92 boundary (crit 0.909) |
+| Social-threshold bounds, alpha_s crit | `analysis/check_soc_bounds.py` | varsigma_th 0.32/0.33 boundary, alpha_s 0.91 boundary (crit 0.909) |
 | Empirical-range alpha_s sweep (0.30–6.62) | `analysis/empirical_range_alpha_sweep.py` | ranking robust on full interval; corner smooth through 0.90, social crash at 0.91 |
 | Two calibrated configurations | `analysis/check_two_configs.py` | 0.3576 at p_E=0.45 (smooth), 0.3326 at p_E=0.30 (smooth) |
 | Welfare weights (384 combinations) | `analysis/check_welfare_weights.py` | wide-grid best (0.10, 0.40, 0.02) = 62.84 under baseline weights |
