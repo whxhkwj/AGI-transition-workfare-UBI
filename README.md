@@ -44,7 +44,7 @@ pdflatex manuscript.tex
 pdflatex manuscript.tex      # second pass for cross-references
 ```
 
-The result is the submitted PDF: 56 pages, no errors, no undefined references.
+The result is the submitted PDF: 52 pages, no errors, no undefined references.
 A separate online appendix (`supplementary.tex`, 6 pages) is built the same way.
 This was verified from a clean copy of the repository on TeX Live 2022.
 

@@ -13,6 +13,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{xurl}
+\usepackage{longtable}
 \usepackage{microtype}
 \graphicspath{{figures/}}
 
@@ -204,7 +205,7 @@ E_t^{P,act}=\rho\,E_t^{P,plan},\qquad
 U_t^{rem}=u_t\barL-E_t^{P,act},\qquad
 L_t^D+E_t^{P,act}+U_t^{rem}=\barL.
 \end{equation}
-The remainder is therefore recomputed against the financed headcount rather than the planned one: an unfunded position does not absorb a worker, and the social pressure and skill depreciation equations below use this actual $U_t^{rem}$, so promised-but-unpaid jobs provide no protection. The population partition closes to machine precision in every period (verified by \texttt{analysis/verify\_population\_accounting.py}).
+The remainder is therefore recomputed against the financed headcount rather than the planned one: an unfunded position does not absorb a worker, and the social pressure and skill depreciation equations below use this actual $U_t^{rem}$, so promised-but-unpaid jobs provide no protection. The population partition closes to machine precision in every period (verified by \path{analysis/verify_population_accounting.py}).
 
 \smallskip\noindent\textbf{Financed-headcount residual on the corner path.} The remainder is measured against the financed headcount rather than the planned one, so at $t=5$ the actual remainder $0.186$ exceeds the planned $0.137$ that would ignore budget scaling, with both values from the same engine run and the partition closing to machine precision.
 
@@ -331,7 +332,7 @@ Write $G(\tau)=a-b\tau$ with $a=1+g_G$, $b=g_G\eta>0$, and $\Lambda\equiv1+g_{di
 F'(\tau)=\Lambda\,G(\tau)^{t-1}\big[a-b(t+1)\tau\big].
 \]
 The bracketed term is strictly decreasing and vanishes at $\tau_F=a/[b(t+1)]=(1+g_G)/[g_G\eta(t+1)]\approx1/(t g_G\eta)=\tau^R$. Since $\Lambda G^{t-1}>0$, $F'>0$ below $\tau_F$ and $F'<0$ above it, so $\tau_F$ is the unique global maximum; moreover $(\log F)''=-1/\tau^2-tb^2/G^2<0$, hence $F$ is strictly log-concave and quasi-concave.
-\smallskip\noindent\emph{Numerical note.} With $g_G=0.03,\eta=0.40,t=80$, the financing peak lies outside the admissible range, so $\tau^*$ is pinned by the welfare loss rather than the financing peak; direct minimization places $\tau^*$ at $0.10$--$0.12$ across the tested ranges, always inside the corresponding peak, and removing the decay assumption still yields an interior optimum ($\tau^*=0.12$), so the interior result is retained, with the analytic statement conditional absent the decay. Both tests are reproduced by \texttt{analysis/check\_tax\_optimality.py}.
+\smallskip\noindent\emph{Numerical note.} With $g_G=0.03,\eta=0.40,t=80$, the financing peak lies outside the admissible range, so $\tau^*$ is pinned by the welfare loss rather than the financing peak; direct minimization places $\tau^*$ at $0.10$--$0.12$ across the tested ranges, always inside the corresponding peak, and removing the decay assumption still yields an interior optimum ($\tau^*=0.12$), so the interior result is retained, with the analytic statement conditional absent the decay. Both tests are reproduced by \path{analysis/check_tax_optimality.py}.
 \smallskip\noindent For welfare, write $W=\sum_t[-B_t+C_t]$ with $B_t'\ge0$, $B_t''\le0$; we impose the local tax-base freeze used in the convexity argument, treating $\Pi_t$ as locally constant in $\tau$ over a short window, so $C_t=\delta_\tau\tau^3\Pi_t$ and $C_t''=6\delta_\tau\tau\Pi_t\ge2\delta_\tau\operatorname{tax}_t>0$. Then $W''=\sum_t[-B_t''+C_t'']>0$, so $W$ is strictly convex. We have $W'(0)=-B'(0)<0$. The right-boundary sign $W'(\tau^R)>0$ is imposed as an explicit decay assumption, $B_t'(\tau)\le c\,G(\tau)^t$ for some $c>0$, so that beyond the financing peak the marginal benefit decays while the marginal deadweight $C_t'=3\delta_\tau\tau^2\Pi_t$ remains non-negligible. Under this decay assumption, the intermediate value theorem gives a unique $\tau^*$ with $W'(\tau^*)=0$, and strict convexity yields $0<\tau^*<\tau^R$; absent the decay assumption, the interior result is conditional.
 \end{proof}
 
@@ -347,7 +348,7 @@ Given a tax-budget $B$ split between $EP$ and $TM$, hold the fiscal amount fixed
 The direct fiscal change is positive only when $\phi<r=w^P/w=0.85$; on an equal-outcome basis transfers cost $w^P/\mu_{TM}>w^P$ regardless. The optimal $p_E^*$ equates the marginal gap-compression plus social-risk benefit with the marginal fiscal-plus-welfare cost. Under the explicit end-point assumptions (E0) $MB(0)>MC(0)$ and (E1) $MB(1)<MC(1)$, the loss is U-shaped in $p_E$ and the optimum is interior and finite; otherwise it moves to the corresponding corner.
 \end{proposition}
 \begin{proof}
-One fiscal yuan contributes $1$ to consumption under public employment but only $\mu_{TM}<1$ under transfers, and moving one worker gives $\Delta C>0$ and $\Delta\varsigma<0$, with the direct fiscal change positive only when $\phi<r$. For the interior, the net marginal is strictly decreasing under continuous $MB$ and $MC$, so the endpoint assumptions (E0)--(E1) yield a unique $p_E^*$ by the intermediate value theorem, with the optimum at a corner if either sign fails. At the baseline both endpoint signs are confirmed by direct simulation rather than assumed, reproduced by \texttt{analysis/check\_endpoint\_signs.py}.
+One fiscal yuan contributes $1$ to consumption under public employment but only $\mu_{TM}<1$ under transfers, and moving one worker gives $\Delta C>0$ and $\Delta\varsigma<0$, with the direct fiscal change positive only when $\phi<r$. For the interior, the net marginal is strictly decreasing under continuous $MB$ and $MC$, so the endpoint assumptions (E0)--(E1) yield a unique $p_E^*$ by the intermediate value theorem, with the optimum at a corner if either sign fails. At the baseline both endpoint signs are confirmed by direct simulation rather than assumed, reproduced by \path{analysis/check_endpoint_signs.py}.
 \end{proof}
 
 \subsection{Social-instability threshold and the workfare channel}
@@ -423,11 +424,10 @@ manifold $s_{\text{floor}}=1-1/\lambda_h$. For $0\le s<s_{\text{floor}}$ the
 human share is identically zero and the second-region field is linear,
 $\dot s=f_2(s)=\mu(\omega\sigma q_A-\kappa_I-q_A s)$. The two fields join
 continuously on the manifold but their slopes differ, with the constant jump
-\begin{equation}
+\begin{equation*}
 f_1'(s_{\text{floor}})-f_2'(s_{\text{floor}})
 =k_hS_0\bigl(\lambda_h\omega\sigma-\lambda_h+1\bigr).
-\label{eq:bif-jump}
-\end{equation}
+\end{equation*}
 The fast subsystem is therefore a continuous, piecewise-smooth ($C^0$ but not
 $C^1$) system of the standard Filippov type~\citep{diBernardo2008}; the
 manifold algebra is given in Appendix~\ref{app:fast-derivation}.
@@ -497,7 +497,7 @@ The calibrated model is a discrete-time recursion, not a continuous flow, so we 
 \label{subsec:connection}
 The high-employment equilibrium corresponds structurally to the strong social floor, the workfare corner to the fiscally defended state as market employment vanishes, and the absorbing regime to the no-policy and pure-transfer collapses. The coefficients $\gamma_{PE},\gamma_{TM},\gamma_R$, the baseline $\omega_0$ and the capability sensitivity $\beta_A$ are structural rather than externally estimated, and the threshold $p_E^{*}=0.3661$ is a dimensionless output of the calibrated model, illustrative rather than an empirical estimate. On the corner path the region-I slope stays strictly negative, so the persistence-type classification is supported by the calibrated parameters.
 
-The probit comparison of the share law, the $\beta_A\in\{0,1,3\}$ capability sweep and the counterfactual that removes the logistic erosion term are extended robustness runs rather than main-line results; they are reported in full in Online Appendix~D, with the probit and counterfactual reproduced by \texttt{analysis/check\_link\_function.py} and \texttt{analysis/check\_capability\_counterfactual.py}.
+The probit comparison of the share law, the $\beta_A\in\{0,1,3\}$ capability sweep and the counterfactual that removes the logistic erosion term are extended robustness runs rather than main-line results; they are reported in full in Online Appendix~D, with the probit and counterfactual reproduced by \path{analysis/check_link_function.py} and \path{analysis/check_capability_counterfactual.py}.
 
 \subsection{Global outcome bifurcation: crash versus full public-employment absorption}
 Under full substitution, set the public-employment policy to full absorption, the planned headcount equal to the entire unemployed population so the target share rises to one as market employment falls, while the within-period fiscal constraint is unchanged and unfunded headcount remains residual unemployment. Two outcomes follow: if the tax base expands fast enough, public employment grows in step with the released workers, residual unemployment ends at zero and the path is smooth, while if the fiscal base lags, unfunded workers accumulate and consumption breaks the floor, giving the crash basin. The boundary is the fiscal race of Proposition~\ref{prop6}, decided by whether the accumulating capital-income tax base or the collapsing wage bill leads.
@@ -531,7 +531,7 @@ Consistent with Proposition~\ref{prop:critical}, a bisection on the frontier gro
 \label{fig:absorption-path}
 \end{figure}
 
-The boundary is not an artifact of removing transfers. Two comparisons establish this. First, when the unfunded residual is allowed a transfer payment from the fiscal room left after public employment, the critical frontier speed under $\tau=0.15$ is unchanged at $g_A=0.095$; under the workfare-first allocation order this residual room is essentially zero, with the realized transfer at $10^{-16}$, so that particular switch does not run a positive-spending transfer and cannot by itself identify the transfer effect. Second, a same-budget allocation that reserves a fixed share of each period's tax revenue for transfers produces a genuine positive transfer flow, and on that comparison shifting budget from public employment to transfers lowers the minimum consumption at every step, from $0.295$ at zero transfer share to $0.000$ at the pure-transfer limit near the boundary, and contracts the critical frontier monotonically, from $0.095$ to $0.005$ at $\tau=0.15$. The workfare ranking therefore survives a comparison in which transfers actually spend money: a public job carries a unit consumption coefficient and rebuilds the social channel, whereas a transfer leaks through $\mu_{TM}<1$ and does neither. The global bifurcation rests on the fiscal race and the allocation order rather than on the pure-public-employment specification, and the entire set of numbers in this subsection is reproduced by \texttt{analysis/check\_full\_absorption.py} together with the same-budget transfer check.
+The boundary is not an artifact of removing transfers. Two comparisons establish this. First, when the unfunded residual is allowed a transfer payment from the fiscal room left after public employment, the critical frontier speed under $\tau=0.15$ is unchanged at $g_A=0.095$; under the workfare-first allocation order this residual room is essentially zero, with the realized transfer at $10^{-16}$, so that particular switch does not run a positive-spending transfer and cannot by itself identify the transfer effect. Second, a same-budget allocation that reserves a fixed share of each period's tax revenue for transfers produces a genuine positive transfer flow, and on that comparison shifting budget from public employment to transfers lowers the minimum consumption at every step, from $0.295$ at zero transfer share to $0.000$ at the pure-transfer limit near the boundary, and contracts the critical frontier monotonically, from $0.095$ to $0.005$ at $\tau=0.15$. The workfare ranking therefore survives a comparison in which transfers actually spend money: a public job carries a unit consumption coefficient and rebuilds the social channel, whereas a transfer leaks through $\mu_{TM}<1$ and does neither. The global bifurcation rests on the fiscal race and the allocation order rather than on the pure-public-employment specification, and the entire set of numbers in this subsection is reproduced by \path{analysis/check_full_absorption.py} together with the same-budget transfer check.
 
 % ============================================================================
 \section{Calibration}
@@ -542,10 +542,9 @@ Standardization $L^S=\barL=1$, $w=1$. The reinstatement rate is held at its exog
 
 \smallskip\noindent\textbf{What ``calibration'' means here.} Three entries are anchored to data: the consumption floor ratio $c_0$ to the U.S. absolute poverty line, the transfer MPC $\mu_{TM}$ to total-consumption MPC estimates for low-liquidity recipients, not the in-kind SNAP margin, and the workfare wage ratio $w^P/w$ to workfare programmes. One group sits in a literature range on an annual-frequency convention: the model period is one year, so a quarterly Calvo no-reset probability $\zeta_q=0.75$ maps to $\zeta_y=\zeta_q^4=0.316$, a mean annual duration of $1.46$ years, and the slopes $\gamma_p,\lambda_w$ are annual-rate reduced-form conventions. The remaining entries are model-set, among which $\kappa_I$ is a calibration target set so the $T=80$ horizon reaches $s_t\to0$, not an estimated displacement rate, so the completion within 80 periods restates the target rather than tests it. The social and accounting coefficients are conventions as well. Calibrated therefore means three data-anchored magnitudes plus a two-parameter literature range, with everything else declared as setting; the parameter vector has not been estimated.
 
-\begin{center}
 \renewcommand{\arraystretch}{1.15}
 \footnotesize
-\begin{tabular}{@{}
+\begin{longtable}{@{}
 >{\raggedright\arraybackslash}p{0.95in}
 >{\raggedright\arraybackslash}p{1.35in}
 >{\raggedright\arraybackslash}p{0.70in}
@@ -553,6 +552,7 @@ Standardization $L^S=\barL=1$, $w=1$. The reinstatement rate is held at its exog
 \toprule
 Param & Meaning & Baseline & Anchor / source \\
 \midrule
+\endhead
 $s_0=(N_0-I_0)/N_0$ & initial labor share & 0.90 & model initial state $I_0=0.20$, $N_0=2.00$ gives $s_0=0.90$; U.S.\ labor share 53.8\% is a benchmark only \emph{[model initial state; see note]} \\
 $\kappa_I$ & automation displacement & 0.020 & transition (T$=$80) drives $s_t\to0$ \emph{[calibration target; set to hit $s_t\to0$ at $T{=}80$; not estimated]} \\
 $g_A$ & automation frontier growth & 0.010 & long-run U.S.\ TFP $\approx1\%$/yr; the compute-cost decline is not used~\cite{AIIndex2025} \emph{[model-set; see note]} \\
@@ -563,16 +563,14 @@ $c_0$ & consumption floor ratio & 0.30 & U.S.\ absolute poverty threshold (ASPE/
 $\omega$ & reinstatement rate & 0.05 & A\&R: reinstatement weaker than displacement~\cite{AR2018} \emph{[model-set; direction grounded, magnitude not estimated]} \\
 $w^P/w$ & workfare wage ratio & 0.85 & MGNREGA / World Bank workfare wages set below the market wage (direction grounded); the specific 0.85 ratio is a model setting rather than a point estimate~\cite{Subbarao2013} \emph{[direction data-grounded; level model-set]} \\
 \bottomrule
-\end{tabular}
-\end{center}
+\end{longtable}
 
 \noindent\footnotesize\textit{Note.} The initial share $s_0=0.90$ is computed from the task block as an internal consistency requirement, with the U.S. labor income share serving only as a qualitative benchmark since $s$ is a task share and enters no equation. The frontier growth is set at the long-run TFP rate; the hardware-cost decline and efficiency gain reported by Stanford HAI and NVIDIA refer to the cost of computing rather than $A_t$ and are not used as an anchor. The coefficient $\eta$ scales the growth cost of the tax and is not an effective tax rate, so EATR levels and tax-base elasticities serve as magnitudes only. The symbol $\sigma_t$ denotes the skill stock, not a capital--labor elasticity, and the model has no CES production block; the broader elasticity ranges in task-based calibrations are background only.
 \normalsize
 
-\begin{center}
 \renewcommand{\arraystretch}{1.15}
 \footnotesize
-\begin{tabular}{@{}
+\begin{longtable}{@{}
 >{\raggedright\arraybackslash}p{0.95in}
 >{\raggedright\arraybackslash}p{1.35in}
 >{\raggedright\arraybackslash}p{0.70in}
@@ -580,6 +578,7 @@ $w^P/w$ & workfare wage ratio & 0.85 & MGNREGA / World Bank workfare wages set b
 \toprule
 Param & Meaning & Baseline & Anchor / source \\
 \midrule
+\endhead
 $\alpha_s$ & social-pressure coefficient & 0.60 & $\varsigma_t=\alpha_s\,U_t^{rem}/\barL$; relief share drives instability \emph{[model-set / calibration convention]} \\
 $\varsigma^{th}$ & social-instability threshold & 0.50 & sustained $J=10$-period exceedance $\Rightarrow$ social collapse \emph{[model-set / calibration convention]} \\
 $T$ & simulation horizon & 80 & transition window over which $s_t\to0$ is computed \emph{[model-set / calibration convention]} \\
@@ -598,8 +597,7 @@ $g^{unfin}$ & unfinanced closure at zero truncation & 0.00 & write-down or exter
 \midrule
 \multicolumn{4}{@{}p{6.3in}@{}}{\textit{Baseline policy levers (headline corner).} $\tau=0.15$, $p_E=0.45$ (workfare-dominant), $\phi^{\max}=0.02$ (the grid floor; transfers effectively closed under the baseline loss weights). This is the reported headline, which retains a buffer; the grid's mathematical minimum under the baseline weights sits at $(\tau,p_E)=(0.10,0.40)$, as explained below.} \\
 \bottomrule
-\end{tabular}
-\end{center}
+\end{longtable}
 
 \smallskip\noindent\textbf{The transition-loss objective.}
 The grid search ranks policies by a single scalar, and we therefore state that scalar explicitly instead of leaving it implicit in the simulation code. Writing $C^{fe}=w\barL$ for full-employment consumption, the objective for a policy path $(\tau,p_E,\phi^{\max})$ is
@@ -658,9 +656,9 @@ No-policy / pure-transfer & crash / all crash & buffering and financing necessar
 \smallskip\noindent\textbf{The public-employment intensity is load-bearing.} The same six $\omega$ values survive at $p_E=0.45$ but all collapse at $p_E=0.30$, every path through the floor; the corner survives only above a share of about $0.36$, a feasibility bound rather than a tuning preference.
 
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering\small
-\caption{Structural decomposition of the pure-transfer failure. All four runs use the identical fiscal setting $(\tau=0.16,p_E=0,\phi^{\max}=0.65)$ and vary only the two structural choices the workfare corner does not share: the transfer consumption MPC $\mu_{TM}$ and the social-instability coefficient $\alpha_s$. Reproduced by \texttt{analysis/check\_transfer\_structure.py}.}\label{tab:transfer-structure}
+\caption{Structural decomposition of the pure-transfer failure. All four runs use the identical fiscal setting $(\tau=0.16,p_E=0,\phi^{\max}=0.65)$ and vary only the two structural choices the workfare corner does not share: the transfer consumption MPC $\mu_{TM}$ and the social-instability coefficient $\alpha_s$. Reproduced by \protect\path{analysis/check_transfer_structure.py}.}\label{tab:transfer-structure}
 \begin{tabular}{@{}lccc@{}}
 \toprule
 Configuration & outcome & crash type & $\min C$ \\
@@ -675,9 +673,9 @@ Both relaxed ($\mu_{TM}=1.00,\alpha_s=0$) & smooth & none & 0.409 \\
 
 \noindent The decomposition separates the two mechanisms as detailed in the table: an equal MPC leaves only the social channel, while disabling the social channel but retaining MPC leakage still leaves an economic crash, and the regime is smooth only when both are relaxed. The workfare advantage therefore rests on the unit workfare MPC together with the relief-to-jobs conversion rather than a generic financing failure, with the time paths in Figure~\ref{fig:policy-compare}.
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering\small
-\caption{Symmetric-limit welfare comparison on the same fiscal setting $(\tau=0.16,\phi^{\max}=0.65)$, with the transfer MPC set to one and the social channel disabled $(\mu_{TM}=1,\alpha_s=0)$. The two columns differ only in the public-employment share $p_E$. Total loss is the engine welfare loss and fiscal spend is the transfer plus workfare wage bill. Reproduced by \texttt{analysis/check\_symmetric\_welfare.py}.}\label{tab:symmetric-welfare}
+\caption{Symmetric-limit welfare comparison on the same fiscal setting $(\tau=0.16,\phi^{\max}=0.65)$, with the transfer MPC set to one and the social channel disabled $(\mu_{TM}=1,\alpha_s=0)$. The two columns differ only in the public-employment share $p_E$. Total loss is the engine welfare loss and fiscal spend is the transfer plus workfare wage bill. Reproduced by \protect\path{analysis/check_symmetric_welfare.py}.}\label{tab:symmetric-welfare}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
 Regime & outcome & total loss & fiscal spend & $\min C$ \\
@@ -712,7 +710,7 @@ Pure transfer ($p_E=0$) & smooth & 51.23 & 32.01 & 0.409 \\
 
 \smallskip\noindent\textbf{Stochastic robustness.} We shock the frontier growth, the parameter on which the smooth conclusion most depends, setting $g_{A,t}=0.010+\varepsilon_t$ with an AR(1) deviation ($\rho=0.5$, Gaussian innovations of standard deviation $\sigma_\varepsilon$, distinct from the skill index $\sigma_t$); each configuration is run $200$ times and a path is recorded as a crash when it triggers a crash test before the horizon. Table~\ref{tab:shock} reports the results.
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering\small
 \caption{Monte Carlo crash counts under frontier-growth shocks ($200$ replications; AR(1), $\rho=0.5$). Buffer is $\min_tC_t-0.300$; the last column reports the fifth percentile of $\min_tC_t$ at $\sigma_\varepsilon=0.03$.}\label{tab:shock}
 \begin{tabular}{@{}lccccc@{}}
@@ -740,7 +738,7 @@ The deterministic v6 global-best point $(0.10,0.40,0.001)$ is not a third crash-
 
 \smallskip\noindent\textbf{Social-threshold sensitivity sweep.} A dedicated sweep varies one social-channel parameter at a time ($\varsigma^{th}$, $\alpha_s$, $J$) under the calibrated parameters and compares the corner, the standard setting and the pure transfer; Table~\ref{tab:socbase} reports baseline outcomes and Table~\ref{tab:socbound} the boundaries.
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering\small
 \caption{Baseline social-channel outcomes ($\varsigma^{th}=0.50,\alpha_s=0.60,J=10$, $g_A=0.010$). Reported path statistics are rounded to three decimals.}\label{tab:socbase}
 \begin{tabular}{@{}lccccc@{}}
@@ -754,7 +752,7 @@ Pure transfer $(0.16,0,0.65)$ & crash & both & 0.259 & 0.600 & yes \\
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering\small
 \caption{Social-crash boundaries under one-at-a-time sweeps.}\label{tab:socbound}
 \begin{tabular}{@{}lccc@{}}
@@ -961,7 +959,7 @@ question here is operational: across the full-substitution parameter domain,
 does any policy configuration hold the market share at a high level at the
 terminal date? A high market-employment endpoint is defined as a terminal
 market share at or above $0.50$. The full battery is reproduced by
-\texttt{analysis/check\_high\_employment\_unreachable.py}, which exits with all
+\path{analysis/check_high_employment_unreachable.py}, which exits with all
 checks passing.
 
 \begin{center}
