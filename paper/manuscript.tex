@@ -14,6 +14,7 @@
 \usepackage{lmodern}
 \usepackage{xurl}
 \usepackage{longtable}
+\usepackage{caption}
 \usepackage{microtype}
 \graphicspath{{figures/}}
 
@@ -380,9 +381,9 @@ where $C_t(\kappa_I)$ is the model consumption under the bounded net-borrowing r
 By Theorem~\ref{thm1}, the wage collapse time is finite and moves earlier as $\kappa_I$ rises; as it approaches zero, cumulative financing is limited to the insufficient initial tax base while the rationed net-borrowing term cannot add consumption, so for sufficiently large $\kappa_I$ every admissible policy crashes, making the defining set nonempty and $\bar\kappa_I$ well defined. The upward-closure property holds because a larger $\kappa_I$ accelerates displacement without changing the reinstatement engine, so a crash at one value implies a crash at every higher value; faster tax-base accumulation raises the ceiling and stronger tax inhibition lowers it.
 \end{proof}
 
-\begin{remark}[Summary of the analytical results]
 \begin{center}
 \small
+\captionof{table}{Summary of the analytical results (P1--P6), mapping each proposition to its result and the key structural equation. The table restates the in-text findings and introduces no additional claims.}\label{tab:analytical-summary}
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.45in}>{\raggedright\arraybackslash}p{2.1in}>{\raggedright\arraybackslash}p{3.3in}@{}}\toprule
 Item & Result & Key structure \\
 \midrule
@@ -395,7 +396,6 @@ P6 & Buffer ceiling $\bar\kappa_I$; strong shocks need structure & tax-base vs w
 \bottomrule
 \end{tabular}
 \end{center}
-\end{remark}
 
 % ============================================================================
 \section{An Analytic Bifurcation Theory: Boundary Equilibrium Bifurcation of the Reinstatement Mechanism}
@@ -553,6 +553,12 @@ Standardization $L^S=\barL=1$, $w=1$. The reinstatement rate is held at its exog
 >{\raggedright\arraybackslash}p{1.35in}
 >{\raggedright\arraybackslash}p{0.70in}
 >{\raggedright\arraybackslash}p{2.80in}@{}}
+\caption{Baseline parameters and their anchors (part 1): model initial state, task dynamics, nominal rigidity, the transfer MPC and the data-anchored consumption floor.}\label{tab:calibration-1}\\
+\toprule
+Param & Meaning & Baseline & Anchor / source \\
+\midrule
+\endfirsthead
+\caption[]{Baseline parameters and their anchors (part 1, continued).}\\
 \toprule
 Param & Meaning & Baseline & Anchor / source \\
 \midrule
@@ -579,6 +585,12 @@ $w^P/w$ & workfare wage ratio & 0.85 & MGNREGA / World Bank workfare wages set b
 >{\raggedright\arraybackslash}p{1.35in}
 >{\raggedright\arraybackslash}p{0.70in}
 >{\raggedright\arraybackslash}p{2.80in}@{}}
+\caption{Baseline parameters and their anchors (part 2): social-channel conventions, balance-sheet and debt parameters, the adjustment-speed floor and the same-budget transfer diagnostic.}\label{tab:calibration-2}\\
+\toprule
+Param & Meaning & Baseline & Anchor / source \\
+\midrule
+\endfirsthead
+\caption[]{Baseline parameters and their anchors (part 2, continued).}\\
 \toprule
 Param & Meaning & Baseline & Anchor / source \\
 \midrule
@@ -636,6 +648,7 @@ Figure~\ref{fig:baseline} reports the baseline path under the corner configurati
 
 \begin{center}
 \small
+\captionof{table}{Calibrated outcomes across the diagnostic checks: policy delay, the isolation gain from retraining, workfare versus pure transfer, the minimum-loss grid point and the feasible smooth share.}\label{tab:calibrated-outcomes}
 \begin{tabular}{@{}
 >{\raggedright\arraybackslash}p{1.55in}
 >{\raggedright\arraybackslash}p{2.15in}
@@ -954,6 +967,7 @@ The simulation code, parameter files and scripts that generate every reported nu
 
 % ============================================================================
 \appendix
+\gdef\thetable{\arabic{table}}
 \section{The high market-employment counterfactual}
 \label{app:high-employment}
 % ============================================================================
@@ -968,8 +982,10 @@ market share at or above $0.50$. The full battery is reproduced by
 \path{analysis/check_high_employment_unreachable.py}, which exits with all
 checks passing.
 
-\begin{center}
+\begin{table}[ht]
+\centering
 \small
+\caption{Full-substitution outcomes and the exogenous-reinstatement counterfactual (Appendix A), giving terminal labor share and public employment for each configuration.}\label{tab:appendix-full-substitution}
 \begin{tabular}{@{}lccc@{}}
 \toprule
 Configuration (full substitution) & outcome & terminal $s_L$ & terminal $E^P$ \\
@@ -987,7 +1003,7 @@ $\omega=0.70$                            & not reached & 0.390 &  \\
 $\omega=0.90$                            & not reached & 0.543 &  \\
 \bottomrule
 \end{tabular}
-\end{center}
+\end{table}
 
 Three facts follow. First, no configuration in the full-substitution domain
 reaches the $0.50$ threshold; even with every policy lever raised at once the
