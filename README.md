@@ -157,12 +157,15 @@ returns `minC`, `total` and the decomposition.
 
 ```bash
 python figures/republish_figures.py        # six figures -> paper/figures (about 2 min)
-python figures/make_graphical_abstract.py  # -> paper/, 1433 x 602 px
+python figures/make_graphical_abstract.py  # renders figures/graphical_abstract.html -> paper/, 3200 x 1600 px + single-page vector PDF
 ```
 
-Both read the same engine and the same calibration as the manuscript, and both
-write into `paper/`, so `paper/manuscript.tex` picks the new figures up
-directly through `\graphicspath{{figures/}}`.
+The six figures read the same engine and calibration as the manuscript and write
+into `paper/`, so `paper/manuscript.tex` picks them up directly through
+`\graphicspath{{figures/}}`. The graphical abstract is an infographic rendered
+from `figures/graphical_abstract.html` with headless Chromium via Playwright
+(set `CHROMIUM_PATH` to a system browser); every number it quotes is
+cross-checked by `analysis/check_ga_panel.py`.
 
 ## Runtime
 

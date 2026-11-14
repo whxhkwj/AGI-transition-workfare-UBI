@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{
+    --blue:#1565a8; --teal:#1796b0; --orange:#d9772e;
+    --green:#2e8b57; --red:#c0392b;
+    --ink:#1f2d3d; --muted:#6b7b8c; --line:#d8e1ea; --bg:#f4f7fa;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{width:1600px;}
+  body{
+    font-family:"DejaVu Sans","Liberation Sans",Arial,sans-serif;
+    color:var(--ink); background:#fff;
+    width:1600px; padding:36px 44px 30px;
+  }
+  .head{display:flex; align-items:center; justify-content:space-between; border-bottom:3px solid var(--blue); padding-bottom:20px;}
+  .head h1{color:var(--blue); font-size:42px; letter-spacing:.2px;}
+  .head .sub{color:var(--muted); font-size:18px; margin-top:8px;}
+  .flow{display:flex; align-items:stretch; margin-top:28px;}
+  .card{
+    flex:1 1 0; background:#fff; border:1.5px solid var(--line); border-top:6px solid var(--blue);
+    border-radius:14px; padding:24px 22px 22px; text-align:center;
+    box-shadow:0 6px 16px rgba(21,101,168,.08);
+    display:flex; flex-direction:column; align-items:center;
+  }
+  .card.c2{border-top-color:var(--teal);}
+  .card.c3{border-top-color:var(--orange);}
+  .arrow{flex:0 0 42px; display:flex; align-items:center; justify-content:center;}
+  .num{font-size:13px; font-weight:700; color:#fff; background:var(--blue); border-radius:20px; padding:3px 12px; letter-spacing:1px; margin-bottom:14px;}
+  .c2 .num{background:var(--teal);} .c3 .num{background:var(--orange);}
+  .ico{width:66px; height:66px;}
+  .card h2{font-size:24px; color:var(--ink); margin-top:14px; line-height:1.15;}
+  .desc{font-size:15.5px; color:var(--muted); line-height:1.4; margin-top:10px; min-height:44px;}
+  .focus{margin-top:auto; padding-top:14px;}
+  .sym{font-size:38px; font-weight:700; color:var(--blue); font-style:italic; line-height:1;}
+  .sym .dn{color:var(--red); font-style:normal;}
+  .big{font-size:36px; font-weight:700; color:var(--orange); line-height:1; white-space:nowrap;}
+  .big small{display:block; font-size:16px; font-weight:400; color:var(--muted); margin-top:8px; font-style:normal;}
+  .miniviz{width:100%; margin-top:14px; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:10px 10px 6px;}
+  .outcomes{display:flex; gap:24px; margin-top:28px;}
+  .oc{flex:1; border-radius:12px; padding:16px 22px; display:flex; align-items:center; gap:16px;}
+  .oc.good{background:#eaf5ef; border:1.6px solid #b9dcc7;}
+  .oc.bad{background:#fbeceb; border:1.6px solid #ecc4c0;}
+  .oc .ot{font-size:21px; font-weight:700;}
+  .oc.good .ot{color:var(--green);} .oc.bad .ot{color:var(--red);}
+  .oc .od{font-size:15px; color:var(--muted); margin-top:3px;}
+  .foot{margin-top:22px; font-size:14px; color:var(--muted); text-align:center; border-top:1px solid var(--line); padding-top:14px;}
+</style>
+</head>
+<body>
+
+  <div class="head">
+    <div>
+      <h1>Anatomy of a Smooth Transition</h1>
+      <div class="sub">AGI displacement &middot; fiscal and social safety nets</div>
+    </div>
+    <div>
+      <svg width="96" height="96" viewBox="0 0 92 92">
+        <circle cx="46" cy="46" r="43" fill="none" stroke="#1565a8" stroke-width="2.5"/>
+        <path d="M14 66 C30 66,34 30,48 30 C58 30,60 40,78 24" fill="none" stroke="#1796b0" stroke-width="3.4" stroke-linecap="round"/>
+        <line x1="40" y1="16" x2="40" y2="76" stroke="#d9772e" stroke-width="2.4" stroke-dasharray="4 4"/>
+        <circle cx="40" cy="40" r="4.5" fill="#d9772e"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="flow">
+    <div class="card c1">
+      <span class="num">01</span>
+      <svg class="ico" viewBox="0 0 48 48">
+        <rect x="9" y="9" width="30" height="30" rx="5" fill="#eaf2fa" stroke="#1565a8" stroke-width="2.2"/>
+        <rect x="18" y="3" width="12" height="7" rx="2" fill="#1565a8"/>
+        <rect x="18" y="38" width="12" height="7" rx="2" fill="#1565a8"/>
+        <rect x="3" y="18" width="7" height="12" rx="2" fill="#1565a8"/>
+        <rect x="38" y="18" width="7" height="12" rx="2" fill="#1565a8"/>
+        <circle cx="24" cy="24" r="6.5" fill="#1565a8"/>
+        <circle cx="24" cy="24" r="2.4" fill="#fff"/>
+      </svg>
+      <h2>AGI displaces</h2>
+      <div class="desc">AGI reaches into task creation itself, weakening the re-absorption of displaced workers.</div>
+      <div class="focus"><span class="sym">&omega; <span class="dn">&#8595;</span></span></div>
+    </div>
+
+    <div class="arrow">
+      <svg width="32" height="26" viewBox="0 0 34 26"><path d="M2 13 H28 M22 5 L31 13 L22 21" fill="none" stroke="#9fb3c6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div class="card c2">
+      <span class="num">02</span>
+      <svg class="ico" viewBox="0 0 48 48">
+        <path d="M8 40 C20 40,22 22,26 16" fill="none" stroke="#1796b0" stroke-width="2.8" stroke-linecap="round"/>
+        <path d="M26 16 C30 10,34 9,40 8" fill="none" stroke="#1796b0" stroke-width="2.8" stroke-linecap="round"/>
+        <line x1="26" y1="8" x2="26" y2="40" stroke="#d9772e" stroke-width="2.4" stroke-dasharray="3 3"/>
+        <circle cx="26" cy="16" r="4" fill="#d9772e"/>
+        <path d="M10 40 H42" stroke="#5b6b7c" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <h2>Threshold</h2>
+      <div class="desc">Past the critical re-absorption rate &omega;<sub>c</sub>, the system falls into a low-employment basin.</div>
+      <div class="miniviz">
+        <svg width="100%" height="132" viewBox="0 0 420 132" preserveAspectRatio="none">
+          <rect x="6" y="12" width="128" height="106" fill="#e9edf1"/>
+          <line x1="156" y1="8" x2="156" y2="118" stroke="#d9772e" stroke-width="2.6" stroke-dasharray="6 5"/>
+          <text x="140" y="129" font-size="16" fill="#d9772e">&#969;<tspan font-size="12" baseline-shift="sub">c</tspan></text>
+          <path d="M156 98 C200 98,210 38,258 30 C306 22,336 20,412 18" fill="none" stroke="#1796b0" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="156" cy="98" r="6.5" fill="#1f2d3d"/>
+          <line x1="10" y1="98" x2="156" y2="98" stroke="#8aa0b2" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="arrow">
+      <svg width="32" height="26" viewBox="0 0 34 26"><path d="M2 13 H28 M22 5 L31 13 L22 21" fill="none" stroke="#9fb3c6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div class="card c3">
+      <span class="num">03</span>
+      <svg class="ico" viewBox="0 0 48 48">
+        <path d="M24 5 L40 11 V25 C40 35,33 41,24 44 C15 41,8 35,8 25 V11 Z" fill="#fbf0e6" stroke="#d9772e" stroke-width="2.3"/>
+        <path d="M17 24 l5 5 l10 -11" fill="none" stroke="#d9772e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h2>Workfare buffers</h2>
+      <div class="desc">Workfare and retraining move the threshold, keeping consumption above the floor.</div>
+      <div class="focus">
+        <div class="big">0.357 &gt; 0.30<small>min C<sub>t</sub> &nbsp;above&nbsp; C<sup>min</sup></small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="outcomes">
+    <div class="oc good">
+      <svg width="42" height="42" viewBox="0 0 40 40">
+        <circle cx="20" cy="20" r="18" fill="#2e8b57"/>
+        <path d="M12 20.5 l6 6 l11 -13" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div class="ot">Workfare &mdash; smooth</div>
+        <div class="od">consumption stays above the floor</div>
+      </div>
+    </div>
+    <div class="oc bad">
+      <svg width="42" height="42" viewBox="0 0 40 40">
+        <circle cx="20" cy="20" r="18" fill="#c0392b"/>
+        <path d="M14 14 L26 26 M26 14 L14 26" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <div class="ot">No policy &mdash; fails</div>
+        <div class="od">the consumption floor is breached</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">Outcomes are conditional on the social-instability calibration; the floor breaks only at frontier growth g<sub>A</sub> = 10%.</div>
+
+</body>
+</html>
