@@ -27,7 +27,7 @@ def buffer(gA):
     return min(r["C"][10:]) - C_FLOOR
 
 
-grid = [0.005, 0.01, 0.02, 0.04, 0.06, 0.08, 0.09, 0.0948,
+grid = [0.005, 0.01, 0.02, 0.04, 0.06, 0.08, 0.09, 0.0964,
         0.10, 0.12, 0.15, 0.20]
 vals = [buffer(g) for g in grid]
 
@@ -40,8 +40,8 @@ diffs = [vals[i + 1] - vals[i] for i in range(len(vals) - 1)]
 checks.append(("B strictly decreasing on the grid", all(d < 0 for d in diffs)))
 checks.append(("B crosses zero between 0.09 and 0.10",
                vals[grid.index(0.09)] > 0 and vals[grid.index(0.10)] < 0))
-checks.append(("B at the reported critical 0.0948 is within 1e-3 of zero",
-               abs(vals[grid.index(0.0948)]) < 1e-3))
+checks.append(("B at the reported critical 0.0964 is within 1e-3 of zero",
+               abs(vals[grid.index(0.0964)]) < 1e-3))
 
 print("\nchecks")
 bad = 0

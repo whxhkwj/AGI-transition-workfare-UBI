@@ -62,6 +62,7 @@ class Params(v4.Params):
         # ---- 转型路径约束（最小转型时间 / 早期可行性）----
         self.early_window = 10     # 早期调整窗口长度，与后期统计窗口对齐
         self.early_labor_floor = 0.50  # 早期窗口市场就业份额下限：禁止瞬时清空
+        self.P0 = 1.0              # 初始价格水平（计价单位）；仅缩放名义量，不改变实际路径
         # ---- 论文权威标定（覆盖 v4 遗留默认 .35/.70）----
         self.eta = 0.40             # 资本税增长抑制
         self.mu_TM = 0.50           # 转移支付的总消费 MPC
@@ -86,6 +87,8 @@ class Params(v4.Params):
         # 链接函数截距覆盖：默认 None 用 logit(omega0)。probit 重标定时传入标准
         # 正态分位数 z_0.05，使基准概率仍为 omega0=0.05，保证换链接函数的公平比较。
         self.link_intercept_override = None
+        # 制度对照开关：是否允许未用预算结转为财政储备，用于后续缺口（默认 False）。
+        self.fiscal_reserve = False
         for k, v in kw.items():
             setattr(self, k, v)
 
@@ -107,7 +110,7 @@ def simulate_unified(par):
     LD[0] = par.LS * v4.clamp(nlab[0] / Nt[0], 0, 1)
     sL[0] = LD[0] / par.LS
     GDP[0] = 1.0
-    P[0], D[0] = 1.0, par.D0
+    P[0], D[0] = par.P0, par.D0 * par.P0
     w_real[0] = 1.0
     phi[0] = par.phi_base
     u[0] = 1 - LD[0] / par.LS
@@ -131,6 +134,7 @@ def simulate_unified(par):
     omega_arr[0] = par.omega0 if par.omega_mode == "endogenous" else par.omega
     Cfe = par.w * par.LS
     g_eff = par.gG * (1 - par.eta * par.tau)
+    reserve = 0.0   # 制度对照：未用预算结转的财政储备（仅 fiscal_reserve=True 时累积）
 
     # 可选外部能力路径（随机冲击 MC 用）；默认确定性复合增长。
     cap_path = getattr(par, "cap_path", None)
@@ -172,8 +176,10 @@ def simulate_unified(par):
         # 同预算混合分配：把当期税收按固定比例拆给公共就业与转移，保证转移有正支出。
         mixed = (par.pe_policy == "full_absorption"
                  and par.transfer_budget_share > 0.0)
+        # 制度对照：开启回拨时，可用预算含上期结转储备；否则仅当期税收。
+        available = tax[t - 1] + (reserve if par.fiscal_reserve else 0.0)
         if mixed:
-            budget = max(0.0, tax[t - 1])
+            budget = max(0.0, available)
             b_tm = par.transfer_budget_share * budget
             b_ep = budget - b_tm
             unemployed = u[t] * par.LS
@@ -196,26 +202,33 @@ def simulate_unified(par):
                 Urem_plan = max(0.0, u[t] * par.LS - EP_plan)
                 TM_plan = phi[t] * par.w * Urem_plan
             Eplan[t] = par.wP * EP_plan + TM_plan
-            if Eplan[t] <= tax[t - 1] + 1e-9:
+            if Eplan[t] <= available + 1e-9:
                 EP[t], TM[t] = EP_plan, TM_plan
                 shortfall[t] = 0.0
                 cap_share[t] = 1.0
             else:
                 # 预算绑定：公共就业与转移按同一比例压缩，未获融资者仍计入失业。
-                shrink = tax[t - 1] / Eplan[t]
+                shrink = available / Eplan[t]
                 EP[t], TM[t] = EP_plan * shrink, TM_plan * shrink
-                shortfall[t] = Eplan[t] - tax[t - 1]
+                shortfall[t] = Eplan[t] - available
                 cap_share[t] = shrink
             # 闭合人口核算：剩余失业按实际获融资的公共就业计，LD+EP+Urem=L^S。
             Urem[t] = max(0.0, u[t] * par.LS - EP[t])
             # 全覆盖模式可选转移兜底：公共就业优先，剩余财政空间为未接住者融资转移。
             if (par.pe_policy == "full_absorption" and par.full_keep_transfer
                     and Urem[t] > 1e-9):
-                fiscal_room = max(0.0, tax[t - 1] - par.wP * EP[t])
+                fiscal_room = max(0.0, available - par.wP * EP[t])
                 TM_need = phi[t] * par.w * Urem[t]
                 TM[t] = min(TM_need, fiscal_room)
                 Eplan[t] = par.wP * EP_plan + TM_need
-                shortfall[t] = max(0.0, Eplan[t] - tax[t - 1])
+                shortfall[t] = max(0.0, Eplan[t] - available)
+
+        # 制度对照：开启回拨时，把未用预算结转；否则储备恒为零，保持基线行为。
+        spent = par.wP * EP[t] + TM[t]
+        if par.fiscal_reserve:
+            reserve = max(0.0, available - spent)
+        else:
+            reserve = 0.0
 
         # 显式人口加权技能：在岗者技能保留，仅失业者折旧，再培训抵消。
         dep = par.delta_skill * (1.0 - par.retrain * par.retain_retrain)
@@ -242,7 +255,10 @@ def simulate_unified(par):
         Yd = (w_real[t] * LD[t] + par.wP * EP[t] + par.mu_TM * TM[t]
               - par.mu * max(0.0, rd[t]))
         D_rolled = D[t - 1] * (1 + i_arr[t])
-        desired_net = (par.debt_share * max(0.0, Cfe - Yd)
+        # Units: the consumption gap (Cfe-Yd) is a real quantity, so the desired
+        # new borrowing from it is scaled by the current price P[t] before entering
+        # the nominal debt recursion; the amortisation term is already nominal.
+        desired_net = (P[t] * par.debt_share * max(0.0, Cfe - Yd)
                        - par.chi_amort * max(0.0, D_rolled - par.bbar * P[t]))
         D[t] = v4.clamp(D_rolled + desired_net, 0.0, par.b_credit * P[t])
         net_b = D[t] - D_rolled
@@ -298,12 +314,31 @@ def simulate_unified(par):
             crash_type = "+".join(flags)
     else:
         crash_type = "none"
+    # Unified result vector: three separately reported acceptability dimensions.
+    # Every script reads the same structured summary instead of recomputing flags.
+    summary = dict(
+        endpoint=dict(
+            outcome=outcome, reached=bool(reached),
+            sL_end=float(sL[-1]), EP_end=float(EP[-1]), Urem_end=float(Urem[-1]),
+        ),
+        consumption=dict(
+            minC=float(np.min(C)), Cmin=float(Cmin),
+            C_below=bool(C_below), C_early_below=bool(C_early_below),
+            econ_crash=bool(econ_crash),
+        ),
+        social=dict(
+            stress_peak=float(np.max(stress)), stress_thresh=float(par.stress_thresh),
+            social_crash=bool(social_crash), path_crash=bool(path_crash),
+            crash_type=crash_type,
+        ),
+    )
     return dict(It=It, Nt=Nt, nlab=nlab, LD=LD, sL=sL, C=C, GDP=GDP,
                 cap_inc=cap_inc, tax=tax, cap_share=cap_share, shortfall=shortfall,
                 P=P, D=D, pi=pi, phi=phi, u=u, b=b, rd=rd, i_arr=i_arr,
                 w_real=w_real, EP=EP, Urem=Urem, TM=TM, Eplan=Eplan,
                 skill=skill, stress=stress, net_b=net_b_arr, unfin_gap=unfin_gap,
                 omega=omega_arr,
+                summary=summary,
                 Cmin=Cmin, outcome=outcome, sL_end=sL[-1], C_end=C[-1],
                 neg_streak=neg_streak, b_end=b[-1], spiral=spiral,
                 crash_type=crash_type, social_crash=social_crash,

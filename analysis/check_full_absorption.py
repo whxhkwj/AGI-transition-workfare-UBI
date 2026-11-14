@@ -72,7 +72,7 @@ resid = np.max(np.abs(r["LD"] + r["EP"] + r["Urem"] - par.LS))
 print("full baseline: %s minC=%.4f EP_end=%.4f Urem_end=%.4f acct=%.1e"
       % (r["outcome"], minc, r["EP"][-1], r["Urem"][-1], resid))
 checks.append(("full baseline is smooth", r["outcome"] == "smooth"))
-checks.append(("full baseline minC near 0.407", abs(minc - 0.4067) < 5e-3))
+checks.append(("full baseline minC near 0.415", abs(minc - 0.4151) < 5e-3))
 checks.append(("full baseline ends with no residual unemployment",
                r["Urem"][-1] < 0.05))
 checks.append(("population identity closes", resid < 1e-12))

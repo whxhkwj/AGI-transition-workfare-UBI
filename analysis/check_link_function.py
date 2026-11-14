@@ -65,8 +65,8 @@ def main():
     # completes absorption (smooth); the probit corner keeps the buffer but does
     # not finish absorbing within T (not_reached), never a crash.
     expected = {
-        "logistic": ("smooth", 0.121, 0.3562),
-        "probit": ("not_reached", 0.239, 0.3556),
+        "logistic": ("smooth", 0.121, 0.3571),
+        "probit": ("not_reached", 0.239, 0.3560),
     }
     ok = True
     for link, (eout, ep, em) in expected.items():

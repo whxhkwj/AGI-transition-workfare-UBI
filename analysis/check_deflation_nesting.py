@@ -12,7 +12,7 @@ operational and reproduces the supporting numbers:
   2. Real household debt is bounded by the hard credit ceiling: max b_t is at
      b_credit, and once it binds the nominal stock D_t contracts with P_t, so
      the Fisher debt-deflation channel cannot diverge.
-  3. Real consumption is held above the floor (min C_t over t>=10 = 0.3562).
+  3. Real consumption is held above the floor (min C_t over t>=10 = 0.3571).
   4. The population partition still closes to machine precision.
 
 Together (2)-(3) show that with the floor held and debt bounded, the sustained
@@ -77,7 +77,7 @@ def main():
     if not (D[79] < D[20]):  # nominal stock contracts once b binds
         ok = False; print("MISMATCH: nominal debt did not contract with the price level")
     # (3) real consumption held above the floor
-    if abs(minC - 0.3562) > 0.0005 or minC < Cmin:
+    if abs(minC - 0.3571) > 0.0005 or minC < Cmin:
         ok = False; print("MISMATCH: min consumption", minC)
     # (4) closed population partition
     if partition_gap > 1e-12:
