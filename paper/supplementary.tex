@@ -15,6 +15,10 @@
 \usepackage{lmodern}
 \usepackage{xurl}
 \usepackage{microtype}
+% Continue the manuscript's in-text Appendix A/B lettering: the two sections of
+% this separate Online Appendix are labelled C and D to match the in-text calls.
+\renewcommand{\thesection}{\Alph{section}}
+\setcounter{section}{2}
 \graphicspath{{figures/}}
 
 \theoremstyle{plain}
