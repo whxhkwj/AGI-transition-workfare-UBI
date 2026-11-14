@@ -96,16 +96,19 @@
         <circle cx="26" cy="16" r="4" fill="#d9772e"/>
         <path d="M10 40 H42" stroke="#5b6b7c" stroke-width="2" stroke-linecap="round"/>
       </svg>
-      <h2>Threshold</h2>
-      <div class="desc">Past the critical re-absorption rate &omega;<sub>c</sub>, the system falls into a low-employment basin.</div>
+      <h2>Two gates</h2>
+      <div class="desc">A fiscal gate on the consumption floor and a social gate on adjustment speed separate the crash and smooth basins.</div>
       <div class="miniviz">
         <svg width="100%" height="132" viewBox="0 0 420 132" preserveAspectRatio="none">
-          <rect x="6" y="12" width="128" height="106" fill="#e9edf1"/>
-          <line x1="156" y1="8" x2="156" y2="118" stroke="#d9772e" stroke-width="2.6" stroke-dasharray="6 5"/>
-          <text x="140" y="129" font-size="16" fill="#d9772e">&#969;<tspan font-size="12" baseline-shift="sub">c</tspan></text>
-          <path d="M156 98 C200 98,210 38,258 30 C306 22,336 20,412 18" fill="none" stroke="#1796b0" stroke-width="4" stroke-linecap="round"/>
-          <circle cx="156" cy="98" r="6.5" fill="#1f2d3d"/>
-          <line x1="10" y1="98" x2="156" y2="98" stroke="#8aa0b2" stroke-width="2"/>
+          <rect x="6" y="12" width="150" height="106" fill="#e9edf1"/>
+          <rect x="156" y="12" width="120" height="106" fill="#fdf3e7"/>
+          <rect x="276" y="12" width="138" height="106" fill="#eaf5ef"/>
+          <line x1="156" y1="8" x2="156" y2="118" stroke="#c0392b" stroke-width="2.6"/>
+          <line x1="276" y1="8" x2="276" y2="118" stroke="#d9772e" stroke-width="2.6" stroke-dasharray="6 5"/>
+          <text x="118" y="129" font-size="14" fill="#c0392b">fiscal gate</text>
+          <text x="238" y="129" font-size="14" fill="#d9772e">social gate</text>
+          <text x="180" y="60" font-size="15" fill="#6b7b8c">crash</text>
+          <text x="296" y="60" font-size="15" fill="#2e8b57">smooth</text>
         </svg>
       </div>
     </div>
@@ -120,10 +123,10 @@
         <path d="M24 5 L40 11 V25 C40 35,33 41,24 44 C15 41,8 35,8 25 V11 Z" fill="#fbf0e6" stroke="#d9772e" stroke-width="2.3"/>
         <path d="M17 24 l5 5 l10 -11" fill="none" stroke="#d9772e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <h2>Workfare buffers</h2>
-      <div class="desc">Workfare and retraining move the threshold, keeping consumption above the floor.</div>
+      <h2>Full absorption</h2>
+      <div class="desc">Public employment takes over the whole labor force, keeping consumption above the floor with zero residual unemployment.</div>
       <div class="focus">
-        <div class="big">0.357 &gt; 0.30<small>min C<sub>t</sub> &nbsp;above&nbsp; C<sup>min</sup></small></div>
+        <div class="big">0.407 &gt; 0.30<small>min C<sub>t</sub> &nbsp;above&nbsp; C<sup>min</sup>, full-absorption path</small></div>
       </div>
     </div>
   </div>
@@ -151,7 +154,7 @@
     </div>
   </div>
 
-  <div class="foot">Outcomes are conditional on the social-instability calibration; the floor breaks only at frontier growth g<sub>A</sub> = 10%.</div>
+  <div class="foot">Outcomes are conditional on the stated settings: the fiscal gate binds at frontier growth g<sub>A</sub> = 0.095 under &tau; = 0.15, while under high taxation the social gate sets an adjustment-speed boundary near g<sub>A</sub> = 0.14.</div>
 
 </body>
 </html>

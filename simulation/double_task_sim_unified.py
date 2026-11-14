@@ -80,6 +80,12 @@ class Params(v4.Params):
         self.pe_policy = "fixed"
         # 全覆盖模式下，财政压缩后是否对剩余失业者保留转移兜底（默认纯公共就业接管）。
         self.full_keep_transfer = False
+        # 同预算混合分配：强制把当期可用税收的 transfer_budget_share 预留给失业转移，
+        # 其余支付公共就业。0 = 纯公共就业优先（默认），(0,1] 产生正转移支出，用于同预算对照。
+        self.transfer_budget_share = 0.0
+        # 链接函数截距覆盖：默认 None 用 logit(omega0)。probit 重标定时传入标准
+        # 正态分位数 z_0.05，使基准概率仍为 omega0=0.05，保证换链接函数的公平比较。
+        self.link_intercept_override = None
         for k, v in kw.items():
             setattr(self, k, v)
 
@@ -94,6 +100,7 @@ def simulate_unified(par):
     b = np.zeros(T); w_real = np.zeros(T); omega_arr = np.zeros(T)
     EP = np.zeros(T); Urem = np.zeros(T); TM = np.zeros(T)
     Eplan = np.zeros(T); shortfall = np.zeros(T); cap_share = np.zeros(T)
+    unfin_gap = np.zeros(T)   # 零截断处未融资缺口：违约核销或外部资金闭合项
     skill = np.zeros(T); stress = np.zeros(T); net_b_arr = np.zeros(T)
 
     It[0], Nt[0], nlab[0] = par.I0, par.N0, par.N0 - par.I0
@@ -115,7 +122,12 @@ def simulate_unified(par):
     stress[0] = par.alpha_s * (Urem[0] / par.LS)
     C[0] = w_real[0] * LD[0] + par.wP * EP[0] + par.mu_TM * TM[0]
     b[0] = D[0] / P[0]
-    ell0 = np.log(par.omega0 / (1.0 - par.omega0))
+    if getattr(par, "link_intercept_override", None) is not None:
+        ell0 = float(par.link_intercept_override)
+    else:
+        ell0 = np.log(par.omega0 / (1.0 - par.omega0))
+    # Under a probit re-calibration the intercept is chosen so the baseline CDF
+    # still equals omega0; the initial rate is therefore omega0 in both links.
     omega_arr[0] = par.omega0 if par.omega_mode == "endogenous" else par.omega
     Cfe = par.w * par.LS
     g_eff = par.gG * (1 - par.eta * par.tau)
@@ -157,36 +169,53 @@ def simulate_unified(par):
 
         ud = u[max(0, t - par.d)]
         phi[t] = min(par.phi_max, par.phi_base + par.resp * max(0.0, ud))
-        if par.pe_policy == "full_absorption":
-            # 政策目标：公共就业接住全部失业者（有效 pE -> 1），不留计划内救济。
-            EP_plan = u[t] * par.LS
-            Urem_plan = 0.0
-            TM_plan = phi[t] * par.w * Urem_plan
+        # 同预算混合分配：把当期税收按固定比例拆给公共就业与转移，保证转移有正支出。
+        mixed = (par.pe_policy == "full_absorption"
+                 and par.transfer_budget_share > 0.0)
+        if mixed:
+            budget = max(0.0, tax[t - 1])
+            b_tm = par.transfer_budget_share * budget
+            b_ep = budget - b_tm
+            unemployed = u[t] * par.LS
+            EP[t] = min(unemployed, b_ep / par.wP)
+            Urem[t] = max(0.0, unemployed - EP[t])
+            tm_need = phi[t] * par.w * Urem[t]
+            TM[t] = min(tm_need, b_tm)
+            EP_plan = unemployed
+            Eplan[t] = par.wP * unemployed + tm_need
+            shortfall[t] = max(0.0, Eplan[t] - budget)
+            cap_share[t] = (budget / Eplan[t] if Eplan[t] > 0 else 1.0)
         else:
-            EP_plan = min(par.pE * u[t] * par.LS, u[t] * par.LS)
-            Urem_plan = max(0.0, u[t] * par.LS - EP_plan)
-            TM_plan = phi[t] * par.w * Urem_plan
-        Eplan[t] = par.wP * EP_plan + TM_plan
-        if Eplan[t] <= tax[t - 1] + 1e-9:
-            EP[t], TM[t] = EP_plan, TM_plan
-            shortfall[t] = 0.0
-            cap_share[t] = 1.0
-        else:
-            # 预算绑定：公共就业与转移按同一比例压缩，未获融资者仍计入失业。
-            shrink = tax[t - 1] / Eplan[t]
-            EP[t], TM[t] = EP_plan * shrink, TM_plan * shrink
-            shortfall[t] = Eplan[t] - tax[t - 1]
-            cap_share[t] = shrink
-        # 闭合人口核算：剩余失业按实际获融资的公共就业计，LD+EP+Urem=L^S。
-        Urem[t] = max(0.0, u[t] * par.LS - EP[t])
-        # 全覆盖模式可选转移兜底：公共就业优先，剩余财政空间为未接住者融资转移。
-        if (par.pe_policy == "full_absorption" and par.full_keep_transfer
-                and Urem[t] > 1e-9):
-            fiscal_room = max(0.0, tax[t - 1] - par.wP * EP[t])
-            TM_need = phi[t] * par.w * Urem[t]
-            TM[t] = min(TM_need, fiscal_room)
-            Eplan[t] = par.wP * EP_plan + TM_need
-            shortfall[t] = max(0.0, Eplan[t] - tax[t - 1])
+            if par.pe_policy == "full_absorption":
+                # 政策目标：公共就业接住全部失业者（有效 pE -> 1），不留计划内救济。
+                EP_plan = u[t] * par.LS
+                Urem_plan = 0.0
+                TM_plan = phi[t] * par.w * Urem_plan
+            else:
+                EP_plan = min(par.pE * u[t] * par.LS, u[t] * par.LS)
+                Urem_plan = max(0.0, u[t] * par.LS - EP_plan)
+                TM_plan = phi[t] * par.w * Urem_plan
+            Eplan[t] = par.wP * EP_plan + TM_plan
+            if Eplan[t] <= tax[t - 1] + 1e-9:
+                EP[t], TM[t] = EP_plan, TM_plan
+                shortfall[t] = 0.0
+                cap_share[t] = 1.0
+            else:
+                # 预算绑定：公共就业与转移按同一比例压缩，未获融资者仍计入失业。
+                shrink = tax[t - 1] / Eplan[t]
+                EP[t], TM[t] = EP_plan * shrink, TM_plan * shrink
+                shortfall[t] = Eplan[t] - tax[t - 1]
+                cap_share[t] = shrink
+            # 闭合人口核算：剩余失业按实际获融资的公共就业计，LD+EP+Urem=L^S。
+            Urem[t] = max(0.0, u[t] * par.LS - EP[t])
+            # 全覆盖模式可选转移兜底：公共就业优先，剩余财政空间为未接住者融资转移。
+            if (par.pe_policy == "full_absorption" and par.full_keep_transfer
+                    and Urem[t] > 1e-9):
+                fiscal_room = max(0.0, tax[t - 1] - par.wP * EP[t])
+                TM_need = phi[t] * par.w * Urem[t]
+                TM[t] = min(TM_need, fiscal_room)
+                Eplan[t] = par.wP * EP_plan + TM_need
+                shortfall[t] = max(0.0, Eplan[t] - tax[t - 1])
 
         # 显式人口加权技能：在岗者技能保留，仅失业者折旧，再培训抵消。
         dep = par.delta_skill * (1.0 - par.retrain * par.retain_retrain)
@@ -219,7 +248,11 @@ def simulate_unified(par):
         net_b = D[t] - D_rolled
         net_b_arr[t] = net_b
         b[t] = D[t] / P[t]
-        C[t] = max(0.0, Yd + net_b / P[t])
+        raw_res = Yd + net_b / P[t]
+        C[t] = max(0.0, raw_res)
+        # 零截断闭合：可用资源为负时，未覆盖部分必须由违约核销或外部资金承担，
+        # 显式记账，使家庭资源恒等式 Yd + net_b/P + unfin_gap = C 逐期闭合。
+        unfin_gap[t] = max(0.0, -raw_res)
 
     Cmin = par.q * par.w * par.LS
     ew = par.early_window
@@ -269,7 +302,8 @@ def simulate_unified(par):
                 cap_inc=cap_inc, tax=tax, cap_share=cap_share, shortfall=shortfall,
                 P=P, D=D, pi=pi, phi=phi, u=u, b=b, rd=rd, i_arr=i_arr,
                 w_real=w_real, EP=EP, Urem=Urem, TM=TM, Eplan=Eplan,
-                skill=skill, stress=stress, net_b=net_b_arr, omega=omega_arr,
+                skill=skill, stress=stress, net_b=net_b_arr, unfin_gap=unfin_gap,
+                omega=omega_arr,
                 Cmin=Cmin, outcome=outcome, sL_end=sL[-1], C_end=C[-1],
                 neg_streak=neg_streak, b_end=b[-1], spiral=spiral,
                 crash_type=crash_type, social_crash=social_crash,

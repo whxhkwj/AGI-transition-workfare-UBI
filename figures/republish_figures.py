@@ -196,14 +196,14 @@ ax.plot(taus[bj], pes[bi], marker="*", ms=10, color="#8B1A1A",
 ax.annotate("minimum (wide-grid corner)", (taus[bj], pes[bi]),
             textcoords="offset points", xytext=(7, -12), color="#8B1A1A",
             fontsize=6.5, zorder=6)
-# denser re-solve: the dense-grid point (tau=0.13, pE=0.44) with the transfer
-# ceiling extended to phi_max=0.001. Its loss is computed in-line and reported as
-# text, so the displayed number always matches the engine rather than a literal.
-_, w_dense = run(P(tau=0.13, pE=0.44, phi_max=0.001, omega=0.05, retrain=0.0))
+# denser re-solve: the global best of the refined grid (check_grid_refine.py)
+# is (tau=0.10, pE=0.40) with the ceiling at phi_max=0.001. Its loss is
+# computed in-line from the engine, so the displayed number is never a literal.
+_, w_dense = run(P(tau=0.10, pE=0.40, phi_max=0.001, omega=0.05, retrain=0.0))
 dense_loss = w_dense["total"]
 ax.text(0.056, 0.27,
         "denser re-solve " + r"($\varphi^{\mathrm{max}}=0.001$): "
-        + f"{dense_loss:.2f} at (0.13, 0.44)",
+        + f"{dense_loss:.2f} at (0.10, 0.40)",
         fontsize=6.2, color="#8B1A1A", ha="left", zorder=6,
         bbox=dict(facecolor="white", alpha=0.85, edgecolor="none", pad=1.5))
 ax.text(0.155, 0.050, "grey = infeasible or crash", fontsize=6.5, color=GREY, zorder=6)
@@ -239,8 +239,12 @@ sys.path.insert(0, os.path.join(_ROOT, "analysis"))
 import double_task_sim_v12_endogenous_omega as v12
 import dynamic_threshold as dth
 
-OMEGA_C = 0.5667
-SF = 1 - 1 / 1.20
+# thresholds derived from the engine, not hard-coded
+p_thr = v6.Params()
+Q_A = p_thr.kappa_N_AI * p_thr.M0
+RATIO = p_thr.kappa_I / Q_A
+SF = 1 - 1 / p_thr.lambda_h
+OMEGA_C = RATIO + SF
 Cc = 0.003
 
 
@@ -262,25 +266,31 @@ for om in om_grid:
     else:
         s_plus.append(np.nan); s_minus.append(np.nan)
 s_plus, s_minus = np.array(s_plus), np.array(s_minus)
+# region-II linear root from the engine ratio
+s2 = om_grid - RATIO
+
 a = ax[0]
-phys = s_plus >= SF
-a.plot(np.ma.array(om_grid, mask=~phys), np.ma.array(s_plus, mask=~phys),
-       color=BLUE, lw=1.6, label="stable equilibrium $s^+$ (region I)")
-virt = (s_plus >= 0) & (s_plus < SF)
-a.plot(np.ma.array(om_grid, mask=~virt), np.ma.array(s_plus, mask=~virt),
-       color=ORANGE, lw=1.3, ls="--", label="virtual branch (region II)")
-neg = s_plus < 0
-a.plot(np.ma.array(om_grid, mask=~neg), np.ma.array(s_plus, mask=~neg),
-       color=GREY, lw=1.1, ls=":", label="non-physical ($s^+<0$)")
+phys1 = s_plus >= SF
+a.plot(np.ma.array(om_grid, mask=~phys1), np.ma.array(s_plus, mask=~phys1),
+       color=BLUE, lw=1.6, label="stable region-I equilibrium $s^+$")
+phys2 = (s2 >= 0) & (s2 < SF)
+a.plot(np.ma.array(om_grid, mask=~phys2), np.ma.array(s2, mask=~phys2),
+       color=GREEN, lw=1.6, label="stable region-II equilibrium $s^{**}$")
+virt1 = (s_plus >= 0) & (s_plus < SF)
+a.plot(np.ma.array(om_grid, mask=~virt1), np.ma.array(s_plus, mask=~virt1),
+       color=ORANGE, lw=1.1, ls="--", label="virtual region-I root")
+non2 = s2 < 0
+a.plot(np.ma.array(om_grid, mask=~non2), np.ma.array(s2, mask=~non2),
+       color=GREY, lw=1.0, ls=":", label="non-physical $s^{**}<0$")
 a.plot(om_grid, s_minus, color=RED, lw=1.0, ls="-.", label="unstable branch $s^-$")
 a.axhline(SF, color="black", ls="-", lw=0.7, alpha=0.6)
 a.text(0.07, SF + 0.03, r"switching manifold $s_{floor}$", fontsize=6.5)
 a.set_xlim(0.04, 1.02)
 a.axvline(OMEGA_C, color=PURPLE, ls="--", lw=1.1)
 a.plot(OMEGA_C, SF, marker="*", ms=9, color="black")
-a.annotate("BEB\n" + r"$\omega_c=0.567$", (OMEGA_C, SF),
+a.annotate("BEB\n" + r"$\omega_c=%.3f$" % OMEGA_C, (OMEGA_C, SF),
            xytext=(OMEGA_C - 0.26, 0.30), fontsize=6.5, color=PURPLE)
-a.set_xlabel(r"reinvestment rate $\omega$")
+a.set_xlabel(r"reinstatement rate $\omega$")
 a.set_ylabel(r"equilibrium employment share $s$")
 a.set_title("(a) Fast-subsystem BEB, static slice (skill = 1)")
 a.set_ylim(-0.5, 0.85); a.legend(loc="upper left")
@@ -291,10 +301,10 @@ a.plot(om_grid, f_sf, color=GREEN, lw=1.4)
 a.axhline(0, color="black", lw=0.7)
 a.axvline(OMEGA_C, color=PURPLE, ls="--", lw=1.1)
 a.fill_between(om_grid, f_sf, 0, where=f_sf < 0, color=RED, alpha=0.12,
-               label="absorbing: no interior equilibrium")
+               label=r"field on manifold $<0$ (no region-I interior root)")
 a.fill_between(om_grid, f_sf, 0, where=f_sf >= 0, color=BLUE, alpha=0.10,
-               label="stable interior equilibrium exists")
-a.set_xlabel(r"reinvestment rate $\omega$")
+               label=r"field on manifold $\geq 0$ (region-I root exists)")
+a.set_xlabel(r"reinstatement rate $\omega$")
 a.set_ylabel(r"vector field on the manifold $f(s_{floor})$")
 a.set_title(r"(b) Transversality at $\omega_c$, static slice (skill = 1)")
 a.legend(loc="upper left", frameon=True, facecolor="white", edgecolor="none",
@@ -330,7 +340,7 @@ for name, rr in res.items():
     ax[2].plot(t12, rr["C"], color=c, ls=ls, lw=1.3, label=name)
 ax[0].set_title(r"(a) Endogenous $\omega_t$ and dynamic $\omega_c(t)$")
 ax[0].set_xlabel("period $t$")
-ax[0].set_ylabel("reinvestment rate")
+ax[0].set_ylabel("reinstatement rate")
 ax[0].annotate("dotted: dynamic threshold; $*$ = real crossing",
                xy=(0.03, 0.96), xycoords="axes fraction",
                fontsize=5.8, color=GREY)

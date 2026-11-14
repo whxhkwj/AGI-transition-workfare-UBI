@@ -187,17 +187,21 @@ and the counterfactual that removes the logistic erosion term. All runs are
 reproduced by the named analysis scripts.
 
 \paragraph{D.1 Functional form of the share law.}
-Equation for the endogenous rate is a modelling choice, so we re-solve the
+The equation for the endogenous rate is a modelling choice, so we re-solve the
 corner with the probit share, $\omega_t=\Phi(\ell_0+\Gamma_t-\beta_A g_t)$
-where $\Phi$ is the standard normal cumulative distribution, which shares the
-logistic form's endpoints, monotonicity and smoothness but a different tail
-shape. Both forms keep the corner smooth and without a real crossing. Measured
-over the policy-driven horizon $t\geq1$, the effective capture peaks at
-$0.121$ under the logistic and $0.041$ under the probit. The buffer conclusion
-is nevertheless unchanged, with $\min_t C_t$ moving only from $0.3562$ to
-$0.3571$, a gap below $0.001$. The binding constraint remains skill
-depreciation rather than the choice of link function, so the functional form
-is not the margin that decides the outcome. This is reproduced by
+where $\Phi$ is the standard normal cumulative distribution. Because reusing
+the logistic intercept would make the baseline probability $0.0016$ rather than
+$0.05$, the intercept is re-calibrated to the normal quantile $\Phi^{-1}(0.05)=-1.645$,
+so both links start from the same baseline $\omega_0=0.05$ and the comparison
+is like for like. Measured over the policy-driven horizon $t\geq1$, the
+effective capture peaks at $0.121$ under the logistic and $0.239$ under the
+probit. The consumption buffer is effectively unchanged, $\min_t C_t$ moving
+only from $0.3562$ to $0.3556$. The logistic corner completes absorption
+(smooth), whereas the probit corner keeps the buffer but does not finish
+absorbing within $T=80$, a right-censored not-reached outcome rather than a
+crash. The link function therefore does not move the consumption floor or
+trigger a crash, which remain governed by skill depreciation, but it does
+change the time needed to finish absorption. This is reproduced by
 \texttt{analysis/check\_link\_function.py}.
 
 \paragraph{D.2 Capability-sensitivity sweep.}

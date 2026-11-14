@@ -44,7 +44,7 @@ pdflatex manuscript.tex
 pdflatex manuscript.tex      # second pass for cross-references
 ```
 
-The result is the submitted PDF: 52 pages, no errors, no undefined references.
+The result is the submitted PDF: 56 pages, no errors, no undefined references.
 A separate online appendix (`supplementary.tex`, 6 pages) is built the same way.
 This was verified from a clean copy of the repository on TeX Live 2022.
 
@@ -138,7 +138,8 @@ returns `minC`, `total` and the decomposition.
 | Manuscript | Script | Key values |
 |---|---|---|
 | Grid minima and identification | `analysis/check_grid_refine.py` | (0.18, 0.40, 0.15) = 63.53; dense grid (0.10, 0.40, 0.001) = 62.82, min C 0.3070 |
-| Link-function sensitivity (logistic vs probit) | `analysis/check_link_function.py` | min C 0.3562 vs 0.3571; link does not change the outcome |
+| Link-function sensitivity (logistic vs probit) | `analysis/check_link_function.py` | probit re-calibrated to normal quantile; min C 0.3562 vs 0.3556, probit not reached but no crash; link does not move the floor |
+| Two gates, same-budget transfer, household closure | `analysis/check_two_gates.py` | fiscal vs speed boundary 0.0948/0.1403; min C 0.2949 to 0; crash gap total 0.28511, max 0.01753, residual 0 |
 | Deflation nesting (consumption-smooth) | `analysis/check_deflation_nesting.py` | longest negative run 79, real debt capped at 0.80, min C 0.3562 |
 | Shock Monte Carlo (absorption counts) | `analysis/check_shock_mc.py` | headline crash counts 0/0/0, minima 0.3540, 0.3348 |
 | g_A and eta sensitivity | `analysis/check_ga_eta.py` | 0.344 / 0.294 / 0.237 / 0.222 |

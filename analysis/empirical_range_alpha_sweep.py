@@ -8,10 +8,12 @@ using the model's own conversion k = 1 - pE = 0.55. Confirms:
   * the pure transfer crashes at every alpha_s.
 All numbers are produced directly from the v6 engine; no value is hard-coded.
 """
-import sys, importlib.util
+import os, sys, importlib.util
 import numpy as np
 
-SIM = "/home/user/neutral_push/git_remote/simulation"
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_ROOT = os.path.dirname(_HERE)
+SIM = os.path.join(_ROOT, "simulation")
 sys.path.insert(0, SIM)
 
 

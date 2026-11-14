@@ -59,20 +59,28 @@ def run_full(tau, ga, keep_transfer=False):
 
 
 # ---------- Figure: global bifurcation basin over tau x gA ----------
-taus = np.linspace(0.05, 0.40, 15)
-gas = np.linspace(0.01, 0.20, 20)
+taus = np.linspace(0.05, 0.40, 29)
+gas = np.linspace(0.005, 0.20, 40)
 Smooth = np.zeros((len(gas), len(taus)), dtype=bool)
-MinC = np.zeros_like(Smooth, dtype=float)
+MinC = np.zeros((len(gas), len(taus)), dtype=float)
+Mech = np.zeros((len(gas), len(taus)), dtype=int)
+# mechanism codes: 0 smooth, 1 path, 2 econ, 3 econ+path, 4 social+econ+path
+code = {"none": 0, "path": 1, "econ": 2, "econ+path": 3,
+        "social+econ+path": 4}
 for i, ga in enumerate(gas):
     for j, tau in enumerate(taus):
         r = run_full(tau, ga)
         Smooth[i, j] = (r["outcome"] == "smooth")
         MinC[i, j] = np.min(r["C"][1:])
+        Mech[i, j] = code.get(r["crash_type"], 4)
 
 xi, yi = np.meshgrid(taus, gas)
-fig, ax = plt.subplots(figsize=(6.4, 4.4))
-ax.pcolor(xi, yi, np.ma.array(np.ones_like(MinC), mask=Smooth),
-          cmap=ListedColormap([FILLGR]), shading="auto", zorder=0)
+fig, ax = plt.subplots(figsize=(6.6, 4.5))
+# crash basin colored by mechanism
+mech_colors = ["#000000", "#F0A868", "#B23A48", "#8E5A8C", "#404040"]
+ax.pcolor(xi, yi, np.ma.array(Mech, mask=Smooth),
+          cmap=ListedColormap(mech_colors), shading="auto", zorder=0)
+# smooth basin: minimum consumption contours
 cm = ax.contourf(taus, gas, np.ma.array(MinC, mask=~Smooth),
                  levels=14, cmap="cividis", zorder=1)
 cs = ax.contour(taus, gas, np.ma.array(MinC, mask=~Smooth),
@@ -81,28 +89,40 @@ ax.clabel(cs, inline=True, fontsize=6, fmt="%.2f")
 fig.colorbar(cm, ax=ax, label="minimum consumption (smooth basin)",
              shrink=0.9, pad=0.02)
 
-# critical boundary: for each tau, bisection on gA at the consumption floor.
-crit = []
-for tau in taus:
+def boundary(tau, no_path=False):
     lo, hi = 0.005, 0.25
-    for _ in range(12):
+    for _ in range(14):
         mid = (lo + hi) / 2
-        r = run_full(tau, mid)
+        p = U.Params(eta=0.40, mu_TM=0.50, phi_max=0.02,
+                     pe_policy="full_absorption", tau=tau, gA=mid)
+        if no_path:
+            p.early_labor_floor = 0.0
+        r = U.simulate_unified(p)
         if np.min(r["C"][1:]) >= 0.30 and r["outcome"] == "smooth":
             lo = mid
         else:
             hi = mid
-    crit.append((lo + hi) / 2)
-ax.plot(taus, crit, color="#8B1A1A", lw=1.6, zorder=5,
-        label="critical boundary (floor)")
-ax.text(0.06, 0.185, "grey = crash basin", fontsize=6.6, color=GREY, zorder=6)
-ax.text(0.22, 0.035, "smooth public-employment absorption",
-         fontsize=6.6, color="#0a4d68", zorder=6)
-ax.set_title("Global outcome bifurcation: crash vs smooth public-employment "
-             "absorption")
+    return (lo + hi) / 2
+
+# default boundary (all gates) and fiscal boundary (speed gate removed)
+crit = [boundary(tau) for tau in taus]
+fisc = [boundary(tau, no_path=True) for tau in taus]
+ax.plot(taus, crit, color="#8B1A1A", lw=1.7, zorder=5,
+        label="default boundary (all gates)")
+ax.plot(taus, fisc, color="#0072B2", lw=1.4, ls="--", zorder=5,
+        label="fiscal boundary (speed gate off)")
+# mechanism legend (manual patches)
+from matplotlib.patches import Patch
+patches = [Patch(facecolor="#F0A868", label="crash: adjustment speed (path)"),
+           Patch(facecolor="#B23A48", label="crash: consumption floor (econ)"),
+           Patch(facecolor="#8E5A8C", label="crash: econ + path"),
+           Patch(facecolor="#404040", label="crash: social + econ + path")]
+ax.legend(handles=patches, loc="upper left", fontsize=6.0)
+ax.text(0.235, 0.03, "smooth public-employment absorption",
+        fontsize=6.6, color="#0a4d68", zorder=6)
+ax.set_title("Global outcome bifurcation: two gates, two crash mechanisms")
 ax.set_xlabel(r"capital tax $\tau$")
 ax.set_ylabel(r"automation frontier growth $g_A$")
-ax.legend(loc="upper right")
 fig.tight_layout()
 save(fig, "fig_global_bifurcation")
 

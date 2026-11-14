@@ -29,13 +29,19 @@ def _norm_cdf(x):
 
 
 def _corner_path(link):
+    extra = {}
     if link == "probit":
         engine.sigmoid = _norm_cdf
+        # Re-calibrate the intercept so the baseline probit CDF equals omega0=0.05
+        # rather than reusing the logit intercept (which would give 0.0016).
+        from statistics import NormalDist
+        extra["link_intercept_override"] = NormalDist().inv_cdf(0.05)
     else:
         engine.sigmoid = lambda x: 1.0 / (1.0 + np.exp(-x))
     par = engine.Params(eta=0.40, mu_TM=0.50, T=80,
                         omega_mode="endogenous", omega=0.05,
-                        tau=0.15, pE=0.45, phi_max=0.02, retrain=0.0)
+                        tau=0.15, pE=0.45, phi_max=0.02, retrain=0.0,
+                        **extra)
     return engine.simulate_unified(par)
 
 
@@ -54,18 +60,22 @@ def main():
     for link, (out, peak, mc) in rows.items():
         print("%-9s %-9s %-16.4f %.4f" % (link, out, peak, mc))
 
+    # After proper probit re-calibration the intercept is reset to the normal
+    # quantile (so the baseline probability stays 0.05). The logistic corner
+    # completes absorption (smooth); the probit corner keeps the buffer but does
+    # not finish absorbing within T (not_reached), never a crash.
     expected = {
-        "logistic": (0.121, 0.3562),
-        "probit": (0.041, 0.3571),
+        "logistic": ("smooth", 0.121, 0.3562),
+        "probit": ("not_reached", 0.239, 0.3556),
     }
     ok = True
-    for link, (ep, em) in expected.items():
+    for link, (eout, ep, em) in expected.items():
         out, peak, mc = rows[link]
-        if out != "smooth":
+        if out != eout:
             ok = False
         if abs(peak - ep) > 0.0005 or abs(mc - em) > 0.0005:
             ok = False
-            print("MISMATCH for %s: got peak %.4f minC %.4f" % (link, peak, mc))
+            print("MISMATCH for %s: got %s peak %.4f minC %.4f" % (link, out, peak, mc))
     print("RESULT:", "PASS" if ok else "FAIL")
     return 0 if ok else 1
 
