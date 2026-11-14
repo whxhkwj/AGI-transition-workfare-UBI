@@ -16,6 +16,10 @@
 \usepackage{longtable}
 \usepackage{caption}
 \usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,breaklinks=true,bookmarksnumbered=true,pdfstartview=FitH]{hyperref}
+\definecolor{linknavy}{rgb}{0.10,0.22,0.48}
+\hypersetup{linkcolor=linknavy,citecolor=linknavy,urlcolor=linknavy,anchorcolor=linknavy}
 \graphicspath{{figures/}}
 
 \theoremstyle{plain}
@@ -381,6 +385,7 @@ where $C_t(\kappa_I)$ is the model consumption under the bounded net-borrowing r
 By Theorem~\ref{thm1}, the wage collapse time is finite and moves earlier as $\kappa_I$ rises; as it approaches zero, cumulative financing is limited to the insufficient initial tax base while the rationed net-borrowing term cannot add consumption, so for sufficiently large $\kappa_I$ every admissible policy crashes, making the defining set nonempty and $\bar\kappa_I$ well defined. The upward-closure property holds because a larger $\kappa_I$ accelerates displacement without changing the reinstatement engine, so a crash at one value implies a crash at every higher value; faster tax-base accumulation raises the ceiling and stronger tax inhibition lowers it.
 \end{proof}
 
+Table~\ref{tab:analytical-summary} collects the six analytical results established in this section together with the structural equation behind each.
 \begin{center}
 \small
 \captionof{table}{Summary of the analytical results (P1--P6), mapping each proposition to its result and the key structural equation. The table restates the in-text findings and introduces no additional claims.}\label{tab:analytical-summary}
@@ -546,6 +551,8 @@ Standardization $L^S=\barL=1$, $w=1$. The reinstatement rate is held at its exog
 
 \smallskip\noindent\textbf{What ``calibration'' means here.} Three entries are anchored to data: the consumption floor ratio $c_0$ to the U.S. absolute poverty line, the transfer MPC $\mu_{TM}$ to total-consumption MPC estimates for low-liquidity recipients, not the in-kind SNAP margin, and the workfare wage ratio $w^P/w$ to workfare programmes. One group sits in a literature range on an annual-frequency convention: the model period is one year, so a quarterly Calvo no-reset probability $\zeta_q=0.75$ maps to $\zeta_y=\zeta_q^4=0.316$, a mean annual duration of $1.46$ years, and the slopes $\gamma_p,\lambda_w$ are annual-rate reduced-form conventions. The remaining entries are model-set, among which $\kappa_I$ is a calibration target set so the $T=80$ horizon reaches $s_t\to0$, not an estimated displacement rate, so the completion within 80 periods restates the target, it does not test it. The social and accounting coefficients are conventions as well. Calibrated therefore means three data-anchored magnitudes plus a two-parameter literature range, with everything else declared as setting; the parameter vector has not been estimated. The anchoring is summarized in three explicit classes, each with a different evidentiary weight: (i) \emph{data-anchored levels}, $c_0$, $\mu_{TM}$ and $w^P/w$, tied to a named external source; (ii) \emph{literature-range conventions}, $\zeta_y$ and the two annual slopes, mapped from a documented quarterly convention; and (iii) \emph{model-set targets and conventions}, including $\kappa_I$, the social coefficients and the policy shares, chosen by the modeler, not estimated. The floor ratio $c_0$ uses the ASPE/HHS absolute poverty threshold normalized by the baseline full-time wage income $wL^S=1$, a level anchored to an official source, not the historical ``food times three'' rule, which is noted as its origin but not used in the normalization. Under the extended joint-uncertainty Monte Carlo, the high market-employment endpoint remains unreachable in every one of 500 draws that jointly vary the fiscal, technological and social parameters, with a Clopper-Pearson upper bound of $0.0074$, as reproduced by \path{analysis/check_joint_uncertainty_mc.py}.
 
+The complete parameter vector and the anchor attached to each entry are listed in Tables~\ref{tab:calibration-1} and~\ref{tab:calibration-2}.
+
 \renewcommand{\arraystretch}{1.15}
 \footnotesize
 \begin{longtable}{@{}
@@ -644,7 +651,7 @@ Throughout the calibration, reported path statistics on the unit scale (consumpt
 \end{figure}
 
 \subsection{Robustness of the analytical results under the calibrated parameters}
-Figure~\ref{fig:baseline} reports the baseline path under the corner configuration. Under the calibrated parameters ($\mu_{TM}=0.50$, $\eta=0.40$), transfers are costly relative to public-employment wages and the capital tax carries a Laffer supply-side cost. Running the full battery under the calibrated engine with the reinstatement rate held at its exogenous special case $\omega=0.05$, exactly as in the named check scripts, yields the following calibrated outcomes:
+Figure~\ref{fig:baseline} reports the baseline path under the corner configuration. Under the calibrated parameters ($\mu_{TM}=0.50$, $\eta=0.40$), transfers are costly relative to public-employment wages and the capital tax carries a Laffer supply-side cost. Running the full battery under the calibrated engine with the reinstatement rate held at its exogenous special case $\omega=0.05$, exactly as in the named check scripts, yields the calibrated outcomes reported in Table~\ref{tab:calibrated-outcomes}:
 
 \begin{table}[htbp]
 \centering
@@ -873,19 +880,19 @@ The simulation code, parameter files and scripts that generate every reported nu
 
 \bibitem{Acemoglu2021} D. Acemoglu, \emph{Harms of AI}, NBER Working Paper 29247, 2021 (Oxford Handbook of AI Governance), available at \url{https://www.nber.org/papers/w29247}.
 
-\bibitem{AR2018} D. Acemoglu and P. Restrepo, The Race between Man and Machine: Implications of Technology for Growth, Factor Shares, and Employment, \emph{American Economic Review} 108(6), 1488--1542, 2018, DOI: \texttt{10.1257/aer.20160696}.
+\bibitem{AR2018} D. Acemoglu and P. Restrepo, The Race between Man and Machine: Implications of Technology for Growth, Factor Shares, and Employment, \emph{American Economic Review} 108(6), 1488--1542, 2018, DOI: \href{https://doi.org/10.1257/aer.20160696}{\texttt{10.1257/aer.20160696}}.
 
-\bibitem{AR2020} D. Acemoglu and P. Restrepo, Robots and Jobs: Evidence from US Labor Markets, \emph{Journal of Political Economy} 128(6), 2188--2244, 2020, DOI: \texttt{10.1086/705716}.
+\bibitem{AR2020} D. Acemoglu and P. Restrepo, Robots and Jobs: Evidence from US Labor Markets, \emph{Journal of Political Economy} 128(6), 2188--2244, 2020, DOI: \href{https://doi.org/10.1086/705716}{\texttt{10.1086/705716}}.
 
-\bibitem{AR2020pandp} D. Acemoglu and P. Restrepo, Unpacking Skill Bias: Automation and New Tasks, \emph{AEA Papers and Proceedings} 110, 356--361, 2020, DOI: \texttt{10.1257/pandp.20201063}.
+\bibitem{AR2020pandp} D. Acemoglu and P. Restrepo, Unpacking Skill Bias: Automation and New Tasks, \emph{AEA Papers and Proceedings} 110, 356--361, 2020, DOI: \href{https://doi.org/10.1257/pandp.20201063}{\texttt{10.1257/pandp.20201063}}.
 
-\bibitem{Atolia2024} M. Atolia, M. Holland and J. Kreamer, Optimal Taxes and Basic Income during an Episode of Automation: A Worker's Perspective, \emph{Macroeconomic Dynamics} 29, e28, 1--27, 2024, DOI: \texttt{10.1017/S1365100524000361}.
+\bibitem{Atolia2024} M. Atolia, M. Holland and J. Kreamer, Optimal Taxes and Basic Income during an Episode of Automation: A Worker's Perspective, \emph{Macroeconomic Dynamics} 29, e28, 1--27, 2024, DOI: \href{https://doi.org/10.1017/S1365100524000361}{\texttt{10.1017/S1365100524000361}}.
 
-\bibitem{ADKPV2020} D. Autor, D. Dorn, L. F. Katz, C. Patterson and J. Van Reenen, The Fall of the Labor Share and the Rise of Superstar Firms, \emph{Quarterly Journal of Economics} 135(2), 645--709, 2020, DOI: \texttt{10.1093/qje/qjaa004}.
+\bibitem{ADKPV2020} D. Autor, D. Dorn, L. F. Katz, C. Patterson and J. Van Reenen, The Fall of the Labor Share and the Rise of Superstar Firms, \emph{Quarterly Journal of Economics} 135(2), 645--709, 2020, DOI: \href{https://doi.org/10.1093/qje/qjaa004}{\texttt{10.1093/qje/qjaa004}}.
 
-\bibitem{ALM2003} D. H. Autor, F. Levy and R. J. Murnane, The Skill Content of Recent Technological Change: An Empirical Exploration, \emph{Quarterly Journal of Economics} 118(4), 1279--1333, 2003, DOI: \texttt{10.1162/003355303322552801}.
+\bibitem{ALM2003} D. H. Autor, F. Levy and R. J. Murnane, The Skill Content of Recent Technological Change: An Empirical Exploration, \emph{Quarterly Journal of Economics} 118(4), 1279--1333, 2003, DOI: \href{https://doi.org/10.1162/003355303322552801}{\texttt{10.1162/003355303322552801}}.
 
-\bibitem{BK2004} M. Bils and P. J. Klenow, Some Evidence on the Importance of Sticky Prices, \emph{Journal of Political Economy} 112(5), 947--985, 2004, DOI: \texttt{10.1086/422559}.
+\bibitem{BK2004} M. Bils and P. J. Klenow, Some Evidence on the Importance of Sticky Prices, \emph{Journal of Political Economy} 112(5), 947--985, 2004, DOI: \href{https://doi.org/10.1086/422559}{\texttt{10.1086/422559}}.
 
 \bibitem{BondKremens2024} P. Bond and L. Kremens, Income and Inequality under Asymptotically Full Automation, Working paper, University of Washington, 2024 (revised 2026), available at \url{https://faculty.washington.edu/apbond/research/260324%20Automation.pdf}.
 
@@ -893,23 +900,23 @@ The simulation code, parameter files and scripts that generate every reported nu
 
 \bibitem{KR2021} E. Karger and A. Rajan, Heterogeneity in the Marginal Propensity to Consume: Evidence from Covid-19 Stimulus Payments, Federal Reserve Bank of Chicago Working Paper No. 2020-15, revised 2021, available at \url{https://www.chicagofed.org/publications/working-papers/2020/2020-15}.
 
-\bibitem{CO2021} D. H. Cooper and G. P. Olivei, \emph{High-Frequency Spending Responses to Government Transfer Payments}, Federal Reserve Bank of Boston Research Department Working Paper 21-10, 2021, DOI: \texttt{10.29412/res.wp.2021.10}.
+\bibitem{CO2021} D. H. Cooper and G. P. Olivei, \emph{High-Frequency Spending Responses to Government Transfer Payments}, Federal Reserve Bank of Boston Research Department Working Paper 21-10, 2021, DOI: \href{https://doi.org/10.29412/res.wp.2021.10}{\texttt{10.29412/res.wp.2021.10}}.
 
-\bibitem{diBernardo2008} M. di Bernardo, C. J. Budd, A. R. Champneys and P. Kowalczyk, \emph{Piecewise-smooth Dynamical Systems: Theory and Applications}, Applied Mathematical Sciences vol.~163, Springer-Verlag, London, 2008, DOI: \texttt{10.1007/978-1-84628-708-4}.
+\bibitem{diBernardo2008} M. di Bernardo, C. J. Budd, A. R. Champneys and P. Kowalczyk, \emph{Piecewise-smooth Dynamical Systems: Theory and Applications}, Applied Mathematical Sciences vol.~163, Springer-Verlag, London, 2008, DOI: \href{https://doi.org/10.1007/978-1-84628-708-4}{\texttt{10.1007/978-1-84628-708-4}}.
 
-\bibitem{DLL2014} M. Devereux, L. Liu and S. Loretz, The Elasticity of Corporate Taxable Income: New Evidence from UK Tax Records, \emph{American Economic Journal: Economic Policy} 6(2), 19--53, 2014, DOI: \texttt{10.1257/pol.6.2.19}.
+\bibitem{DLL2014} M. Devereux, L. Liu and S. Loretz, The Elasticity of Corporate Taxable Income: New Evidence from UK Tax Records, \emph{American Economic Journal: Economic Policy} 6(2), 19--53, 2014, DOI: \href{https://doi.org/10.1257/pol.6.2.19}{\texttt{10.1257/pol.6.2.19}}.
 
 \bibitem{FW2026} L. Fornaro and M. Wolf, Macroeconomic Policies for AI, Economics Working Paper No.~1943, Universitat Pompeu Fabra, April 2026, available at \url{https://econ-papers.upf.edu/papers/1943.pdf}.
 
-\bibitem{BHY2026} J. Brault, M. Haghighi and J. Yang, Monetary Policy in an AI-Driven Two-Speed Economy, Bank of Canada Staff Working Paper 2026-27, July 2026, DOI: \texttt{10.34989/swp-2026-27}, available at \url{https://www.bankofcanada.ca/2026/07/staff-working-paper-2026-27/}.
+\bibitem{BHY2026} J. Brault, M. Haghighi and J. Yang, Monetary Policy in an AI-Driven Two-Speed Economy, Bank of Canada Staff Working Paper 2026-27, July 2026, DOI: \href{https://doi.org/10.34989/swp-2026-27}{\texttt{10.34989/swp-2026-27}}, available at \url{https://www.bankofcanada.ca/2026/07/staff-working-paper-2026-27/}.
 
 \bibitem{Jacobs2023} A. Jacobs, Capitalist--Worker Wealth Distribution in a Task-Based Model of Automation, Working Paper 23/1064, Department of Economics, Ghent University, 2023, available at \url{http://wps-feb.ugent.be/Papers/wp_23_1064.pdf}.
 
 \bibitem{HLR2025} M. Hadzi-Vaskov, E. Luttini and L. A. Ricci, \emph{Micro-Evidence on the Consumption Impact of Income-Support Policies During COVID-19}, IMF Working Paper 2025/064, 2025, available at \url{https://www.imf.org/en/publications/wp/issues/2025/04/04/micro-evidence-on-the-consumption-impact-of-income-support-policies-during-covid-19-565741}.
 
-\bibitem{KN2014} L. Karabarbounis and B. Neiman, The Global Decline of the Labor Share, \emph{Quarterly Journal of Economics} 129(1), 61--103, 2014, DOI: \texttt{10.1093/qje/qjt032}.
+\bibitem{KN2014} L. Karabarbounis and B. Neiman, The Global Decline of the Labor Share, \emph{Quarterly Journal of Economics} 129(1), 61--103, 2014, DOI: \href{https://doi.org/10.1093/qje/qjt032}{\texttt{10.1093/qje/qjt032}}.
 
-\bibitem{KlevenZidar2026} H. Kleven and O. M. Zidar, \emph{Automation and Optimal Taxation: A Task-Based Theory}, NBER Working Paper 35747, September 2026, DOI: \texttt{10.3386/w35747}, available at \url{https://www.nber.org/papers/w35747}.
+\bibitem{KlevenZidar2026} H. Kleven and O. M. Zidar, \emph{Automation and Optimal Taxation: A Task-Based Theory}, NBER Working Paper 35747, September 2026, DOI: \href{https://doi.org/10.3386/w35747}{\texttt{10.3386/w35747}}, available at \url{https://www.nber.org/papers/w35747}.
 
 \bibitem{KS2021} A. Korinek and J. E. Stiglitz, \emph{Artificial Intelligence, Globalization, and Strategies for Economic Development}, NBER Working Paper 28453, 2021, available at \url{https://www.nber.org/papers/w28453}.
 
@@ -917,19 +924,19 @@ The simulation code, parameter files and scripts that generate every reported nu
 
 \bibitem{MitchellWatts2004} W. Mitchell and M. Watts, A Comparison of the Macroeconomic Consequences of Basic Income and Job Guarantee Schemes, CofFEE Working Paper 04-05, Centre of Full Employment and Equity, University of Newcastle, July 2004, available at \url{http://www.basicincome.org/bien/pdf/2004WattsMitchell.pdf}.
 
-\bibitem{NakamuraZeira2024} H. Nakamura and J. Zeira, Automation and Unemployment: Help Is on the Way, \emph{Journal of Economic Growth} 29, 215--250, 2024, DOI: \texttt{10.1007/s10887-023-09233-9}.
+\bibitem{NakamuraZeira2024} H. Nakamura and J. Zeira, Automation and Unemployment: Help Is on the Way, \emph{Journal of Economic Growth} 29, 215--250, 2024, DOI: \href{https://doi.org/10.1007/s10887-023-09233-9}{\texttt{10.1007/s10887-023-09233-9}}.
 
-\bibitem{NS2008} E. Nakamura and J. Steinsson, Five Facts about Prices: A Reevaluation of Menu Cost Models, \emph{Quarterly Journal of Economics} 123(4), 1415--1464, 2008, DOI: \texttt{10.1162/qjec.2008.123.4.1415}.
+\bibitem{NS2008} E. Nakamura and J. Steinsson, Five Facts about Prices: A Reevaluation of Menu Cost Models, \emph{Quarterly Journal of Economics} 123(4), 1415--1464, 2008, DOI: \href{https://doi.org/10.1162/qjec.2008.123.4.1415}{\texttt{10.1162/qjec.2008.123.4.1415}}.
 
 \bibitem{OECD2026} OECD, \emph{Corporate Tax Statistics 2026}, OECD Publishing, Paris, 2026, available at \url{https://www.oecd.org/en/publications/corporate-tax-statistics-2026\_73af6222-en.html}.
 
-\bibitem{Ravallion} A. Alik-Lagrange and M. Ravallion, Workfare versus Transfers in Rural India, \emph{World Development} 112, 244--258, 2018, DOI: \texttt{10.1016/j.worlddev.2018.08.008}.
+\bibitem{Ravallion} A. Alik-Lagrange and M. Ravallion, Workfare versus Transfers in Rural India, \emph{World Development} 112, 244--258, 2018, DOI: \href{https://doi.org/10.1016/j.worlddev.2018.08.008}{\texttt{10.1016/j.worlddev.2018.08.008}}.
 
-\bibitem{RayMookherjee2022} D. Ray and D. Mookherjee, Growth, Automation and the Long-Run Share of Labor, \emph{Review of Economic Dynamics} 46, 1--26, 2022, DOI: \texttt{10.1016/j.red.2021.09.003}.
+\bibitem{RayMookherjee2022} D. Ray and D. Mookherjee, Growth, Automation and the Long-Run Share of Labor, \emph{Review of Economic Dynamics} 46, 1--26, 2022, DOI: \href{https://doi.org/10.1016/j.red.2021.09.003}{\texttt{10.1016/j.red.2021.09.003}}.
 
 \bibitem{Restrepo2025} P. Restrepo, \emph{We Won't be Missed: Work and Growth in the AGI World}, NBER Working Paper 34423, 2025 (also in \emph{The Economics of Transformative AI}, University of Chicago Press), available at \url{https://www.nber.org/papers/w34423}.
 
-\bibitem{SW2007} F. Smets and R. Wouters, Shocks and Frictions in US Business Cycles: A Bayesian DSGE Approach, \emph{American Economic Review} 97(3), 586--606, 2007, DOI: \texttt{10.1257/aer.97.3.586}.
+\bibitem{SW2007} F. Smets and R. Wouters, Shocks and Frictions in US Business Cycles: A Bayesian DSGE Approach, \emph{American Economic Review} 97(3), 586--606, 2007, DOI: \href{https://doi.org/10.1257/aer.97.3.586}{\texttt{10.1257/aer.97.3.586}}.
 
 \bibitem{Stiefenhofer2025} P. Stiefenhofer, The Future of Work and Capital: Analyzing AGI in a CES Production Model, arXiv:2502.07044, 2025, available at \url{https://arxiv.org/abs/2502.07044}.
 
@@ -939,13 +946,13 @@ The simulation code, parameter files and scripts that generate every reported nu
 
 \bibitem{GH1983} J. Guckenheimer and P. Holmes, \emph{Nonlinear Oscillations, Dynamical Systems, and Bifurcations of Vector Fields}, Springer-Verlag, New York, 1983.
 
-\bibitem{Kuznetsov2023} Y. A. Kuznetsov, \emph{Elements of Applied Bifurcation Theory}, 4th edition, Applied Mathematical Sciences vol.~112, Springer, Cham, 2023, DOI: \texttt{10.1007/978-3-031-22007-4}.
+\bibitem{Kuznetsov2023} Y. A. Kuznetsov, \emph{Elements of Applied Bifurcation Theory}, 4th edition, Applied Mathematical Sciences vol.~112, Springer, Cham, 2023, DOI: \href{https://doi.org/10.1007/978-3-031-22007-4}{\texttt{10.1007/978-3-031-22007-4}}.
 
 \bibitem{Sotomayor1973} J. Sotomayor, Generic Bifurcations of Dynamical Systems, in M.~M. Peixoto (ed.), \emph{Dynamical Systems} (Proceedings of a Symposium held at the University of Bahia, 1971), Academic Press, New York, 1973, pp.~561--582.
 
-\bibitem{Fenichel1979} N. Fenichel, Geometric Singular Perturbation Theory for Ordinary Differential Equations, \emph{Journal of Differential Equations} 31(1), 53--98, 1979, DOI: \texttt{10.1016/0022-0396(79)90152-9}.
+\bibitem{Fenichel1979} N. Fenichel, Geometric Singular Perturbation Theory for Ordinary Differential Equations, \emph{Journal of Differential Equations} 31(1), 53--98, 1979, DOI: \href{https://doi.org/10.1016/0022-0396(79)90152-9}{\texttt{10.1016/0022-0396(79)90152-9}}.
 
-\bibitem{Gechert2015} S. Gechert, What Fiscal Policy Is Most Effective? A Meta-Regression Analysis, \emph{Oxford Economic Papers} 67(3), 553--580, 2015, DOI: \texttt{10.1093/oep/gpv027}.
+\bibitem{Gechert2015} S. Gechert, What Fiscal Policy Is Most Effective? A Meta-Regression Analysis, \emph{Oxford Economic Papers} 67(3), 553--580, 2015, DOI: \href{https://doi.org/10.1093/oep/gpv027}{\texttt{10.1093/oep/gpv027}}.
 
 \bibitem{LeeKoKim2023} H. Lee, C. Ko and W. Kim, Local Employment Multiplier: Evidence from Relocation of Public-Sector Entities in South Korea, CESifo Working Paper 10870, 2023.
 
@@ -961,7 +968,7 @@ The simulation code, parameter files and scripts that generate every reported nu
 
 \bibitem{Rein2023GPQA} D. Rein, B. Li Hou, A. Cooper Stickland, J. Petty, R. Y. Pang, J. Dirani, J. Michael and S. R. Bowman, GPQA: A Graduate-Level Google-Proof Q\&A Benchmark, arXiv:2311.12022, 2023, available at \url{https://arxiv.org/abs/2311.12022}.
 
-\bibitem{Lu2026AIScientist} C. Lu, C. Lu, R. T. Lange, Y. Yamada, S. Hu, J. Foerster, D. Ha and J. Clune, Towards End-to-End Automation of AI Research, \emph{Nature} 651, 914--919, 2026, DOI: \texttt{10.1038/s41586-026-10265-5}.
+\bibitem{Lu2026AIScientist} C. Lu, C. Lu, R. T. Lange, Y. Yamada, S. Hu, J. Foerster, D. Ha and J. Clune, Towards End-to-End Automation of AI Research, \emph{Nature} 651, 914--919, 2026, DOI: \href{https://doi.org/10.1038/s41586-026-10265-5}{\texttt{10.1038/s41586-026-10265-5}}.
 
 \end{thebibliography}
 
@@ -980,7 +987,7 @@ does any policy configuration hold the market share at a high level at the
 terminal date? A high market-employment endpoint is defined as a terminal
 market share at or above $0.50$. The full battery is reproduced by
 \path{analysis/check_high_employment_unreachable.py}, which exits with all
-checks passing.
+checks passing. Table~\ref{tab:appendix-full-substitution} reports the terminal labor share and public employment for each configuration together with the exogenous-reinstatement counterfactual.
 
 \begin{table}[htbp]
 \centering
