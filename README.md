@@ -19,7 +19,7 @@ against the values printed in the paper.
 ```
 simulation/   the unified engine (one physical law); v6/v12 are thin wrappers
 analysis/     one script per number in the paper; each prints the value it checks
-figures/      the six manuscript figures and the graphical abstract
+figures/      the eight manuscript figures and the graphical abstract
 paper/        LaTeX source, compiled PDF, cover letter, graphical abstract
 ```
 
@@ -152,15 +152,17 @@ returns `minC`, `total` and the decomposition.
 | Fold region diagnostics | `analysis/check_fold_region.py` | local fold locus |
 | Cross-checks between tables | `analysis/check_tables_cross.py` | internal consistency |
 | Graphical-abstract annotation | `analysis/check_ga_panel.py` | corner 0.357, no-policy 0.057 |
+| Full-absorption global bifurcation | `analysis/check_full_absorption.py` | critical g_A 0.095, saturation near 0.14, min C 0.407 |
 
 ### Figures
 
 ```bash
-python figures/republish_figures.py        # six figures -> paper/figures (about 2 min)
-python figures/make_graphical_abstract.py  # renders figures/graphical_abstract.html -> paper/, 3200 x 1600 px + single-page vector PDF
+python figures/republish_figures.py             # six fast-subsystem figures -> paper/figures (about 2 min)
+python figures/make_fig_global_bifurcation.py   # two global bifurcation figures -> paper/figures
+python figures/make_graphical_abstract.py       # renders figures/graphical_abstract.html -> paper/, 3200 x 1600 px + single-page vector PDF
 ```
 
-The six figures read the same engine and calibration as the manuscript and write
+The eight figures read the same engine and calibration as the manuscript and write
 into `paper/`, so `paper/manuscript.tex` picks them up directly through
 `\graphicspath{{figures/}}`. The graphical abstract is an infographic rendered
 from `figures/graphical_abstract.html` with headless Chromium via Playwright

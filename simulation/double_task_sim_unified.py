@@ -73,6 +73,13 @@ class Params(v4.Params):
         self.gamma_TM = 3.0         # 以工代赈 -> 再附着 log-odds
         self.gamma_R = 2.25         # 再培训 -> 再附着 log-odds
         self.beta_A = 1.0           # AGI 能力 -> 复职份额侵蚀敏感度
+        # ---- 动态全覆盖公共就业政策（默认关闭，保持固定 pE 口径）----
+        # "fixed"          : EP_plan = pE * u * L^S（现有口径，固定份额）
+        # "full_absorption": EP_plan = u * L^S（目标接住全部失业者，有效 pE -> 1），
+        #                    财政 within-period 约束照常，税收不足则压缩，刻画崩溃/接管分岔。
+        self.pe_policy = "fixed"
+        # 全覆盖模式下，财政压缩后是否对剩余失业者保留转移兜底（默认纯公共就业接管）。
+        self.full_keep_transfer = False
         for k, v in kw.items():
             setattr(self, k, v)
 
@@ -150,9 +157,15 @@ def simulate_unified(par):
 
         ud = u[max(0, t - par.d)]
         phi[t] = min(par.phi_max, par.phi_base + par.resp * max(0.0, ud))
-        EP_plan = min(par.pE * u[t] * par.LS, u[t] * par.LS)
-        Urem_plan = max(0.0, u[t] * par.LS - EP_plan)
-        TM_plan = phi[t] * par.w * Urem_plan
+        if par.pe_policy == "full_absorption":
+            # 政策目标：公共就业接住全部失业者（有效 pE -> 1），不留计划内救济。
+            EP_plan = u[t] * par.LS
+            Urem_plan = 0.0
+            TM_plan = phi[t] * par.w * Urem_plan
+        else:
+            EP_plan = min(par.pE * u[t] * par.LS, u[t] * par.LS)
+            Urem_plan = max(0.0, u[t] * par.LS - EP_plan)
+            TM_plan = phi[t] * par.w * Urem_plan
         Eplan[t] = par.wP * EP_plan + TM_plan
         if Eplan[t] <= tax[t - 1] + 1e-9:
             EP[t], TM[t] = EP_plan, TM_plan
@@ -166,6 +179,14 @@ def simulate_unified(par):
             cap_share[t] = shrink
         # 闭合人口核算：剩余失业按实际获融资的公共就业计，LD+EP+Urem=L^S。
         Urem[t] = max(0.0, u[t] * par.LS - EP[t])
+        # 全覆盖模式可选转移兜底：公共就业优先，剩余财政空间为未接住者融资转移。
+        if (par.pe_policy == "full_absorption" and par.full_keep_transfer
+                and Urem[t] > 1e-9):
+            fiscal_room = max(0.0, tax[t - 1] - par.wP * EP[t])
+            TM_need = phi[t] * par.w * Urem[t]
+            TM[t] = min(TM_need, fiscal_room)
+            Eplan[t] = par.wP * EP_plan + TM_need
+            shortfall[t] = max(0.0, Eplan[t] - tax[t - 1])
 
         # 显式人口加权技能：在岗者技能保留，仅失业者折旧，再培训抵消。
         dep = par.delta_skill * (1.0 - par.retrain * par.retain_retrain)
@@ -202,7 +223,11 @@ def simulate_unified(par):
 
     Cmin = par.q * par.w * par.LS
     ew = par.early_window
-    reached = sL[-1] < par.term_thresh
+    if par.pe_policy == "full_absorption":
+        # 成功判据：无遗留失业（市场 + 公共部门接住全部劳动力），而非市场就业消失。
+        reached = Urem[-1] < par.term_thresh
+    else:
+        reached = sL[-1] < par.term_thresh
     # 后期消费可行性（t>=early_window）。
     C_below = np.min(C[ew:]) < Cmin
     # 早期窗口消费可行性：排除 t=0 初始条件，检查 t=1..ew-1，防止早期瞬时崩溃被窗口忽略。
