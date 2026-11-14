@@ -646,9 +646,10 @@ Throughout the calibration, reported path statistics on the unit scale (consumpt
 \subsection{Robustness of the analytical results under the calibrated parameters}
 Figure~\ref{fig:baseline} reports the baseline path under the corner configuration. Under the calibrated parameters ($\mu_{TM}=0.50$, $\eta=0.40$), transfers are costly relative to public-employment wages and the capital tax carries a Laffer supply-side cost. Running the full battery under the calibrated engine with the reinstatement rate held at its exogenous special case $\omega=0.05$, exactly as in the named check scripts, yields the following calibrated outcomes:
 
-\begin{center}
+\begin{table}[htbp]
+\centering
 \small
-\captionof{table}{Calibrated outcomes across the diagnostic checks: policy delay, the isolation gain from retraining, workfare versus pure transfer, the minimum-loss grid point and the feasible smooth share.}\label{tab:calibrated-outcomes}
+\caption{Calibrated outcomes across the diagnostic checks: policy delay, the isolation gain from retraining, workfare versus pure transfer, the minimum-loss grid point and the feasible smooth share.}\label{tab:calibrated-outcomes}
 \begin{tabular}{@{}
 >{\raggedright\arraybackslash}p{1.55in}
 >{\raggedright\arraybackslash}p{2.15in}
@@ -666,13 +667,13 @@ No-policy / pure-transfer & crash / all crash & buffering and financing necessar
 \end{tabular}
 \\[2pt]
 \footnotesize The feasible share is the fraction of grid cells smooth under the operational criterion in Proposition~\ref{prop3a}: $41/64=64.1\%$ at $p_E=0.45$, $17/64=26.6\%$ at $p_E=0.30$, and $208/384=54.2\%$ overall. The workfare--transfer row is a same-fiscal comparison on identical $(\tau,\phi^{\max})$: across six $\omega$ values workfare survives all six (four reach the target and two are not-reached, so the count is not a claim that all six reach it) while the pure transfer crashes all six. The ranking rests on declared social-instability parameters; their anchoring and the region where even the workfare corner fails are documented in Online Appendix C.
-\end{center}
+\end{table}
 
 \noindent\emph{Engine convention for the corner minimum.} In this calibration the reinstatement rate is held fixed at its exogenous special case $\omega=0.05$, under which the corner ($\phi^{\max}=0.02$) gives minimum consumption $0.358$. The main model and the bifurcation analysis instead let $\omega$ evolve endogenously with policy, and the same corner then gives $0.357$. The $0.001$ difference reflects only whether $\omega$ is held fixed or allowed to move, and changes no ranking or conclusion. The lower value $0.354$ quoted for the corner is obtained by closing the transfer ceiling to $\phi^{\max}=0.001$, not by changing the reinstatement convention.
 
 \smallskip\noindent\textbf{The public-employment intensity is load-bearing.} The same six $\omega$ values survive at $p_E=0.45$ but all collapse at $p_E=0.30$, every path through the floor; the corner survives only above a share of about $0.37$, a feasibility bound rather than a tuning preference.
 
-\begin{table}[ht]
+\begin{table}[htbp]
 \centering\small
 \caption{Structural decomposition of the pure-transfer failure. All four runs use the identical fiscal setting $(\tau=0.16,p_E=0,\phi^{\max}=0.65)$ and vary only the two structural choices the workfare corner does not share: the transfer consumption MPC $\mu_{TM}$ and the social-instability coefficient $\alpha_s$. Reproduced by \protect\path{analysis/check_transfer_structure.py}.}\label{tab:transfer-structure}
 \begin{tabular}{@{}lccc@{}}
@@ -689,7 +690,7 @@ Both relaxed ($\mu_{TM}=1.00,\alpha_s=0$) & smooth & none & 0.418 \\
 
 \noindent The decomposition separates the two mechanisms as detailed in the table: an equal MPC leaves only the social channel, while disabling the social channel but retaining MPC leakage still leaves an economic crash, and the regime is smooth only when both are relaxed. The workfare advantage therefore rests on the unit workfare MPC together with the relief-to-jobs conversion rather than a generic financing failure, with the time paths in Figure~\ref{fig:policy-compare}.
 
-\begin{table}[ht]
+\begin{table}[htbp]
 \centering\small
 \caption{Symmetric-limit welfare comparison on the same fiscal setting $(\tau=0.16,\phi^{\max}=0.65)$, with the transfer MPC set to one and the social channel disabled $(\mu_{TM}=1,\alpha_s=0)$. The two columns differ only in the public-employment share $p_E$. Total loss is the engine welfare loss and fiscal spend is the transfer plus workfare wage bill. Reproduced by \protect\path{analysis/check_symmetric_welfare.py}.}\label{tab:symmetric-welfare}
 \begin{tabular}{@{}lcccc@{}}
@@ -734,7 +735,7 @@ Pure transfer ($p_E=0$) & smooth & 51.28 & 32.01 & 0.418 \\
 
 \smallskip\noindent\textbf{Stochastic robustness.} We shock the frontier growth, the parameter on which the smooth conclusion most depends, setting $g_{A,t}=0.010+\varepsilon_t$ with an AR(1) deviation ($\rho=0.5$, Gaussian innovations of standard deviation $\sigma_\varepsilon$, distinct from the skill index $\sigma_t$); each configuration is run $200$ times and a path is recorded as a crash when it triggers a crash test before the horizon. Table~\ref{tab:shock} reports the results.
 
-\begin{table}[ht]
+\begin{table}[htbp]
 \centering\small
 \caption{Monte Carlo crash counts under frontier-growth shocks ($200$ replications; AR(1), $\rho=0.5$). Buffer is $\min_tC_t-0.300$; the last column reports the fifth percentile of $\min_tC_t$ at $\sigma_\varepsilon=0.03$.}\label{tab:shock}
 \begin{tabular}{@{}lccccc@{}}
@@ -762,7 +763,7 @@ The deterministic v6 global-best point $(0.10,0.40,0.001)$ is not a third crash-
 
 \smallskip\noindent\textbf{Social-threshold sensitivity sweep.} A dedicated sweep varies one social-channel parameter at a time ($\varsigma^{th}$, $\alpha_s$, $J$) under the calibrated parameters and compares the corner, the standard setting and the pure transfer; Table~\ref{tab:socbase} reports baseline outcomes and Table~\ref{tab:socbound} the boundaries.
 
-\begin{table}[ht]
+\begin{table}[htbp]
 \centering\small
 \caption{Baseline social-channel outcomes ($\varsigma^{th}=0.50,\alpha_s=0.60,J=10$, $g_A=0.010$). Reported path statistics are rounded to three decimals.}\label{tab:socbase}
 \begin{tabular}{@{}lccccc@{}}
@@ -776,7 +777,7 @@ Pure transfer $(0.16,0,0.65)$ & crash & both & 0.259 & 0.600 & yes \\
 \end{tabular}
 \end{table}
 
-\begin{table}[ht]
+\begin{table}[htbp]
 \centering\small
 \caption{Social-crash boundaries under one-at-a-time sweeps.}\label{tab:socbound}
 \begin{tabular}{@{}lccc@{}}
@@ -869,7 +870,6 @@ During the preparation of this work the author used a generative AI assistant in
 The simulation code, parameter files and scripts that generate every reported number are publicly available at \url{https://github.com/whxhkwj/AGI-transition-workfare-UBI}.
 % ============================================================================
 \begin{thebibliography}{99}
-\enlargethispage{5\baselineskip}
 
 \bibitem{Acemoglu2021} D. Acemoglu, \emph{Harms of AI}, NBER Working Paper 29247, 2021 (Oxford Handbook of AI Governance), available at \url{https://www.nber.org/papers/w29247}.
 
@@ -967,7 +967,7 @@ The simulation code, parameter files and scripts that generate every reported nu
 
 % ============================================================================
 \appendix
-\gdef\thetable{\arabic{table}}
+\setcounter{table}{0}
 \section{The high market-employment counterfactual}
 \label{app:high-employment}
 % ============================================================================
@@ -982,7 +982,7 @@ market share at or above $0.50$. The full battery is reproduced by
 \path{analysis/check_high_employment_unreachable.py}, which exits with all
 checks passing.
 
-\begin{table}[ht]
+\begin{table}[htbp]
 \centering
 \small
 \caption{Full-substitution outcomes and the exogenous-reinstatement counterfactual (Appendix A), giving terminal labor share and public employment for each configuration.}\label{tab:appendix-full-substitution}
