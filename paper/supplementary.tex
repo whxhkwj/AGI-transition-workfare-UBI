@@ -1,0 +1,279 @@
+% ============================================================================
+% Online Appendix (Supplementary Material): a self-contained PDF submitted
+% separately from the main manuscript. It collects the external empirical
+% anchoring of the social-instability parameters (Section C) and the extended
+% robustness runs (Section D). Every number is produced by the simulation and
+% analysis scripts in the repository.
+% ============================================================================
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,array}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xurl}
+\usepackage{microtype}
+\graphicspath{{figures/}}
+
+\theoremstyle{plain}
+\newtheorem{proposition}{Proposition}
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries Online Appendix}\\[4pt]
+Anatomy of a Smooth Transition: A Task-Based Macroeconomic Model of AGI
+Displacement with Fiscal and Social Safety Nets\\[2pt]
+DUAN Fang, Huaqiao University
+\end{center}
+
+\tableofcontents
+\bigskip
+
+% ============================================================================
+\section{External empirical anchoring of the social-instability parameters}
+% ============================================================================
+The social-instability channel contains three reduced-form parameters: the
+social-crash cutoff $\varsigma^{th}$ (baseline $0.50$), the stress coefficient
+$\alpha_s$ (baseline $0.60$), and the sustained-exceedance window $J$
+(baseline $10$ periods, one model period being one year). We search the
+empirical literature for mappable evidence for each, distinguish direct
+anchors from indirect directional evidence, and state the mapping assumptions
+explicitly. Table~\ref{tab:anchor-status} summarizes the anchoring status.
+
+\begin{table}[h]
+\centering\small
+\caption{External empirical anchoring status of the three social-instability parameters.}
+\label{tab:anchor-status}
+\begin{tabular}{@{}
+>{\raggedright\arraybackslash}p{0.8in}
+>{\raggedright\arraybackslash}p{0.7in}
+>{\raggedright\arraybackslash}p{1.7in}
+>{\raggedright\arraybackslash}p{2.6in}@{}}
+\toprule
+Parameter & Baseline & Anchoring status & Nature of evidence \\
+\midrule
+$\varsigma^{th}$ & 0.50 & no direct external anchor & directional/continuous probability only; no normalized cutoff \\
+$\alpha_s$ & 0.60 & partially anchored & illustrative reverse-engineered range $\approx1.0$--$6.6$; baseline 0.60 is below this range, a conservative setting \\
+$J$ & 10 & partially anchored & mean/upper-tail scale (crisis 8--10 yrs; civil-war mean 11.1 yrs) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{C.1 The cutoff $\varsigma^{th}=0.50$: no direct external anchor.}
+No study provides a population-dependency threshold that maps onto a $0.50$
+cutoff of the $[0,1]$ normalized stress variable. The authoritative literature
+consistently reports continuous probability or dose--response relationships
+rather than structural thresholds replicable across samples. Using rainfall as
+an instrument across 41 African countries over 1981--1999, Miguel, Satyanath
+and Sergenti~\cite{MSS2004} identify that a five-percentage-point drop in real
+GDP growth raises the probability of conflict in the following year (at least
+25 battle deaths) by about 12 percentage points, a relative increase of
+roughly 50\%. Ponticelli and Voth~\cite{PV2020}, across 25 European countries
+over 1919--2008, find that a one-standard-deviation spending cut (about 2.8
+percentage points of GDP) adds roughly 0.4 unrest events per year, with the
+event count nearly doubling as cuts widen from 1\% to 10\% of GDP; only a
+descriptive soft cutoff around a 2\%-of-GDP cut appears, not an identified
+structural threshold. Using natural disasters as instruments,
+Bellemare~\cite{Bellemare2015} identifies that a one-unit rise in the global
+food price index adds about 0.99 food-related unrest reports per month, while
+price volatility has no significant effect. Earlier work by Collier and
+Hoeffler~\cite{CH2004}, Fearon and Laitin~\cite{FL2003}, and Alesina and
+Perotti~\cite{AP1996} likewise reports continuous marginal effects. The only
+explicit numerical cutoff, due to Lagi, Bertrand and Bar-Yam (2011,
+arXiv:1108.2455, not peer reviewed), clusters protests when the FAO food price
+index exceeds 210; but that cutoff is a price-index level rather than a
+population dependency ratio, and mapping it onto $\varsigma^{th}=0.50$ would
+require an over-long chain of normalization assumptions, so we do not adopt it
+as a direct anchor.
+
+\paragraph{C.2 The stress coefficient $\alpha_s=0.60$: partially anchored, with an identifiable range.}
+The sign with which unemployment or relief dependence raises property crime
+and social unrest is robust across U.S., European and cross-country panels,
+ruling out $\alpha_s\leq0$. The literature reports crime semi-elasticities to
+unemployment of roughly $+1.3\%$ to $+4\%$ per percentage point of
+unemployment, concentrated in property crime with weak effects on violent
+crime. Raphael and Winter-Ebmer~\cite{RWE2001} find that a one-percentage-point
+fall in unemployment lowers property crime by about 1.6\%--2.4\%;
+Lin~\cite{Lin2008} identifies a 1.8\% OLS and 4.0\% 2SLS rise in property
+crime per extra percentage point of unemployment; Gould, Weinberg and
+Mustard~\cite{GWM2002} find that the 23.3\% decline in low-skill male wages
+over 1979--1993 accounts for 43\% of the rise in property crime; Buonanno,
+Drago and Galbiati~\cite{BDG2014}, across about 20 developed countries over
+1979--2010, identify a roughly 1.3\% rise in total crime and 1.7\% rise in
+homicides per extra percentage point of unemployment; and Foug\`ere, Kramarz
+and Pouget~\cite{FKP2009} identify a significant positive effect of youth
+unemployment on property crime in France; see also the surveys by
+Freeman~\cite{Freeman1999} and Draca and Machin~\cite{DM2015}. Mapping these
+semi-elasticities $\beta_{crime}\approx\partial\log C/\partial u$ onto
+$\alpha_s=\partial\,\text{stress}/\partial r$ requires three layers of
+assumptions, and we keep every quantity in consistent units: (A) the normalized
+range linking the stress index to disorder indicators, setting
+$\text{stress}=1$ to correspond to a 3--10-fold amplification of crime over
+baseline (mapping slopes $f'$ of about 0.43--0.91); (B) the conversion factor
+$k=r/u$ between the relief share $r$ and unemployment $u$; and (C) a local
+linearization treating the semi-elasticity as approximately constant over the
+working range. On (B), rather than import an external value, we use the model's
+own accounting: relief recipients are the unemployed not absorbed by public
+employment, $r=(1-p_E)u$, so at the baseline $p_E=0.45$ the conversion is
+$k=1-p_E=0.55$ (verified directly from the simulated paths). On units, when
+$u$ is measured on the $[0,1]$ scale the semi-elasticity entering the chain is
+$\beta_{crime}=1.3$--$4$ (the per-percentage-point $1.3\%$--$4\%$ figures
+restated per unit of the fraction $u$). Substituting into
+$\alpha_s\approx f'\beta_{crime}(1/k)$ with $k=0.55$ gives an illustrative
+reverse-engineered interval of roughly $1.0$--$6.6$ (the lower value
+$0.43\times1.3/0.55\approx1.02$, the upper $0.91\times4/0.55\approx6.62$).
+We read this as a wide, normalization-dependent illustration rather than an
+empirical estimate: the interval spans more than a factor of six and moves
+almost one-for-one with the assumed stress-to-disorder mapping. The baseline
+$0.60$ lies below even the lower end of this interval, so the calibration
+deliberately errs on the conservative side, assigning a smaller stress
+response than the reverse engineering would tolerate; it is a scenario setting
+rather than a value the interval identifies.
+
+\paragraph{C.3 The sustained-exceedance window $J=10$: partially anchored at mean/upper-tail scale.}
+No study directly estimates the window of consecutive stress exceedance that
+triggers a crash. Annual-scale evidence brackets ten years along two
+independent lines. First, after systemic banking crises, per-capita GDP returns
+to its pre-crisis peak in about eight years on average (median 6.5 years), with
+45\% of episodes experiencing a second dip~\cite{RR2014}; Cerra and
+Saxena~\cite{CS2008} find highly persistent, near-permanent output losses
+after banking crises, with later estimates placing the average post-crisis GDP
+loss at about ten years. Second, civil wars last 11.1 years on average (median
+7.1 years)~\cite{Fearon2004}, and the hazard estimates of Collier, Hoeffler
+and S\"oderbom~\cite{CHS2004} average just over seven years, with wars begun
+in the 1980s lasting 105 months (about 8.75 years). On the other side, protest
+waves and crime shocks persist only months to 2--5 years, markedly shorter
+than ten years. $J=10$ is therefore a defensible mean/upper-tail anchor
+aligned with chronic post-crisis slumps and average civil wars, but it lies
+above the median durations and should be read as such rather than as a median
+anchor.
+
+\paragraph{C.4 Parameter decision and empirical-range robustness.}
+Because none of the three parameters has a precise, directly identified
+empirical replacement, we keep the baseline values but state their standing
+accurately: assigning a value to $\varsigma^{th}$ would lack mappable threshold
+evidence; $\alpha_s=0.60$ is a conservative setting that sits below the
+$\approx1.0$--$6.6$ reverse-engineered interval rather than inside it; and
+$J=10$ is a supported mean/upper-tail value. An empirical-range sweep extends
+the $\alpha_s$ scan across the full $0.30$--$6.62$ interval alongside a
+directional $\varsigma^{th}$ scan. The analytic boundaries are
+$\alpha_s^{crit}=0.50/((1-0.45)u^{max})=0.909$ (with $u^{max}=1$) and
+$\varsigma^{th}_{crit}=0.33$, and the numerical sweep locates the first social
+crash at $\alpha_s=0.91$ (smooth at $0.90$) and between
+$\varsigma^{th}=0.30$ and $0.33$ (smooth at $0.33$); $\min C$ stays $0.357$
+throughout because the social channel does not feed back into the economic
+paths. Two results bound the channel. First, the ranking is robust across the
+entire interval: the pure transfer crashes at every $\alpha_s$, whereas the
+corner stays smooth through $\alpha_s=0.90$. Second, the corner's own
+smoothness is not unconditional: under the upper portion of the
+reverse-engineered interval ($\alpha_s\geq0.91$), the corner also triggers the
+social channel. The sweep therefore reports both the conservative margin at
+the baseline and the parameter region in which even the workfare corner would
+fail, rather than presenting the reduced-form channel as settled.
+
+% ============================================================================
+\section{Extended robustness runs}
+% ============================================================================
+This section collects the three extensions summarized in the body: the
+functional-form comparison of the share law, the capability-sensitivity sweep,
+and the counterfactual that removes the logistic erosion term. All runs are
+reproduced by the named analysis scripts.
+
+\paragraph{D.1 Functional form of the share law.}
+Equation for the endogenous rate is a modelling choice, so we re-solve the
+corner with the probit share, $\omega_t=\Phi(\ell_0+\Gamma_t-\beta_A g_t)$
+where $\Phi$ is the standard normal cumulative distribution, which shares the
+logistic form's endpoints, monotonicity and smoothness but a different tail
+shape. Both forms keep the corner smooth and without a real crossing. Measured
+over the policy-driven horizon $t\geq1$, the effective capture peaks at
+$0.121$ under the logistic and $0.041$ under the probit. The buffer conclusion
+is nevertheless unchanged, with $\min_t C_t$ moving only from $0.3562$ to
+$0.3571$, a gap below $0.001$. The binding constraint remains skill
+depreciation rather than the choice of link function, so the functional form
+is not the margin that decides the outcome. This is reproduced by
+\texttt{analysis/check\_link\_function.py}.
+
+\paragraph{D.2 Capability-sensitivity sweep.}
+On the $T=200$ horizon, varying $\beta_A\in\{0,1,3\}$ separates a
+mid-horizon crossing from a durable reinstatement; the critical value is
+$0.5667$. At $\beta_A=0$, with no capability erosion, the strong floor crosses
+at $t=29$ and the effective capture peaks at $0.731$ and stays above the
+threshold, so the crossing is durable in the sense that it is not reversed;
+the market employment share ends the horizon at a positive $0.344$ without
+sliding back, although it still declines at a small negative rate rather than
+settling. At $\beta_A=1$ the strong floor crosses at $t=35$, with a peak of
+$0.640$ above the critical value, but continued erosion pulls the effective
+capture back below the threshold later, so the employment share keeps declining
+to $0.172$: a mid-horizon crossing that defends consumption and employment
+over the short run without a durable reinstatement. At $\beta_A=3$ the peak
+falls to $0.486$, below the critical value, there is no crossing and the
+employment share reaches zero. The corner remains smooth throughout and its
+minimum consumption stays in $0.356$--$0.357$, while the strong floor's
+minimum consumption stays in $0.433$--$0.456$ at every reported $\beta_A$, so
+the fiscal buffer defends consumption at every setting even though a durable
+restoration of the labor engine occurs only in the no-erosion limit. The
+baseline $\beta_A=1$ is the conservative middle setting, not an estimated
+value.
+
+\paragraph{D.3 Counterfactual: the collapse is not built into the logistic term.}
+The law contains a monotone term $-\beta_A g_t$ with $g_t=\log(\mathrm{cap}_t
+/A_0)$ accumulating over the horizon, so a reader could ask whether the
+labor-share collapse is imposed by the functional form rather than generated
+by the model. The direct counterfactual sets $\beta_A=0$, which removes the
+erosion channel and leaves only the policy stock and the task accounting, and
+re-runs the same engine with every other parameter fixed. The no-policy path
+still crashes, with $\min C=0.0575$ and the employment share absorbed to
+zero, and the financed corner still stays smooth with $\min C=0.356$. The
+collapse therefore follows from the task-accounting condition
+$\omega\sigma\,dN<\kappa_I A$ of Theorem~1 in the main manuscript, which holds
+even when the reinstatement rate is not being eroded, rather than from the
+monotone logistic term. The $\beta_A$ coefficient instead governs the
+durability of a strong-policy reinstatement, the terminal share $0.344$ versus
+$0.172$ reported above, not whether the no-policy path crashes. This
+counterfactual is reproduced by
+\texttt{analysis/check\_capability\_counterfactual.py}.
+
+% ============================================================================
+\begin{thebibliography}{99}
+% ============================================================================
+
+\bibitem{MSS2004} E. Miguel, S. Satyanath and E. Sergenti, Economic Shocks and Civil Conflict: An Instrumental Variables Approach, \emph{Journal of Political Economy} 112(4), 725--753, 2004, DOI: \texttt{10.1086/421174}.
+
+\bibitem{PV2020} J. Ponticelli and H.-J. Voth, Austerity and Anarchy: Budget Cuts and Social Unrest in Europe, 1919--2008, \emph{Journal of Comparative Economics} 48(1), 1--19, 2020, DOI: \texttt{10.1016/j.jce.2019.09.007}.
+
+\bibitem{Bellemare2015} M. F. Bellemare, Rising Food Prices, Food Price Volatility, and Social Unrest, \emph{American Journal of Agricultural Economics} 97(1), 1--21, 2015, DOI: \texttt{10.1093/ajae/aau038}.
+
+\bibitem{RWE2001} S. Raphael and R. Winter-Ebmer, Identifying the Effect of Unemployment on Crime, \emph{Journal of Law and Economics} 44(1), 259--283, 2001, DOI: \texttt{10.1086/320275}.
+
+\bibitem{Lin2008} M.-J. Lin, Does Unemployment Increase Crime? Evidence from U.S. Data 1974--2000, \emph{Journal of Human Resources} 43(2), 413--436, 2008, DOI: \texttt{10.3368/jhr.43.2.413}.
+
+\bibitem{GWM2002} E. D. Gould, B. A. Weinberg and D. B. Mustard, Crime Rates and Local Labor Market Opportunities in the United States: 1979--1997, \emph{Review of Economics and Statistics} 84(1), 45--61, 2002, DOI: \texttt{10.1162/003465302317331919}.
+
+\bibitem{BDG2014} P. Buonanno, F. Drago and R. Galbiati, Response of Crime to Unemployment, \emph{Journal of Contemporary Criminal Justice} 30(1), 29--40, 2014, DOI: \texttt{10.1177/1043986213509023}.
+
+\bibitem{FKP2009} D. Foug\`ere, F. Kramarz and J. Pouget, Youth Unemployment and Crime in France, \emph{Journal of the European Economic Association} 7(5), 909--938, 2009, DOI: \texttt{10.1162/JEEA.2009.7.5.909}.
+
+\bibitem{RR2014} C. M. Reinhart and K. S. Rogoff, Recovery from Financial Crises: Evidence from 100 Episodes, \emph{American Economic Review Papers and Proceedings} 104(5), 50--55, 2014 (NBER Working Paper 19823), DOI: \texttt{10.3386/w19823}.
+
+\bibitem{CS2008} V. Cerra and S. C. Saxena, Growth Dynamics: The Myth of Economic Recovery, \emph{American Economic Review} 98(1), 439--457, 2008, DOI: \texttt{10.1257/aer.98.1.439}.
+
+\bibitem{Fearon2004} J. D. Fearon, Why Do Some Civil Wars Last So Much Longer Than Others?, \emph{Journal of Peace Research} 41(3), 275--301, 2004, DOI: \texttt{10.1177/0022343304043770}.
+
+\bibitem{CHS2004} P. Collier, A. Hoeffler and M. S\"oderbom, On the Duration of Civil War, \emph{Journal of Peace Research} 41(3), 253--273, 2004, DOI: \texttt{10.1177/0022343304043769}.
+
+\bibitem{CH2004} P. Collier and A. Hoeffler, Greed and Grievance in Civil War, \emph{Oxford Economic Papers} 56(4), 563--595, 2004, DOI: \texttt{10.1093/oep/gpf064}.
+
+\bibitem{FL2003} J. D. Fearon and D. D. Laitin, Ethnicity, Insurgency, and Civil War, \emph{American Political Science Review} 97(1), 75--90, 2003, DOI: \texttt{10.1017/S0003055403000534}.
+
+\bibitem{AP1996} A. Alesina and R. Perotti, Income Distribution, Political Instability, and Investment, \emph{European Economic Review} 40(6), 1203--1228, 1996, DOI: \texttt{10.1016/0014-2921(95)00030-5}.
+
+\bibitem{Freeman1999} R. B. Freeman, The Economics of Crime, in O. Ashenfelter and D. Card (eds.), \emph{Handbook of Labor Economics}, vol.~3, ch.~52, Elsevier, Amsterdam, 3529--3571, 1999.
+
+\bibitem{DM2015} M. Draca and S. Machin, Crime and Economic Incentives, \emph{Annual Review of Economics} 7, 389--408, 2015, DOI: \texttt{10.1146/annurev-economics-080614-115808}.
+
+\end{thebibliography}
+
+\end{document}

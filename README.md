@@ -20,7 +20,8 @@ against the values printed in the paper.
 simulation/   the unified engine (one physical law); v6/v12 are thin wrappers
 analysis/     one script per number in the paper; each prints the value it checks
 figures/      the eight manuscript figures and the graphical abstract
-paper/        LaTeX source, compiled PDF, cover letter, graphical abstract
+paper/        LaTeX source, compiled PDF, cover letter, graphical abstract,
+              and the standalone online appendix (supplementary.tex/.pdf)
 ```
 
 Nothing in the repository depends on an absolute path: every script resolves
@@ -43,7 +44,8 @@ pdflatex manuscript.tex
 pdflatex manuscript.tex      # second pass for cross-references
 ```
 
-The result is the submitted PDF: 59 pages, no errors, no undefined references.
+The result is the submitted PDF: 52 pages, no errors, no undefined references.
+A separate online appendix (`supplementary.tex`, 6 pages) is built the same way.
 This was verified from a clean copy of the repository on TeX Live 2022.
 
 ## Quick check
@@ -153,6 +155,7 @@ returns `minC`, `total` and the decomposition.
 | Cross-checks between tables | `analysis/check_tables_cross.py` | internal consistency |
 | Graphical-abstract annotation | `analysis/check_ga_panel.py` | corner 0.357, no-policy 0.057 |
 | Full-absorption global bifurcation | `analysis/check_full_absorption.py` | critical g_A 0.095, saturation near 0.14, min C 0.407 |
+| High-employment endpoint unreachable | `analysis/check_high_employment_unreachable.py` | full-substitution cap 0.427; high employment needs high omega |
 
 ### Figures
 

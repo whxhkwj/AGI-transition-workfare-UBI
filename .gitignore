@@ -13,6 +13,7 @@ paper/*.bbl
 paper/*.blg
 paper/*.synctex.gz
 paper/*.spl
+paper/*.toc
 
 # editor / OS
 .vscode/
