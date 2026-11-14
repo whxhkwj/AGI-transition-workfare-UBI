@@ -202,7 +202,7 @@ L_t^D+E_t^{P,act}+U_t^{rem}=\barL.
 \end{equation}
 The remainder is therefore recomputed against the financed headcount rather than the planned one: an unfunded position does not absorb a worker, and the social pressure and skill depreciation equations below use this actual $U_t^{rem}$, so promised-but-unpaid jobs provide no protection. The population partition closes to machine precision in every period (verified by \texttt{analysis/verify\_population\_accounting.py}).
 
-\smallskip\noindent\textbf{Financed-headcount residual on the corner path.} The remainder is measured against the financed headcount rather than the planned one, so at $t=5$ the actual remainder $0.1855$ exceeds the planned $0.1369$ that would ignore budget scaling, with both values from the same engine run and the partition closing to machine precision.
+\smallskip\noindent\textbf{Financed-headcount residual on the corner path.} The remainder is measured against the financed headcount rather than the planned one, so at $t=5$ the actual remainder $0.186$ exceeds the planned $0.137$ that would ignore budget scaling, with both values from the same engine run and the partition closing to machine precision.
 
 Appropriations in period $t$ are funded by taxes collected in $t-1$, the government budgeting against last period's revenue with no fiscal reserve, so surpluses are not carried forward and deficits are not rolled into debt; the fiscal account is separate from the household debt. When revenue is insufficient, spending is scaled proportionally rather than borrowed, and a financing-constraint collapse occurs when the scaled spending cannot fund the floor.
 
@@ -620,6 +620,7 @@ The four terms are in consumption units: the consumption gap, transfer outlays c
 Feasibility is a separate criterion and is not part of $\mathcal{L}$: a path is admissible if $C_t\ge C_{\min}=c_0\,w\barL$ for every $t\ge10$, the first ten periods being excluded to remove the initial-condition transient, and the statistic $\min_tC_t$ quoted throughout the calibration (including the robustness and social-anchoring subsections) and in Figure~\ref{fig:baseline} refers to that window.
 Proposition~\ref{prop3b} is the one-dimensional projection of \eqref{eq:loss}: with $p_E$ and $\phi^{\max}$ held fixed, the transfer and workfare charges collapse into its single $cost(\tau)$ term and the deadweight enters with the same quadratic form, so $W(\tau)$ and $\mathcal{L}$ rank policies identically along the $\tau$ axis.
 The four weights are conventions rather than estimates, so $\mathcal{L}$ is a scenario loss index under stated weights rather than a normative welfare measure, with no household utility specified; the normative statements are confined to feasibility and financing, and the loss numbers are comparative scenario statistics.
+Throughout the calibration, reported path statistics on the unit scale (consumption, stress, headcount and share values) are rounded to three decimals, while aggregate loss and fiscal totals are rounded to two; the sharp bisection thresholds that locate a boundary are kept to four decimals. Declared parameters and policy levers retain their setting precision and are not rounded outputs.
 
 \paragraph{External ranges for the two policy instruments} Two empirical ranges check the settings without becoming inputs. For workfare, Lee, Ko and Kim~\cite{LeeKoKim2023} estimate that one public-sector position raises private employment by one, and Gechert~\cite{Gechert2015} reports public-spending multipliers near one that exceed those of transfers; the model omits the private-employment multiplier, so adding it would raise the workfare ranking. For the pure transfer, Vivalt et al.~\cite{Vivalt2024} find a small labor-supply reduction from a guaranteed income; the model has no hours margin and holds labor supply fixed, which flatters the transfer by leaving the tax base unshrunk. Both gaps therefore run in the direction that makes the ranking harder to establish, and neither range enters an equation; this is the sense in which the policy claims are model-implied rather than universal.
 
@@ -631,7 +632,7 @@ The four weights are conventions rather than estimates, so $\mathcal{L}$ is a sc
 \end{figure}
 
 \subsection{Robustness of the analytical results under the calibrated parameters}
-Figure~\ref{fig:baseline} reports the baseline path under the corner configuration. Under the calibrated parameters ($\mu_{TM}=0.50$, $\eta=0.40$), transfers are costly relative to public-employment wages (one yuan of transfers yields $0.50$ of consumption, whereas a public-employment wage yields $1$), and the capital tax carries a Laffer supply-side cost. Running the full battery under the calibrated engine with the reinstatement rate held at its exogenous special case $\omega=0.05$, exactly as in the named check scripts, yields the following calibrated outcomes:
+Figure~\ref{fig:baseline} reports the baseline path under the corner configuration. Under the calibrated parameters ($\mu_{TM}=0.50$, $\eta=0.40$), transfers are costly relative to public-employment wages and the capital tax carries a Laffer supply-side cost. Running the full battery under the calibrated engine with the reinstatement rate held at its exogenous special case $\omega=0.05$, exactly as in the named check scripts, yields the following calibrated outcomes:
 
 \begin{center}
 \small
@@ -651,12 +652,13 @@ No-policy / pure-transfer & crash / all crash & buffering and financing necessar
 \bottomrule
 \end{tabular}
 \\[2pt]
-\footnotesize The feasible share is the fraction of grid cells smooth under the operational criterion in Proposition~\ref{prop3a}: $41/64=64.1\%$ at $p_E=0.45$, $17/64=26.6\%$ at $p_E=0.30$, and $208/384=54.2\%$ overall. The workfare--transfer row is a same-fiscal comparison on identical $(\tau,\phi^{\max})$: across six $\omega$ values workfare survives all six while the pure transfer crashes all six, and of the six surviving paths four reach the target and two are not-reached, so the no-crash count is not a claim that all six reach the target. The workfare-over-transfer ranking is reported under the declared social-instability parameters, which have no direct external identification; the anchoring status and the parameter region in which even the workfare corner fails are documented in Online Appendix C and should be read together with this ranking.
+\footnotesize The feasible share is the fraction of grid cells smooth under the operational criterion in Proposition~\ref{prop3a}: $41/64=64.1\%$ at $p_E=0.45$, $17/64=26.6\%$ at $p_E=0.30$, and $208/384=54.2\%$ overall. The workfare--transfer row is a same-fiscal comparison on identical $(\tau,\phi^{\max})$: across six $\omega$ values workfare survives all six (four reach the target and two are not-reached, so the count is not a claim that all six reach it) while the pure transfer crashes all six. The ranking rests on declared social-instability parameters with no external identification; their anchoring and the region where even the workfare corner fails are documented in Online Appendix C.
 \end{center}
 
 \noindent\emph{Engine convention for the corner minimum.} The corner minimum consumption is reported as $0.357$ in this calibration, where the reinstatement rate is fixed at $\omega=0.05$; under the endogenously evolving reinstatement rate used in the bifurcation analysis, the same corner gives $0.356$. The difference is below $0.001$ and reflects only whether $\omega$ is held fixed or allowed to move with policy, with no effect on any ranking or conclusion.
 
 \smallskip\noindent\textbf{The public-employment intensity is load-bearing.} The same six $\omega$ values survive at $p_E=0.45$ but all collapse at $p_E=0.30$, every path through the floor; the corner survives only above a share of about $0.36$, a feasibility bound rather than a tuning preference.
+
 
 \begin{table}[h]
 \centering\small
@@ -665,15 +667,15 @@ No-policy / pure-transfer & crash / all crash & buffering and financing necessar
 \toprule
 Configuration & outcome & crash type & $\min C$ \\
 \midrule
-Baseline ($\mu_{TM}=0.50,\alpha_s=0.60$) & crash & both & 0.2589 \\
-Equal MPC ($\mu_{TM}=1.00$) & crash & social only & 0.4086 \\
-Social disabled ($\alpha_s=0$) & crash & economic & 0.2589 \\
-Both relaxed ($\mu_{TM}=1.00,\alpha_s=0$) & smooth & none & 0.4086 \\
+Baseline ($\mu_{TM}=0.50,\alpha_s=0.60$) & crash & both & 0.259 \\
+Equal MPC ($\mu_{TM}=1.00$) & crash & social only & 0.409 \\
+Social disabled ($\alpha_s=0$) & crash & economic & 0.259 \\
+Both relaxed ($\mu_{TM}=1.00,\alpha_s=0$) & smooth & none & 0.409 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\noindent The decomposition separates the two mechanisms. With an equal MPC the transfer holds consumption above the floor ($\min C=0.4086$), leaving only the social channel, while with the social channel disabled but the MPC leakage retained the path still crashes economically ($\min C=0.2589$); only when both are relaxed does the regime become smooth. The workfare advantage therefore rests on the combination of the unit workfare MPC and the relief-to-jobs conversion, not on a generic financing failure, and the table states the exact conditions under which the ranking holds; the corresponding time paths of the three regimes are plotted in Figure~\ref{fig:policy-compare}.
+\noindent The decomposition separates the two mechanisms as detailed in the table: an equal MPC leaves only the social channel, while disabling the social channel but retaining MPC leakage still leaves an economic crash, and the regime is smooth only when both are relaxed. The workfare advantage therefore rests on the unit workfare MPC together with the relief-to-jobs conversion rather than a generic financing failure, with the time paths in Figure~\ref{fig:policy-compare}.
 
 \begin{table}[h]
 \centering\small
@@ -682,15 +684,15 @@ Both relaxed ($\mu_{TM}=1.00,\alpha_s=0$) & smooth & none & 0.4086 \\
 \toprule
 Regime & outcome & total loss & fiscal spend & $\min C$ \\
 \midrule
-Public employment ($p_E=0.45$) & smooth & 55.34 & 36.12 & 0.4177 \\
-Pure transfer ($p_E=0$) & smooth & 51.23 & 32.01 & 0.4086 \\
+Public employment ($p_E=0.45$) & smooth & 55.34 & 36.12 & 0.418 \\
+Pure transfer ($p_E=0$) & smooth & 51.23 & 32.01 & 0.409 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\noindent The symmetric limit reverses both the feasibility classification and the welfare ranking, the pure transfer attaining a lower total loss ($51.23$ against $55.34$) at a lower spend ($32.01$ against $36.12$). Once the transfer MPC equals one and the social channel is disabled, a transfer yuan supports consumption as a workfare wage does, while the public-employment path still carries its workfare cost, which then dominates. This is a conditional result, the reversal requiring both $\mu_{TM}=1$ and $\alpha_s=0$ simultaneously, and the calibrated values satisfy neither; the symmetric numbers are the boundary at which the ranking changes, not the baseline case.
+\noindent The symmetric limit reverses both the feasibility classification and the welfare ranking, the pure transfer attaining a lower total loss at a lower spend as reported in the table. Once the transfer MPC equals one and the social channel is disabled, a transfer yuan supports consumption as a workfare wage does, while the public-employment path still carries its workfare cost, which then dominates. The reversal is a conditional result requiring both $\mu_{TM}=1$ and $\alpha_s=0$ simultaneously, and the calibrated values satisfy neither; these numbers are the boundary at which the ranking changes, not the baseline case.
 
-\smallskip\noindent\textbf{Sensitivity to $g_A$ and $\eta$.} Sweeping $g_A$ over $\{0.010,0.05,0.10,0.20,0.30\}$ gives minimum consumption $0.357,0.344,0.294,0.237,0.222$ with smooth, smooth, crash, crash, crash; the buffer holds at $g_A=0.05$, one sixth of the often quoted hardware-cost decline, and the floor is breached at $0.10$. This is the sharpest calibration sensitivity, so the smooth conclusion is conditional on a conservative long-run-TFP frontier rate rather than a hardware-cost rate. By contrast $\eta$ is nearly inert, every corner outcome smooth at $\min_tC_t=0.357$ with the total loss moving about $0.1\%$, so its imprecision affects no conclusion and no sharp Laffer effect can be claimed at $\tau=0.15$.
+\smallskip\noindent\textbf{Sensitivity to $g_A$ and $\eta$.} Sweeping $g_A$ over $\{0.010,0.05,0.10,0.20,0.30\}$ gives minimum consumption $0.357,0.344,0.294,0.237,0.222$ with outcomes smooth, smooth, crash, crash, crash; the buffer holds at $g_A=0.05$, one sixth of the often quoted hardware-cost decline, and the floor is breached at $0.10$. As the sharpest calibration sensitivity, the smooth conclusion is conditional on a conservative long-run-TFP frontier rate rather than a hardware-cost rate. By contrast $\eta$ is nearly inert, every corner outcome smooth at $\min_tC_t=0.357$ with the total loss moving about $0.1\%$, so its imprecision affects no conclusion and no sharp Laffer effect can be claimed at $\tau=0.15$.
 
 \begin{figure}[htbp]
 \centering
@@ -708,7 +710,7 @@ Pure transfer ($p_E=0$) & smooth & 51.23 & 32.01 & 0.4086 \\
 \label{fig:loss-surface}
 \end{figure}
 
-\smallskip\noindent\textbf{Sensitivity to the loss weights.} Feasibility is weight-independent, re-ranking all grid points under six weight configurations leaving the admissible set at $208$ points in every case, while the ranking among admissible paths depends on them. The minimizer moves across configurations, yet public employment remains the dominant instrument in every case ($p_E\in[0.30,0.55]$), whereas the transfer ceiling varies widely. Workfare dominance is therefore a property of the model, while transfers being closed at the optimum is a property of the baseline weights and the lower grid bound, reported as such.
+\smallskip\noindent\textbf{Sensitivity to the loss weights.} Feasibility is weight-independent: re-ranking all grid points under six weight configurations leaves the admissible set at $208$ points in every case, while the ranking among admissible paths depends on them. The minimizer moves across configurations, yet public employment remains the dominant instrument in every case ($p_E\in[0.30,0.55]$), whereas the transfer ceiling varies widely. Workfare dominance is therefore a property of the model, while transfers being closed at the optimum is a property of the baseline weights and the lower grid bound.
 
 \smallskip\noindent\textbf{Stochastic robustness.} We shock the frontier growth, the parameter on which the smooth conclusion most depends, setting $g_{A,t}=0.010+\varepsilon_t$ with an AR(1) deviation ($\rho=0.5$, Gaussian innovations of standard deviation $\sigma_\varepsilon$, distinct from the skill index $\sigma_t$); each configuration is run $200$ times and a path is recorded as a crash when it triggers a crash test before the horizon. Table~\ref{tab:shock} reports the results.
 
@@ -719,15 +721,15 @@ Pure transfer ($p_E=0$) & smooth & 51.23 & 32.01 & 0.4086 \\
 \toprule
 Configuration & buffer & $\sigma_\varepsilon{=}0.01$ & $\sigma_\varepsilon{=}0.02$ & $\sigma_\varepsilon{=}0.03$ & $\min_tC_t$, 5\% \\
 \midrule
-Headline $(0.15,0.45,0.02)$ & $0.056$ & $0/200$ & $0/200$ & $0/200$ & $0.3540$ \\
-Refined $(0.13,0.44,0.001)$ & $0.048$ & $0/200$ & $0/200$ & $0/200$ & $0.3348$ \\
+Headline $(0.15,0.45,0.02)$ & $0.056$ & $0/200$ & $0/200$ & $0/200$ & $0.354$ \\
+Refined $(0.13,0.44,0.001)$ & $0.048$ & $0/200$ & $0/200$ & $0/200$ & $0.335$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Two things follow. First, neither configuration crashes across the tested sizes, the bounded debt block and financed buffer defending consumption; with zero crashes in $200$ draws, the Clopper--Pearson one-sided $95\%$ upper bound on the true crash probability is $1.49\%$, so zero observed crashes does not establish a zero probability. At $\sigma_\varepsilon=0.03$, $69$ headline paths ($65$ refined) fail to reach the absorbing value within $T$ and are right-censored, counted as neither survival nor crash rather than evidence of robustness. Second, the margin still separates the two: the headline buffer of $0.056$ holds the fifth-percentile minimum at $0.354$, while the refined configuration with a $0.048$ buffer falls to $0.335$, leaving consumption closer to the floor.
+Two things follow. First, neither configuration crashes across the tested sizes, the bounded debt block and financed buffer defending consumption; with zero crashes in $200$ draws, the Clopper--Pearson one-sided $95\%$ upper bound on the true crash probability is $1.49\%$, so zero observed crashes does not establish a zero probability. At $\sigma_\varepsilon=0.03$, $69$ headline paths ($65$ refined) fail to reach the absorbing value within $T$ and are right-censored, counted as neither survival nor crash. Second, the headline buffer of $0.056$ holds the fifth-percentile minimum at $0.354$, while the $0.048$ refined buffer falls to $0.335$, closer to the floor.
 
-The deterministic v6 global-best point $(0.10,0.40,0.001)$ is not a third crash-free stochastic design. Its buffer is only $0.007$, and under the stochastic engine it crashes, with $16$, $58$ and $74$ paths at the three shock sizes and fifth-percentile minimum consumption falling to $0.298$, $0.288$ and $0.279$; consumption first breaks the floor mid-horizon after the skill stock has depreciated. The refined point $(0.13,0.44)$ keeps a $0.048$ buffer and stays crash-free, so buffer thickness rather than the third decimal of the deterministic loss decides stochastic survival. Demand-side, monetary and policy-implementation shocks are not modelled, and a fully stochastic version remains for future work.
+The deterministic v6 global-best point $(0.10,0.40,0.001)$ is not a third crash-free design: its buffer is only $0.007$, and under the stochastic engine it crashes with $16$, $58$ and $74$ paths and fifth-percentile minima of $0.298$, $0.288$ and $0.279$, the floor breaking mid-horizon after skill depreciation. The refined point $(0.13,0.44)$ keeps a $0.048$ buffer and stays crash-free, so buffer thickness rather than the third decimal of the deterministic loss decides stochastic survival; demand-side, monetary and implementation shocks are not modelled, and a fully stochastic version remains for future work.
 
 \smallskip\noindent\textbf{Two configurations, not one.} The smooth headline depends on the public-employment intensity rather than the transfer ceiling. Under the standard setting, both workfare shares clear the floor ($\min C=0.333$ and $0.358$ at $p_E=0.30$ and $0.45$), and a higher share raises the margin; the sharp threshold for this calibration is $p_E=0.1405$. The binding condition is therefore the workfare share, not a tight transfer ceiling.
 
@@ -742,14 +744,14 @@ The deterministic v6 global-best point $(0.10,0.40,0.001)$ is not a third crash-
 
 \begin{table}[h]
 \centering\small
-\caption{Baseline social-channel outcomes ($\varsigma^{th}=0.50,\alpha_s=0.60,J=10$, $g_A=0.010$). Values within $10^{-3}$ of the floor are given to four decimals.}\label{tab:socbase}
+\caption{Baseline social-channel outcomes ($\varsigma^{th}=0.50,\alpha_s=0.60,J=10$, $g_A=0.010$). Reported path statistics are rounded to three decimals.}\label{tab:socbase}
 \begin{tabular}{@{}lccccc@{}}
 \toprule
 Policy & outcome & crash type & $\min C$ & peak stress & social crash \\
 \midrule
 Corner $(0.15,0.45,0.02)$ & smooth & none & 0.357 & 0.330 & no \\
-Standard $(0.16,0.45,0.65)$ & smooth & none & 0.3576 & 0.330 & no \\
-Pure transfer $(0.16,0,0.65)$ & crash & both & 0.2589 & 0.600 & yes \\
+Standard $(0.16,0.45,0.65)$ & smooth & none & 0.358 & 0.330 & no \\
+Pure transfer $(0.16,0,0.65)$ & crash & both & 0.259 & 0.600 & yes \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -774,7 +776,7 @@ critical $J$ (base 10) & never triggers & never triggers & all $J\in[3,30]$ \\
 
 \noindent\textbf{Conditional conclusion.} The ranking does not flip within the scanned range. To make the corner socially crash, $\varsigma^{th}$ must fall below $0.33$ or $\alpha_s$ rise above $0.91$, while the pure transfer already crashes at the baseline, and $J$ is immaterial to the corner. The ranking remains conditional on the reduced-form cutoffs, with the external anchoring examined in Section~\ref{sec:social-anchor}.
 
-\noindent\textbf{Robustness to the functional form and to feedback.} Two tests ask whether the ranking depends on the linear pressure law. Replacing the linear conversion with the family $g(r)=r^\gamma$ gives critical $\alpha_s$ of $0.67$, $0.91$, and $1.65$ across concave, linear and convex forms, with the linear value matching the analytic $0.909$, while the pure transfer critical value is $0.50$ under every form. Opening a pressure-to-output channel, the corner stays smooth throughout ($\min C=0.326$ at full strength), the standard setting turns economic only at full strength, and the pure transfer crashes at every strength. Under both tests the workfare corner stays smooth while the pure transfer crashes, so the ranking is not an artifact of the linear, no-feedback law; the crash boundary moving from $0.67$ to $1.65$ is reported rather than absorbed.
+\noindent\textbf{Robustness to the functional form and to feedback.} Replacing the linear conversion with $g(r)=r^\gamma$ gives critical $\alpha_s$ of $0.67$, $0.91$, and $1.65$ across concave, linear and convex forms, the linear value matching the analytic $0.909$, while the pure transfer critical value stays $0.50$ under every form. Opening a pressure-to-output channel, the corner stays smooth throughout ($\min C=0.326$ at full strength), the standard setting turns economic only at full strength, and the pure transfer crashes at every strength. Under both tests the workfare corner stays smooth while the pure transfer crashes, so the ranking is not an artifact of the linear, no-feedback law; the boundary moving from $0.67$ to $1.65$ is reported rather than absorbed.
 
 \subsection{External empirical anchoring of the social-instability parameters}
 \label{sec:social-anchor}
