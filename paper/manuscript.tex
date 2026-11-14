@@ -79,7 +79,6 @@ Discrete time $t=0,1,\dots,T$. A continuum of labor $L^S=\barL=1$ is supplied in
 The state variables are the automation threshold $I_t$, the upper bound of new tasks $N_t$, the labor-task share $n_t\equiv N_t-I_t$, employment $L_t^D$, the labor share of employment $s_t\equiv L_t^D/\barL$ (called the labor share throughout; it equals the wage-bill share $w_tL_t^D/Y_t$ only while $w\barL=Y_t$), the price level $P_t$, nominal debt $D_t$, real debt $b_t\equiv D_t/P_t$, a skill stock $\sigma_t$, and a social-pressure index $\varsigma_t$.
 
 \subsection{Technology: a two-layer task model with an endogenously collapsing reinstatement engine}
-\label{sec:technology}
 We extend the Acemoglu--Restrepo task framework to two layers: a production-task layer and a creative-task layer that can itself be automated.
 
 \textbf{Automation (displacement) frontier.}
@@ -203,7 +202,7 @@ L_t^D+E_t^{P,act}+U_t^{rem}=\barL.
 \end{equation}
 The remainder is therefore recomputed against the financed headcount rather than the planned one: an unfunded position does not absorb a worker, and the social pressure and skill depreciation equations below use this actual $U_t^{rem}$, so promised-but-unpaid jobs provide no protection. The population partition closes to machine precision in every period (verified by \texttt{analysis/verify\_population\_accounting.py}).
 
-\smallskip\noindent\textbf{Financed-headcount residual on the corner path.} The remainder is measured against the financed headcount rather than the planned one, so at $t=5$ the actual remainder $0.18550$ exceeds the planned $0.13690$ that would ignore budget scaling, with both values from the same engine run and the partition closing to machine precision.
+\smallskip\noindent\textbf{Financed-headcount residual on the corner path.} The remainder is measured against the financed headcount rather than the planned one, so at $t=5$ the actual remainder $0.1855$ exceeds the planned $0.1369$ that would ignore budget scaling, with both values from the same engine run and the partition closing to machine precision.
 
 Appropriations in period $t$ are funded by taxes collected in $t-1$, the government budgeting against last period's revenue with no fiscal reserve, so surpluses are not carried forward and deficits are not rolled into debt; the fiscal account is separate from the household debt. When revenue is insufficient, spending is scaled proportionally rather than borrowed, and a financing-constraint collapse occurs when the scaled spending cannot fund the floor.
 
@@ -402,10 +401,9 @@ $\sigma=\text{skill}$. In the high-employment region, where the direct
 automation flow binds before the availability cap and the human-task share is
 active, the identity $\dot s=\dot n/N-s\,\dot N/N$ gives the fast vector
 field
-\begin{equation}
+\begin{equation*}
 \boxed{\ \dot s=f_1(s)=-Cs^2+Bs+A\ }
-\label{eq:bif-fast}
-\end{equation}
+\end{equation*}
 with the coefficients defined from the normalized variables and the leading nonlinearity quadratic, so no cubic coefficient on which a cusp normal form would rest is induced. The event is located not by an interior discriminant but by the boundary of the admissible state space, which is why it is a boundary equilibrium bifurcation rather than an interior fold; the normalization and full expansion are given in Appendix~\ref{app:fast-derivation}.
 
 \subsection{The switching manifold and the piecewise-smooth system}
@@ -425,14 +423,12 @@ $C^1$) system of the standard Filippov type~\citep{diBernardo2008}; the
 manifold algebra is given in Appendix~\ref{app:fast-derivation}.
 
 \subsection{Boundary equilibrium bifurcation}
-\label{subsec:beb}
 \begin{theorem}[Boundary equilibrium bifurcation]
 \label{thm:beb}
 For $\mu>0$ and with $\sigma$ fixed, a boundary equilibrium bifurcation~\citep{Sotomayor1973,GH1983,Kuznetsov2023} occurs at
-\begin{equation}
+\begin{equation*}
 \boxed{\ \omega_c=\frac1\sigma\left(\frac{\kappa_I}{q_A}+s_{\text{floor}}\right).\ }
-\label{eq:beb-critical}
-\end{equation}
+\end{equation*}
 The crossing is transverse, $\partial_\omega f_1(s_{\text{floor}})=\mu q_A\sigma>0$. For $\omega<\omega_c$ the region-I root is virtual (it lies outside the physical region) and the field on the manifold points toward the absorbing boundary $s=0$; for $\omega>\omega_c$ an interior equilibrium $s^+>s_{\text{floor}}$ exists and is stable whenever the persistence condition $q_A\mu>C\kappa_I/q_A$ derived below holds.
 \end{theorem}
 
@@ -454,15 +450,13 @@ The reinstatement rate is the same endogenous variable as in the main model, equ
 \label{eq:endog-gamma}
 \end{equation}
 and the reinstatement rate is the competitive logistic law
-\begin{equation}
+\begin{equation*}
 \boxed{\ \omega_t=\Lambda\!\left(\ell_0+\Gamma_t-\beta_A g_t\right),\quad
 g_t=\ln(A_t/A_0).\ }
-\label{eq:endog-omega}
-\end{equation}
+\end{equation*}
 This specification has the required properties. The logistic keeps $\omega_t\in(0,1)$ without truncation. With no policy and no capability growth it returns the baseline $\omega_0$; capability growth, $\beta_A g_t>0$, lowers the rate, and the policy stock $\Gamma_t$ offsets that decline. Setting $\beta_A=0$ removes the capability term and recovers the policy-only limit, while the exogenous constant $\omega_t=\omega$ is the degenerate special case used for the calibrated thresholds below.
 
 \begin{proposition}[Effective capture and the conditional crossing]
-\label{prop:endog-cross}
 The real bifurcation is governed by the effective capture $\omega_t\,\text{skill}_{t-1}$, not by $\omega_t$ alone. The instantaneous threshold on the nominal rate is
 \[
 \omega_c(t)=\frac{\kappa_I/q_A+s_{\text{floor}}}{\text{skill}_{t-1}},
@@ -481,10 +475,9 @@ The conditional crossing is verified on the full system in Figure~\ref{fig:beb-p
 \end{figure}
 
 A bisection on the public-employment intensity gives the sharp threshold at which consumption is defended, defined as $\min_t C_t\ge C_{\min}$:
-\begin{equation}
+\begin{equation*}
 p_E^{*}=0.3661,
-\label{eq:beb-pestar}
-\end{equation}
+\end{equation*}
 below which the economy crashes and above which consumption is held at its floor. This is a model-implied consumption threshold, not an identified estimate or a high-employment threshold: at $p_E^*$ the effective capture does not reach the critical value, so consumption is defended by the fiscal buffer without restoring market employment. The long-horizon run confirms the distinction, with the strong-floor employment share retained at a positive but still-declining level ($s_L$ ends at $0.17$) rather than settling.
 
 \subsection{Slow--fast dynamics and the finite-rate lag}
@@ -513,7 +506,6 @@ The high-employment equilibrium corresponds structurally to the strong social fl
 The probit comparison of the share law, the $\beta_A\in\{0,1,3\}$ capability sweep and the counterfactual that removes the logistic erosion term are extended robustness runs rather than main-line results; they are reported in full in Online Appendix~D, with the probit and counterfactual reproduced by \texttt{analysis/check\_link\_function.py} and \texttt{analysis/check\_capability\_counterfactual.py}.
 
 \subsection{Global outcome bifurcation: crash versus full public-employment absorption}
-\label{subsec:global}
 Under full substitution, set the public-employment policy to full absorption, the planned headcount equal to the entire unemployed population so the target share rises to one as market employment falls, while the within-period fiscal constraint is unchanged and unfunded headcount remains residual unemployment. Two outcomes follow: if the tax base expands fast enough, public employment grows in step with the released workers, residual unemployment ends at zero and the path is smooth, while if the fiscal base lags, unfunded workers accumulate and consumption breaks the floor, giving the crash basin. The boundary is the fiscal race of Proposition~\ref{prop6}, decided by whether the accumulating capital-income tax base or the collapsing wage bill leads.
 
 Before reporting the numerical boundary, the reduced analytic core guarantees that one exists.
@@ -523,7 +515,7 @@ Fix the capital tax and all slow parameters and reduce the system to its one-dim
 \[
 B(g_A)=\min_{t\in[0,T]}\bigl(C_t(g_A)-C^{min}\bigr).
 \]
-Assume on this reduced core: (R1) $B$ is continuous in $g_A$; (R2) $B$ is strictly decreasing in $g_A$; (R3) $B(0)>0$ and $B(g_A)<0$ for some finite $g_A$. Then there is a unique critical value $g_A^*>0$ with $B(g_A^*)=0$: every $g_A<g_A^*$ is smooth and every $g_A>g_A^*$ crashes.
+Assume on this reduced core: (R1) $B$ is continuous in $g_A$; (R2) $B$ is strictly decreasing in $g_A$; (R3) $B(0)>0$ and $B(g_A)<0$ for some finite $g_A$. Then there is a unique critical value $g_A^*>0$ with $B(g_A^*)=0$: every $g_A<g_A^*$ is smooth and every $g_A>g_A^*$ crashes. The strict monotonicity in (R2) is not left unexamined: a named check script sweeps $g_A$ on this core and confirms $B$ decreases at every step and crosses zero at the reported critical value, providing numerical evidence for the assumption while the proposition supplies the conditional analytic conclusion.
 \end{proposition}
 \begin{proof}
 By (R1) and (R3), the intermediate value theorem gives at least one root of $B(g_A)=0$; by (R2) that root is unique, and the sign of $B$ places slower growth in the smooth region and faster growth in the crash region. On the analytic core, continuity follows from continuous dependence of the difference-equation path on its parameter, and monotonicity follows because a larger $g_A$ raises the displacement flow $\kappa_I A_t$ and the fiscal gap at every period without changing a financing rule, so the minimum buffer cannot increase. The bisection below does not establish existence; it locates the $g_A^*$ whose existence is proved here. This is a one-dimensional reduction with slow variables frozen, not a claim that the full high-dimensional switching system has only two attractors, which remains a numerical observation over the calibrated grid. $\square$
@@ -659,7 +651,7 @@ No-policy / pure-transfer & crash / all crash & buffering and financing necessar
 \bottomrule
 \end{tabular}
 \\[2pt]
-\footnotesize The feasible share is the fraction of grid cells smooth under the operational criterion in Proposition~\ref{prop3a}: $41/64=64.1\%$ at $p_E=0.45$, $17/64=26.6\%$ at $p_E=0.30$, and $208/384=54.2\%$ overall. The workfare--transfer row is a same-fiscal comparison on identical $(\tau,\phi^{\max})$: across six $\omega$ values workfare survives all six while the pure transfer crashes all six, and of the six surviving paths four reach the target and two are not-reached, so the no-crash count is not a claim that all six reach the target.
+\footnotesize The feasible share is the fraction of grid cells smooth under the operational criterion in Proposition~\ref{prop3a}: $41/64=64.1\%$ at $p_E=0.45$, $17/64=26.6\%$ at $p_E=0.30$, and $208/384=54.2\%$ overall. The workfare--transfer row is a same-fiscal comparison on identical $(\tau,\phi^{\max})$: across six $\omega$ values workfare survives all six while the pure transfer crashes all six, and of the six surviving paths four reach the target and two are not-reached, so the no-crash count is not a claim that all six reach the target. The workfare-over-transfer ranking is reported under the declared social-instability parameters, which have no direct external identification; the anchoring status and the parameter region in which even the workfare corner fails are documented in Online Appendix C and should be read together with this ranking.
 \end{center}
 
 \noindent\emph{Engine convention for the corner minimum.} The corner minimum consumption is reported as $0.357$ in this calibration, where the reinstatement rate is fixed at $\omega=0.05$; under the endogenously evolving reinstatement rate used in the bifurcation analysis, the same corner gives $0.356$. The difference is below $0.001$ and reflects only whether $\omega$ is held fixed or allowed to move with policy, with no effect on any ranking or conclusion.
@@ -811,7 +803,7 @@ The analysis belongs to the structural-change tradition that treats technology-d
 \item \textbf{Characterizes the fiscal closure}: a Laffer interior tax $\tau^*$ (Proposition~\ref{prop3b}) and within-budget superiority of public employment over transfers (Proposition~\ref{prop4}).
 \item \textbf{Introduces a social-instability channel independent by construction, in a separate equation rather than through economic deflation}, proving under the assumed pressure law that workfare dominates the pure transfer for social-instability risk (Proposition~\ref{prop5}), complementing the qualitative Tcherneva/Ravallion debate and the basic-income-versus-job-guarantee comparison of Mitchell and Watts~\cite{Tcherneva,Ravallion,MitchellWatts2004}.
 \item \textbf{Establishes a robustness ceiling for the buffer family} (Proposition~\ref{prop6}): strong shocks require supply-side structural measures, a result absent from the literature.
-\item \textbf{States the bifurcation at two levels}. Acemoglu--Restrepo treat $\kappa_N$ (in their notation) as an exogenous constant and leave its determinants open; we derive the fast subsystem directly from the model and show that the high-employment branch reaches and crosses the switching manifold through a persistence-type boundary equilibrium bifurcation in a frozen static slice, yielding a closed-form critical reinstatement rate together with the finite-rate lag between slow policy and fast employment. Because that branch is unreachable under full substitution, we then pose the global outcome bifurcation under a full-absorption public-employment policy, locating the boundary between the crash basin and the smooth absorption basin by bisection (Section~\ref{sec:bifurcation}). Both reductions are static or model-implied statements whose parameters are dimensionless and illustrative rather than estimated; on a full path an effective fast-subsystem crossing flattens the labor-share decline discontinuously without interior convergence, so the claim is structural rather than quantitative.
+\item \textbf{States the bifurcation at two levels}. Acemoglu--Restrepo treat $\kappa_N$ (in their notation) as an exogenous constant and leave its determinants open; we derive the fast subsystem directly from the model and show that the high-employment branch reaches and crosses the switching manifold through a persistence-type boundary equilibrium bifurcation in a frozen static slice, yielding a closed-form critical reinstatement rate together with the finite-rate lag between slow policy and fast employment. Because that branch is inadmissible under full substitution, we then pose the global outcome bifurcation under a full-absorption public-employment policy, locating the boundary between the crash basin and the smooth absorption basin by bisection (Section~\ref{sec:bifurcation}). Both reductions are static or model-implied statements whose parameters are dimensionless and illustrative rather than estimated; on a full path an effective fast-subsystem crossing flattens the labor-share decline discontinuously without interior convergence, so the claim is structural rather than quantitative.
 \end{enumerate}
 
 Calibration anchors three magnitudes to data (the consumption floor, the transfer MPC and the workfare wage ratio); the initial labor share $s_0=0.90$ follows from the model's own task block, the U.S.\ labor share of 53.8\% is a qualitative benchmark rather than a target, and the elasticity range and the $-$30\%/yr compute-cost decline are background and enter no equation (Section~\ref{sec:calibration}). The grid search returns a ``workfare-dominant + capital-tax-financed'' corner whose coordinates are grid-dependent rather than uniquely identified, providing an analyzable and quantitative basis for a consumption-smooth AGI transition.
@@ -824,7 +816,7 @@ Several recent papers address adjacent mechanisms, and in each case the differen
 \section{Conclusion}
 \label{sec:conclusion}
 % ============================================================================
-This paper has integrated the supply, demand, fiscal and social sides of the AGI labor transition in one numerically solvable system. The mechanism group delivers the two failure modes, a monotonic labor-share collapse that under full substitution drives market employment to zero and makes a high-employment endpoint unreachable (the counterfactual evidence is compiled in Appendix~\ref{app:high-employment}), together with a decidable demand-side spiral. The fiscal group establishes that a financed buffer is nonempty, ranks workfare above transfers within the budget and under the assumed pressure law, and bounds the buffer at a ceiling beyond which only supply-side measures help. On the method, the fast-subsystem boundary equilibrium bifurcation gives a closed-form critical rate, and the global outcome bifurcation separates the crash and smooth full-absorption basins by a fiscal race, with a critical frontier speed near $g_A=0.095$ under $\tau=0.15$ that saturates near $0.14$.
+This paper has integrated the supply, demand, fiscal and social sides of the AGI labor transition in one numerically solvable system. The mechanism group delivers the two failure modes, a monotonic labor-share collapse that under full substitution drives market employment to zero and makes a high-employment endpoint inadmissible within the model (the counterfactual evidence is compiled in Appendix~\ref{app:high-employment}), together with a decidable demand-side spiral. The fiscal group establishes that a financed buffer is nonempty, ranks workfare above transfers within the budget and under the assumed pressure law, and bounds the buffer at a ceiling beyond which only supply-side measures help. On the method, the fast-subsystem boundary equilibrium bifurcation gives a closed-form critical rate, and the global outcome bifurcation separates the crash and smooth full-absorption basins by a fiscal race, with a critical frontier speed near $g_A=0.095$ under $\tau=0.15$ that saturates near $0.14$.
 
 The policy implications follow within this calibrated model rather than as universal claims. At the baseline frontier growth, the smooth full-absorption path keeps minimum consumption at $0.407$ as public employment rises to $0.85$ and residual unemployment reaches zero, while the fixed corner holds consumption at $0.357$ and the no-policy path crashes at $0.057$. The loss-minimizing design is workfare-dominant and financed by a minimal sufficient capital tax, with transfers closed because their MPC leakage makes them costlier. The pure transfer and no-policy regimes are infeasible, the structural conditions being stated in Table~\ref{tab:transfer-structure}, and the absorption is conditional on the automation pace and fiscal base, the floor breached once the frontier speed crosses the critical value near $0.095$. For sufficiently fast automation no demand-side absorption can keep pace within the model, so the response indicated by the model lies on the supply side. Read this way, the value of the exercise is present before the scenario arrives. Because the decisive instruments are slow and the boundary is a matter of speed, the practical output is a preparedness case rather than a forecast: building the fiscal base and the absorption mechanism in advance is what converts a high-impact scenario from a crash into a smooth path, whereas waiting for certainty removes the lead time on which the result depends.
 
@@ -1017,30 +1009,26 @@ intermediate steps are moved here.
 
 \paragraph{B.1 Normalization and the quadratic vector field.}
 Freeze the slowly evolving state and normalize
-\begin{equation}
+\begin{equation*}
 k_h=\frac{\kappa_N^h}{N},\qquad q_A=\kappa_N^{AI}M_0,\qquad
 \mu=\frac{A}{N},\qquad s=\frac{n}{N},\qquad \sigma=\text{skill},
-\label{app:norm}
-\end{equation}
+\end{equation*}
 so the task and labor-task growth are
-\begin{equation}
+\begin{equation*}
 \frac{\dot N}{N}=k_hS_0\bigl(1-\lambda_h(1-s)\bigr)+q_A\mu,\qquad
 \frac{\dot n}{N}=\omega\sigma\,\frac{\dot N}{N}-\kappa_I\mu.
-\label{app:growth}
-\end{equation}
+\end{equation*}
 Using the direct automation flow that binds in the high-employment region and
 $\dot s=\dot n/N-s\,\dot N/N$, expansion gives the fast field
-\begin{equation}
+\begin{equation*}
 \dot s=f_1(s)=-Cs^2+Bs+A,
-\label{app:fast}
-\end{equation}
+\end{equation*}
 with coefficients
-\begin{align}
-C&=k_hS_0\lambda_h>0, & \Xi&=k_hS_0(1-\lambda_h)<0,\nonumber\\
+\begin{align*}
+C&=k_hS_0\lambda_h>0, & \Xi&=k_hS_0(1-\lambda_h)<0,\\
 B&=C\omega\sigma-\Xi-q_A\mu, &
 A&=\omega\sigma(\Xi+q_A\mu)-\kappa_I\mu.
-\label{app:coeff}
-\end{align}
+\end{align*}
 The leading nonlinearity is quadratic and $f_1'''(s)\equiv0$, so no cubic
 coefficient on which a cusp normal form would rest is induced. The generic
 unfolding of a one-dimensional quadratic field is fold-type, but the event is
@@ -1051,10 +1039,9 @@ interior discriminant.
 The truncated human share $S^h(s)=S_0\max\{0,1-\lambda_h(1-s)\}$ is positive
 only above $s_{\text{floor}}=1-1/\lambda_h$. Below it the human share is
 identically zero and the second-region field is linear,
-\begin{equation}
+\begin{equation*}
 \dot s=f_2(s)=\mu\bigl(\omega\sigma q_A-\kappa_I-q_A s\bigr).
-\label{app:f2}
-\end{equation}
+\end{equation*}
 The fields join continuously on the manifold, and direct subtraction gives the
 constant jump
 \begin{equation}
@@ -1078,18 +1065,16 @@ $\omega_c=\sigma^{-1}(\kappa_I/q_A+s_{\text{floor}})$. Differentiating
 \eqref{app:proof1} in $\omega$ gives $\partial_\omega f_1(s_{\text{floor}})
 =\mu q_A\sigma>0$, which establishes transversality. The unique region-II
 equilibrium of $f_2$ is
-\begin{equation}
+\begin{equation*}
 s^{**}=\omega\sigma-\frac{\kappa_I}{q_A},
-\label{app:s2star}
-\end{equation}
+\end{equation*}
 which equals $s_{\text{floor}}$ at $\omega_c$ and lies below the manifold for
 $\omega<\omega_c$. At the boundary equilibrium the region-II slope is
 $f_2'(s_{\text{floor}})=-q_A\mu<0$, and using \eqref{app:jump} at the
 critical value the region-I slope is
-\begin{equation}
+\begin{equation*}
 f_1'(s_{\text{floor}})=-q_A\mu+\frac{C\kappa_I}{q_A}.
-\label{app:slope}
-\end{equation}
+\end{equation*}
 It is negative exactly under $q_A\mu>C\kappa_I/q_A$. When this persistence
 condition holds, both one-sided slopes are negative and the equilibrium crosses
 with stability preserved, the persistence-type BEB; if it fails, the region-I
@@ -1101,11 +1086,10 @@ is absorbed at $s=0$.
 
 \paragraph{B.4 Slow--fast reduction and the finite-rate lag.}
 With $\omega$ slow and $s$ fast,
-\begin{equation}
+\begin{equation*}
 \dot s=f(s,\omega),\qquad \dot\omega=\varepsilon\,g(\omega,\text{policy}),
 \qquad 0<\varepsilon\ll1,
-\label{app:slow}
-\end{equation}
+\end{equation*}
 the critical manifold $f=0$ is normally hyperbolic away from the switching
 manifold because the fast slope is nonzero. At the boundary equilibrium the
 one-sided slopes are both nonzero but unequal, so normal hyperbolicity is
