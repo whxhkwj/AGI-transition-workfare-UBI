@@ -106,7 +106,7 @@ where $\beta_A\ge0$ is the sensitivity of labor's capture to AGI capability. As 
 \dd I_t=(1-e_t^{cap})\dd N_t+\dd I_t^{auto},\qquad
 \dd n_t=\dd N_t-\dd I_t=e_t^{cap}\dd N_t-\dd I_t^{auto},
 \end{equation}
-so the identity $n_t=N_t-I_t$ holds exactly in every period, with $n_t\ge0$; no independent update of $n_t$ is used. Here $\omega_t\in(0,1)$ is the \emph{reinstatement rate}, the share of new tasks accruing to labor, determined by equation~\eqref{eq:omega-law} and reduced to a fixed constant only in the exogenous special case, and $\sigma_{t-1}$ is the skill stock. \textbf{Key modelling choice}: the value of skills is proportional to $\omega_t$. When $\omega_t\to0$ as AGI takes over new-task creation, so new tasks no longer accrue to labor, skills have no economic return even at arbitrarily high levels. This mechanizes Restrepo's (2025) proposition that skills no longer determine wages.
+so the identity $n_t=N_t-I_t$ holds exactly in every period, with $n_t\ge0$; no independent update of $n_t$ is used. Here $\omega_t\in(0,1)$ is the \emph{reinstatement rate}, the share of new tasks accruing to labor, determined by equation~\eqref{eq:omega-law} and reduced to a fixed constant only in the exogenous special case, and $\sigma_{t-1}$ is the skill stock. \textbf{Key modelling choice}: the value of skills is proportional to $\omega_t$. When $\omega_t\to0$ as AGI takes over new-task creation, so new tasks no longer accrue to labor, skills have no economic return even at arbitrarily high levels, a monotone isolation result visualized in Figure~\ref{fig:skill-omega}. This mechanizes Restrepo's (2025) proposition that skills no longer determine wages.
 
 \smallskip\noindent\textbf{Accounting scope and leakages.} The closure is exact for the task, population and fiscal flows, not for a closed national-income account, and is partial-equilibrium with an exogenous supply path and an exogenous credit line. Two flows are recorded as non-recycling leakages: after-tax capital income accrues outside the modeled consumption block, and the unconsumed transfer share $(1-\mu_{TM})TM_t$ is retained rather than spent. A third timing item is the lagged wage deduction, the difference between the tax-deducted lagged wage and the current wage staying on the firm side and leaving the tax base conservative. Absent a capital-owner recycling channel, treating these as non-returning leakages keeps the flow table complete and assumes no hidden demand; the numbers are reproduced by the leakage and wage-timing checks.
 
@@ -410,7 +410,7 @@ manifold algebra is given in Appendix~\ref{app:fast-derivation}.
 \label{subsec:beb}
 \begin{theorem}[Boundary equilibrium bifurcation]
 \label{thm:beb}
-For $\mu>0$ and with $\sigma$ fixed, a boundary equilibrium bifurcation~\citep{Sotomayor1973,Kuznetsov2023} occurs at
+For $\mu>0$ and with $\sigma$ fixed, a boundary equilibrium bifurcation~\citep{Sotomayor1973,GH1983,Kuznetsov2023} occurs at
 \begin{equation}
 \boxed{\ \omega_c=\frac1\sigma\left(\frac{\kappa_I}{q_A}+s_{\text{floor}}\right).\ }
 \label{eq:beb-critical}
@@ -473,10 +473,11 @@ below which the economy crashes and above which consumption is held at its floor
 The endogenous rate is a slow variable and the employment share a fast
 variable, $\dot s=f(s,\omega)$ and
 $\dot\omega=\varepsilon\,g(\omega,\text{policy})$ with
-$0<\varepsilon\ll1$. Away from the switching manifold the critical manifold
+$0<\varepsilon\ll1$, the standard singular-perturbation setup of geometric singular perturbation theory~\citep{Fenichel1979}, situated within the broader multiple-time-scale framework surveyed in the literature~\citep{Desroches2012}. Away from the switching manifold the critical manifold
 is normally hyperbolic, while at the boundary equilibrium the one-sided
 slopes in~\eqref{eq:bif-jump} are nonzero but unequal, so the normal
-hyperbolicity is one-sided rather than lost as at a smooth fold; the
+hyperbolicity is one-sided rather than lost as at a smooth fold of the kind
+treated in the extended geometric theory~\citep{KS2001}; the
 piecewise-smooth persistence theory for Filippov systems is the appropriate
 framework. The static interior equilibrium of Theorem~\ref{thm:beb} is not
 by itself an attractor of the full model. On a full path the verified
@@ -647,7 +648,7 @@ Both relaxed ($\mu_{TM}=1.00,\alpha_s=0$) & smooth & none & 0.4086 \\
 \end{tabular}
 \end{table}
 
-\noindent The decomposition separates the two mechanisms. With an equal MPC the transfer holds consumption above the floor ($\min C=0.4086$), leaving only the social channel, while with the social channel disabled but the MPC leakage retained the path still crashes economically ($\min C=0.2589$); only when both are relaxed does the regime become smooth. The workfare advantage therefore rests on the combination of the unit workfare MPC and the relief-to-jobs conversion, not on a generic financing failure, and the table states the exact conditions under which the ranking holds.
+\noindent The decomposition separates the two mechanisms. With an equal MPC the transfer holds consumption above the floor ($\min C=0.4086$), leaving only the social channel, while with the social channel disabled but the MPC leakage retained the path still crashes economically ($\min C=0.2589$); only when both are relaxed does the regime become smooth. The workfare advantage therefore rests on the combination of the unit workfare MPC and the relief-to-jobs conversion, not on a generic financing failure, and the table states the exact conditions under which the ranking holds; the corresponding time paths of the three regimes are plotted in Figure~\ref{fig:policy-compare}.
 
 \begin{table}[h]
 \centering\small
@@ -782,7 +783,7 @@ The analysis belongs to the structural-change tradition that treats technology-d
 
 Calibration anchors three magnitudes to data (the consumption floor, the transfer MPC and the workfare wage ratio); the initial labor share $s_0=0.90$ follows from the model's own task block, the U.S.\ labor share of 53.8\% is a qualitative benchmark rather than a target, and the elasticity range and the $-$30\%/yr compute-cost decline are background and enter no equation (Section~\ref{sec:calibration}). The grid search returns a ``workfare-dominant + capital-tax-financed'' corner whose coordinates are grid-dependent rather than uniquely identified, providing an analyzable and quantitative basis for a consumption-smooth AGI transition.
 
-Related empirical work grounds the task and labor-share foundations. The skill-content framework originates with Autor, Levy and Murnane~\cite{ALM2003}; exposure to robots is estimated to reduce local employment and wages~\cite{AR2020}; and the declining labor share is linked to the reallocation of value toward superstar firms~\cite{ADKPV2020}. Broader policy-oriented analyses emphasize the distributional harms of AI deployed along its current trajectory~\cite{Acemoglu2021} and the need for development strategies that share the gains from artificial intelligence more widely~\cite{KS2021}.
+Related empirical work grounds the task and labor-share foundations. The skill-content framework originates with Autor, Levy and Murnane~\cite{ALM2003}, while the automation-versus-new-tasks view of skill bias is developed by Acemoglu and Restrepo~\cite{AR2020pandp}; exposure to robots is estimated to reduce local employment and wages~\cite{AR2020}; and the globally declining labor share is documented by Karabarbounis and Neiman~\cite{KN2014} and linked to the reallocation of value toward superstar firms~\cite{ADKPV2020}. Broader policy-oriented analyses emphasize the distributional harms of AI deployed along its current trajectory~\cite{Acemoglu2021} and the need for development strategies that share the gains from artificial intelligence more widely~\cite{KS2021}.
 
 Several recent papers address adjacent mechanisms, and in each case the difference lies along a specific axis. Atolia, Holland and Kreamer~\cite{Atolia2024} solve for the majority-voting optimal capital tax and basic income after an episode of automation, characterizing long-run outcomes and transitional welfare. Their policy is an optimal tax--transfer schedule; ours treats the two instruments as parameters of a bifurcation unfolding and asks when the high-employment branch crosses the switching manifold. Kleven and Zidar~\cite{KlevenZidar2026} characterize optimal labor and capital income taxation in a task-based automation model calibrated to the U.S. wage distribution, and find a sizable optimal capital tax that is, in their benchmark, unaffected by automation. Our capital tax is not an optimal-tax object: it is the financing instrument of the buffer. In the simulated paths capital income $\Pi_t=\max\{0,Y_t-w_tL_t^D\}$ does not shrink as $s_t\to0$; output growth outpaces the fall in the wage bill and $\Pi_t$ widens rather than contracts. The binding constraint is therefore the period-by-period timing of revenue rather than a vanishing tax base: with no reserve account, period-$t$ spending is limited to taxes already collected in $t-1$, so early in the transition, before the tax base has grown, planned spending is scaled down. The constraint we identify is this fiscal feasibility rather than tax optimality. Ray and Mookherjee~\cite{RayMookherjee2022} derive the long-run labor share in a growth framework where automation moves the share along a smooth path; we study the case in which the reinstatement engine itself collapses, so the share crosses the switching manifold through a boundary bifurcation rather than following a continuous decline. Nakamura and Zeira~\cite{NakamuraZeira2024} analyze transitional unemployment dynamics and identify conditions under which assistance arrives in time; their object is the unemployment stock, ours is the existence of an equilibrium branch. Bond and Kremens~\cite{BondKremens2024} characterize income and inequality under asymptotically full automation, a steady-state distribution question, whereas our constraint is fiscal feasibility along the transition. Jacobs~\cite{Jacobs2023} studies capitalist--worker wealth distribution in a task-based model without a policy-instrument bifurcation, and Stiefenhofer~\cite{Stiefenhofer2025} analyzes AGI substitution inside a CES production structure, where substitution is continuous across factors; our production structure is task-based, so substitution occurs at task boundaries and the resulting instability is discrete. Brault, Haghighi and Yang~\cite{BHY2026} study monetary policy in a two-sector New Keynesian model with downward nominal wage rigidity and show that accommodating AI-driven unemployment opens an intersectoral inflation wedge because one policy rate cannot clear both labor markets; their analysis is a single-instrument monetary trade-off, whereas our buffer is a fiscal instrument whose financing and the existence of the high-employment branch are decided together.
 
@@ -890,40 +891,6 @@ The simulation code, parameter files and scripts that generate every reported nu
 \bibitem{Tcherneva} P. Tcherneva, \emph{The Case for a Job Guarantee}, Polity Press, 2020.
 
 \bibitem{HHSAI} Stanford HAI, \emph{Artificial Intelligence Index Report 2025}, Stanford University, 2025, available at \url{https://hai.stanford.edu/ai-index/2025-ai-index-report}.
-
-\bibitem{MSS2004} E. Miguel, S. Satyanath and E. Sergenti, Economic Shocks and Civil Conflict: An Instrumental Variables Approach, \emph{Journal of Political Economy} 112(4), 725--753, 2004, DOI: \texttt{10.1086/421174}.
-
-\bibitem{PV2020} J. Ponticelli and H.-J. Voth, Austerity and Anarchy: Budget Cuts and Social Unrest in Europe, 1919--2008, \emph{Journal of Comparative Economics} 48(1), 1--19, 2020, DOI: \texttt{10.1016/j.jce.2019.09.007}.
-
-\bibitem{Bellemare2015} M. F. Bellemare, Rising Food Prices, Food Price Volatility, and Social Unrest, \emph{American Journal of Agricultural Economics} 97(1), 1--21, 2015, DOI: \texttt{10.1093/ajae/aau038}.
-
-\bibitem{RWE2001} S. Raphael and R. Winter-Ebmer, Identifying the Effect of Unemployment on Crime, \emph{Journal of Law and Economics} 44(1), 259--283, 2001, DOI: \texttt{10.1086/320275}.
-
-\bibitem{Lin2008} M.-J. Lin, Does Unemployment Increase Crime? Evidence from U.S. Data 1974--2000, \emph{Journal of Human Resources} 43(2), 413--436, 2008, DOI: \texttt{10.3368/jhr.43.2.413}.
-
-\bibitem{GWM2002} E. D. Gould, B. A. Weinberg and D. B. Mustard, Crime Rates and Local Labor Market Opportunities in the United States: 1979--1997, \emph{Review of Economics and Statistics} 84(1), 45--61, 2002, DOI: \texttt{10.1162/003465302317331919}.
-
-\bibitem{BDG2014} P. Buonanno, F. Drago and R. Galbiati, Response of Crime to Unemployment, \emph{Journal of Contemporary Criminal Justice} 30(1), 29--40, 2014, DOI: \texttt{10.1177/1043986213509023}.
-
-\bibitem{FKP2009} D. Foug\`ere, F. Kramarz and J. Pouget, Youth Unemployment and Crime in France, \emph{Journal of the European Economic Association} 7(5), 909--938, 2009, DOI: \texttt{10.1162/JEEA.2009.7.5.909}.
-
-\bibitem{RR2014} C. M. Reinhart and K. S. Rogoff, Recovery from Financial Crises: Evidence from 100 Episodes, \emph{American Economic Review Papers and Proceedings} 104(5), 50--55, 2014 (NBER Working Paper 19823), DOI: \texttt{10.3386/w19823}.
-
-\bibitem{CS2008} V. Cerra and S. C. Saxena, Growth Dynamics: The Myth of Economic Recovery, \emph{American Economic Review} 98(1), 439--457, 2008, DOI: \texttt{10.1257/aer.98.1.439}.
-
-\bibitem{Fearon2004} J. D. Fearon, Why Do Some Civil Wars Last So Much Longer Than Others?, \emph{Journal of Peace Research} 41(3), 275--301, 2004, DOI: \texttt{10.1177/0022343304043770}.
-
-\bibitem{CHS2004} P. Collier, A. Hoeffler and M. S\"oderbom, On the Duration of Civil War, \emph{Journal of Peace Research} 41(3), 253--273, 2004, DOI: \texttt{10.1177/0022343304043769}.
-
-\bibitem{CH2004} P. Collier and A. Hoeffler, Greed and Grievance in Civil War, \emph{Oxford Economic Papers} 56(4), 563--595, 2004, DOI: \texttt{10.1093/oep/gpf064}.
-
-\bibitem{FL2003} J. D. Fearon and D. D. Laitin, Ethnicity, Insurgency, and Civil War, \emph{American Political Science Review} 97(1), 75--90, 2003, DOI: \texttt{10.1017/S0003055403000534}.
-
-\bibitem{AP1996} A. Alesina and R. Perotti, Income Distribution, Political Instability, and Investment, \emph{European Economic Review} 40(6), 1203--1228, 1996, DOI: \texttt{10.1016/0014-2921(95)00030-5}.
-
-\bibitem{Freeman1999} R. B. Freeman, The Economics of Crime, in O. Ashenfelter and D. Card (eds.), \emph{Handbook of Labor Economics}, vol.~3, ch.~52, Elsevier, Amsterdam, 3529--3571, 1999.
-
-\bibitem{DM2015} M. Draca and S. Machin, Crime and Economic Incentives, \emph{Annual Review of Economics} 7, 389--408, 2015, DOI: \texttt{10.1146/annurev-economics-080614-115808}.
 
 \bibitem{GH1983} J. Guckenheimer and P. Holmes, \emph{Nonlinear Oscillations, Dynamical Systems, and Bifurcations of Vector Fields}, Springer-Verlag, New York, 1983.
 
