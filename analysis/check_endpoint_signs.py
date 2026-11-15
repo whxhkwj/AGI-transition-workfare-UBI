@@ -22,7 +22,8 @@ _spec.loader.exec_module(v6)
 
 
 def loss_at(pe):
-    p = v6.Params(eta=0.40, tau=0.15, pE=pe, phi_max=0.02)
+    p = v6.Params(eta=0.40, tau=0.15, pE=pe, phi_max=0.02,
+                  wP_mode="fixed", wage_slack="market")
     r = v6.simulate_v6(p)
     return v6.welfare(r, p)["total"]
 

@@ -42,7 +42,8 @@ SHARES = np.round(np.arange(0.0, 1.0001, 0.05), 2)
 def run(tau, ga, share):
     par = unified.Params(eta=0.40, mu_TM=0.50, phi_max=0.02,
                          pe_policy="full_absorption", tau=tau, gA=ga,
-                         transfer_budget_share=float(share))
+                         transfer_budget_share=float(share),
+                         wP_mode="fixed", wage_slack="market")
     r = unified.simulate_unified(par)
     w = unified.welfare(r, par)
     return dict(

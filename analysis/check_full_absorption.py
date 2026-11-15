@@ -33,7 +33,8 @@ FLOOR = 0.30
 
 def run(keep_transfer=False, **kw):
     base = dict(eta=0.40, mu_TM=0.50, phi_max=0.02,
-                pe_policy="full_absorption", full_keep_transfer=keep_transfer)
+                pe_policy="full_absorption", full_keep_transfer=keep_transfer,
+                wP_mode="fixed", wage_slack="market")
     base.update(kw)
     par = unified.Params(**base)
     return par, unified.simulate_unified(par)
@@ -58,7 +59,8 @@ print("=" * 70)
 checks = []
 
 # fixed-policy regression corner
-pf = unified.Params(eta=0.40, mu_TM=0.50, tau=0.15, pE=0.45, phi_max=0.02)
+pf = unified.Params(eta=0.40, mu_TM=0.50, tau=0.15, pE=0.45, phi_max=0.02,
+                    wP_mode="fixed", wage_slack="market")
 rf = unified.simulate_unified(pf)
 print("fixed corner: %s minC=%.4f" % (rf["outcome"], np.min(rf["C"][10:])))
 checks.append(("fixed corner stays smooth", rf["outcome"] == "smooth"))

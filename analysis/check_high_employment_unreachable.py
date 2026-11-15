@@ -35,6 +35,7 @@ CEILING = 0.45             # full-substitution policy ceiling must stay below th
 
 
 def endo(**kw):
+    kw = dict(kw, wP_mode="fixed", wage_slack="market")
     par = uni.Params(T=T, **kw)
     r = uni.simulate_unified(par)
     return dict(outcome=r["outcome"], sL_end=float(r["sL_end"]),
@@ -68,7 +69,8 @@ print("\nexogenous reinstatement rate (incomplete-substitution counterfactual)")
 om_share = {}
 print("%-8s %-11s %8s" % ("omega", "outcome", "sL_end"))
 for om in (0.3, 0.5, 0.7, 0.9):
-    par = uni.Params(omega_mode="exogenous", omega=om, tau=0.15, pE=0.45, T=T)
+    par = uni.Params(omega_mode="exogenous", omega=om, tau=0.15, pE=0.45, T=T,
+                     wP_mode="fixed", wage_slack="market")
     r = uni.simulate_unified(par)
     om_share[om] = float(r["sL_end"])
     print("%-8.2f %-11s %8.4f" % (om, r["outcome"], r["sL_end"]))

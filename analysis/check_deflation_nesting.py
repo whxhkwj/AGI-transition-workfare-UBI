@@ -45,7 +45,8 @@ def longest_neg(pi):
 def corner():
     par = engine.Params(eta=0.40, mu_TM=0.50, T=80,
                         omega_mode="endogenous", omega=0.05,
-                        tau=0.15, pE=0.45, phi_max=0.02, retrain=0.0)
+                        tau=0.15, pE=0.45, phi_max=0.02, retrain=0.0,
+                        wP_mode="fixed", wage_slack="market")
     return par, engine.simulate_unified(par)
 
 
@@ -93,7 +94,8 @@ def main():
             for pm in phis:
                 gp = engine.Params(eta=0.40, mu_TM=0.50, T=80,
                                    omega_mode="endogenous", omega=0.05,
-                                   tau=tau, pE=pe, phi_max=pm, retrain=0.0)
+                                   tau=tau, pE=pe, phi_max=pm, retrain=0.0,
+                                   wP_mode="fixed", wage_slack="market")
                 gr = engine.simulate_unified(gp)
                 runs.append(longest_neg(np.array(gr["pi"])))
     runs = np.array(runs)

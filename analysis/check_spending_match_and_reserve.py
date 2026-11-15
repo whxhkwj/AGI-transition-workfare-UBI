@@ -29,7 +29,8 @@ checks = []
 
 
 def run(fr, **kw):
-    return simulate_unified(Params(fiscal_reserve=fr, **kw))
+    return simulate_unified(Params(fiscal_reserve=fr, wP_mode="fixed",
+                                   wage_slack="market", **kw))
 
 
 # --- 1. Actual-spending reconciliation across the policy grid ----------------

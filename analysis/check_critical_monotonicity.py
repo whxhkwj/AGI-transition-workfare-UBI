@@ -22,7 +22,8 @@ C_FLOOR = 0.30
 
 
 def buffer(gA):
-    par = unified.Params(gA=gA, tau=0.15, pe_policy="full_absorption")
+    par = unified.Params(gA=gA, tau=0.15, pe_policy="full_absorption",
+                         wP_mode="fixed", wage_slack="market")
     r = unified.simulate_unified(par)
     return min(r["C"][10:]) - C_FLOOR
 

@@ -25,7 +25,8 @@ import double_task_sim_unified as U
 def run(tau, ga, share=0.0, no_floor=False):
     p = U.Params(eta=0.40, mu_TM=0.50, phi_max=0.02,
                  pe_policy="full_absorption", tau=tau, gA=ga,
-                 transfer_budget_share=share)
+                 transfer_budget_share=share,
+                 wP_mode="fixed", wage_slack="market")
     if no_floor:
         p.early_labor_floor = 0.0
     return U.simulate_unified(p), p
@@ -36,7 +37,8 @@ def boundary(tau, no_floor=False):
     for _ in range(14):
         mid = (lo + hi) / 2
         p = U.Params(eta=0.40, mu_TM=0.50, phi_max=0.02,
-                     pe_policy="full_absorption", tau=tau, gA=mid)
+                     pe_policy="full_absorption", tau=tau, gA=mid,
+                     wP_mode="fixed", wage_slack="market")
         if no_floor:
             p.early_labor_floor = 0.0
         r = U.simulate_unified(p)
@@ -72,10 +74,12 @@ for share in [0.0, 0.25, 0.50, 0.75, 1.0]:
     prev_c = mc
 
 # 3. household closure: a no-policy crash that actually truncates at zero
-pc = U.Params(tau=0.0, pE=0.0, phi_max=0.65, eta=0.40, mu_TM=0.50)
+pc = U.Params(tau=0.0, pE=0.0, phi_max=0.65, eta=0.40, mu_TM=0.50,
+              wP_mode="fixed", wage_slack="market")
 rc = U.simulate_unified(pc)
 ps = U.Params(eta=0.40, mu_TM=0.50, phi_max=0.02,
-              pe_policy="full_absorption", tau=0.15, gA=0.01)
+              pe_policy="full_absorption", tau=0.15, gA=0.01,
+              wP_mode="fixed", wage_slack="market")
 rs = U.simulate_unified(ps)
 gap_s = float(np.sum(rs["unfin_gap"])); gap_c = float(np.sum(rc["unfin_gap"]))
 print("\nsmooth total unfinanced gap = %.5f (expect 0)" % gap_s)

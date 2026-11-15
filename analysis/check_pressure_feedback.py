@@ -15,7 +15,7 @@ sys.path.insert(0, _SIMDIR)
 _spec = importlib.util.spec_from_file_location('v6', _os.path.join(_SIMDIR, 'double_task_sim_v6.py'))
 v6 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(v6)
 
-CALIB = dict(eta=0.40, mu_TM=0.50, omega=0.05)
+CALIB = dict(eta=0.40, mu_TM=0.50, omega=0.05, wP_mode="fixed", wage_slack="market")
 REGIMES = {
     'corner':        dict(CALIB, tau=0.15, pE=0.45, phi_max=0.02, retrain=0.0),
     'standard':      dict(CALIB, tau=0.16, pE=0.45, phi_max=0.65, retrain=0.0),

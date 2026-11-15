@@ -89,6 +89,13 @@ class Params(v4.Params):
         self.link_intercept_override = None
         # 制度对照开关：是否允许未用预算结转为财政储备，用于后续缺口（默认 False）。
         self.fiscal_reserve = False
+        # Workfare wage rule. "dynamic": wP_t = max(wP_floor, wP_ratio * w_real[t])
+        # (main model, always below the market wage); "fixed": constant level (legacy).
+        self.wP_mode = "dynamic"
+        self.wP_floor = 0.30       # statutory workfare wage floor (aligned with Cmin)
+        # Wage-Phillips slack measure. "market": u = 1-LD/LS (legacy, counts public
+        # workers as slack); "residual": prior-period Urem/LS (public jobs are jobs).
+        self.wage_slack = "residual"
         for k, v in kw.items():
             setattr(self, k, v)
 
@@ -101,6 +108,7 @@ def simulate_unified(par):
     P = np.zeros(T); D = np.zeros(T); C = np.zeros(T); pi = np.zeros(T)
     phi = np.zeros(T); u = np.zeros(T); i_arr = np.zeros(T); rd = np.zeros(T)
     b = np.zeros(T); w_real = np.zeros(T); omega_arr = np.zeros(T)
+    wP_arr = np.zeros(T)
     EP = np.zeros(T); Urem = np.zeros(T); TM = np.zeros(T)
     Eplan = np.zeros(T); shortfall = np.zeros(T); cap_share = np.zeros(T)
     unfin_gap = np.zeros(T)   # 零截断处未融资缺口：违约核销或外部资金闭合项
@@ -112,18 +120,22 @@ def simulate_unified(par):
     GDP[0] = 1.0
     P[0], D[0] = par.P0, par.D0 * par.P0
     w_real[0] = 1.0
+    # Dynamic workfare wage: a fixed ratio (par.wP = 0.85) of the market wage,
+    # so it stays strictly below the market wage in every period.
+    wP_arr[0] = (max(par.wP_floor, par.wP * w_real[0])
+                 if par.wP_mode == "dynamic" else par.wP)
     phi[0] = par.phi_base
     u[0] = 1 - LD[0] / par.LS
     EP[0] = 0.0
     Urem[0] = u[0] * par.LS
     TM[0] = phi[0] * par.w * Urem[0]
-    Eplan[0] = par.wP * EP[0] + TM[0]
+    Eplan[0] = wP_arr[0] * EP[0] + TM[0]
     cap_inc[0] = max(0.0, GDP[0] - w_real[0] * LD[0])
     tax[0] = par.tau * cap_inc[0]
     cap_share[0] = 1.0
     skill[0] = (LD[0] * 1.0 + EP[0] * 1.0 + Urem[0] * (1 - par.delta_skill)) / par.LS
     stress[0] = par.alpha_s * (Urem[0] / par.LS)
-    C[0] = w_real[0] * LD[0] + par.wP * EP[0] + par.mu_TM * TM[0]
+    C[0] = w_real[0] * LD[0] + wP_arr[0] * EP[0] + par.mu_TM * TM[0]
     b[0] = D[0] / P[0]
     if getattr(par, "link_intercept_override", None) is not None:
         ell0 = float(par.link_intercept_override)
@@ -171,6 +183,13 @@ def simulate_unified(par):
         sL[t] = LD[t] / par.LS
         u[t] = 1 - LD[t] / par.LS
 
+        # Market wage is determined before the fiscal plan so the workfare wage
+        # can be set to a fixed ratio of the contemporaneous market wage.
+        slack = u[t] if par.wage_slack == "market" else Urem[t - 1] / par.LS
+        w_real[t] = max(0.35, w_real[t - 1] * (1 + par.gW - par.lambda_w * slack))
+        wP_arr[t] = (max(par.wP_floor, par.wP * w_real[t])
+                     if par.wP_mode == "dynamic" else par.wP)
+
         ud = u[max(0, t - par.d)]
         phi[t] = min(par.phi_max, par.phi_base + par.resp * max(0.0, ud))
         # 同预算混合分配：把当期税收按固定比例拆给公共就业与转移，保证转移有正支出。
@@ -183,12 +202,12 @@ def simulate_unified(par):
             b_tm = par.transfer_budget_share * budget
             b_ep = budget - b_tm
             unemployed = u[t] * par.LS
-            EP[t] = min(unemployed, b_ep / par.wP)
+            EP[t] = min(unemployed, b_ep / wP_arr[t])
             Urem[t] = max(0.0, unemployed - EP[t])
             tm_need = phi[t] * par.w * Urem[t]
             TM[t] = min(tm_need, b_tm)
             EP_plan = unemployed
-            Eplan[t] = par.wP * unemployed + tm_need
+            Eplan[t] = wP_arr[t] * unemployed + tm_need
             shortfall[t] = max(0.0, Eplan[t] - budget)
             cap_share[t] = (budget / Eplan[t] if Eplan[t] > 0 else 1.0)
         else:
@@ -201,7 +220,7 @@ def simulate_unified(par):
                 EP_plan = min(par.pE * u[t] * par.LS, u[t] * par.LS)
                 Urem_plan = max(0.0, u[t] * par.LS - EP_plan)
                 TM_plan = phi[t] * par.w * Urem_plan
-            Eplan[t] = par.wP * EP_plan + TM_plan
+            Eplan[t] = wP_arr[t] * EP_plan + TM_plan
             if Eplan[t] <= available + 1e-9:
                 EP[t], TM[t] = EP_plan, TM_plan
                 shortfall[t] = 0.0
@@ -217,14 +236,14 @@ def simulate_unified(par):
             # 全覆盖模式可选转移兜底：公共就业优先，剩余财政空间为未接住者融资转移。
             if (par.pe_policy == "full_absorption" and par.full_keep_transfer
                     and Urem[t] > 1e-9):
-                fiscal_room = max(0.0, available - par.wP * EP[t])
+                fiscal_room = max(0.0, available - wP_arr[t] * EP[t])
                 TM_need = phi[t] * par.w * Urem[t]
                 TM[t] = min(TM_need, fiscal_room)
-                Eplan[t] = par.wP * EP_plan + TM_need
+                Eplan[t] = wP_arr[t] * EP_plan + TM_need
                 shortfall[t] = max(0.0, Eplan[t] - available)
 
         # 制度对照：开启回拨时，把未用预算结转；否则储备恒为零，保持基线行为。
-        spent = par.wP * EP[t] + TM[t]
+        spent = wP_arr[t] * EP[t] + TM[t]
         if par.fiscal_reserve:
             reserve = max(0.0, available - spent)
         else:
@@ -250,9 +269,8 @@ def simulate_unified(par):
         P[t] = P[t - 1] * (1 + pi[t])
         i_arr[t] = max(0.0, par.rn + pi[t])
         rd[t] = i_arr[t] - pi[t]
-        w_real[t] = max(0.35, w_real[t - 1] * (1 + par.gW - par.lambda_w * u[t]))
         # 家庭资产负债表：净借贷统一决策，受授信硬上限约束；无消费截断。
-        Yd = (w_real[t] * LD[t] + par.wP * EP[t] + par.mu_TM * TM[t]
+        Yd = (w_real[t] * LD[t] + wP_arr[t] * EP[t] + par.mu_TM * TM[t]
               - par.mu * max(0.0, rd[t]))
         D_rolled = D[t - 1] * (1 + i_arr[t])
         # Units: the consumption gap (Cfe-Yd) is a real quantity, so the desired
@@ -335,7 +353,7 @@ def simulate_unified(par):
     return dict(It=It, Nt=Nt, nlab=nlab, LD=LD, sL=sL, C=C, GDP=GDP,
                 cap_inc=cap_inc, tax=tax, cap_share=cap_share, shortfall=shortfall,
                 P=P, D=D, pi=pi, phi=phi, u=u, b=b, rd=rd, i_arr=i_arr,
-                w_real=w_real, EP=EP, Urem=Urem, TM=TM, Eplan=Eplan,
+                w_real=w_real, wP=wP_arr, EP=EP, Urem=Urem, TM=TM, Eplan=Eplan,
                 skill=skill, stress=stress, net_b=net_b_arr, unfin_gap=unfin_gap,
                 omega=omega_arr,
                 summary=summary,
@@ -352,7 +370,7 @@ def welfare(r, par, lam=0.5, lam_pe=0.6, delta=0.6, nu=0.5):
     Cfe = par.w * par.LS
     gap = np.maximum(0.0, Cfe - r["C"])
     tm_cost = lam * r["TM"]
-    pe_cost = lam_pe * par.wP * r["EP"] + nu * r["EP"] ** 2
+    pe_cost = lam_pe * r["wP"] * r["EP"] + nu * r["EP"] ** 2
     dwl = delta * par.tau ** 2 * r["tax"]
     loss = gap + tm_cost + pe_cost + dwl
     return dict(total=float(loss.sum()), gap=float(gap.sum()),

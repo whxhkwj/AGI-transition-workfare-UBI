@@ -26,7 +26,8 @@ def mc(tau, pe, pm, sigma, rho=0.5, n=None, seed=7,
     for i in range(n):
         p = v12.Params(eta=0.40 + rng.normal(0, eta_sd),
                        mu_TM=0.50 + rng.normal(0, mu_sd),
-                       tau=tau, pE=pe, phi_max=pm, retrain=retrain, omega=0.05)
+                       tau=tau, pE=pe, phi_max=pm, retrain=retrain, omega=0.05,
+                       wP_mode="fixed", wage_slack="market")
         T = p.T
         eps = rng.normal(0.0, sigma, T)
         dev = np.zeros(T)

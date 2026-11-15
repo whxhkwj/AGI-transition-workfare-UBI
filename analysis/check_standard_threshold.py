@@ -22,7 +22,7 @@ Params, simulate_v6 = v6.Params, v6.simulate_v6
 
 def minC(pE):
     p = Params(eta=0.40, mu_TM=0.50, omega=0.05, tau=0.16, pE=pE,
-               phi_max=0.65, retrain=0.0)
+               phi_max=0.65, retrain=0.0, wP_mode="fixed", wage_slack="market")
     r = simulate_v6(p)
     return float(np.min(r['C'][10:])), r['Cmin']
 

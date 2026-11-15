@@ -25,7 +25,8 @@ unified = importlib.util.module_from_spec(spec); spec.loader.exec_module(unified
 
 # Baseline corner (exogenous reinstatement calibration used in the audit).
 par = unified.Params(tau=0.15, pE=0.45, phi_max=0.02,
-                     omega_mode="exogenous", omega=0.05)
+                     omega_mode="exogenous", omega=0.05,
+                     wP_mode="fixed", wage_slack="market")
 r = unified.simulate_unified(par)
 T = par.T
 LD, EP, Urem = r["LD"], r["EP"], r["Urem"]

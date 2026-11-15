@@ -13,7 +13,7 @@ v6 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(v6)
 Params, simulate_v6, welfare = v6.Params, v6.simulate_v6, v6.welfare
 
 def P(**kw):
-    base = dict(eta=0.40, mu_TM=0.50)
+    base = dict(eta=0.40, mu_TM=0.50, wP_mode="fixed", wage_slack="market")
     base.update(kw)
     return Params(**base)
 

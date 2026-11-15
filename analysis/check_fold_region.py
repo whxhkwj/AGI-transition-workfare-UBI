@@ -26,7 +26,7 @@ def f_and_coeffs(s, mu, sig, prm, Ntot):
 
 # ---- 1) one-step consistency: continuous f vs the simulator's discrete update
 par = v6.Params(tau=0.15, pE=0.45, phi_max=0.02, omega=0.05, retrain=0.0,
-                eta=0.40, mu_TM=0.50)
+                eta=0.40, mu_TM=0.50, wP_mode="fixed", wage_slack="market")
 r = v6.simulate_v6(par)
 print("=== one-step consistency (continuous f vs discrete ds/dt) ===")
 Ntot = float(r['Nt'][0]); sig = 1.0

@@ -22,6 +22,7 @@ for T in (80, 200):
     print("%-16s %-11s %-6s %-10s %-10s %s" % ("config", "outcome", "crash", "minC", "sL_end", "om_end"))
     for name, kw in CASES:
         kw = dict(kw); kw['T'] = T
+        kw['wP_mode'] = "fixed"; kw['wage_slack'] = "market"
         par = v12.Params(**kw)
         r = v12.simulate_v12(par)
         om = r.get('omega', [None])[-1]

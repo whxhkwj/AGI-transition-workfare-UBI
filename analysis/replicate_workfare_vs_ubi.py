@@ -28,7 +28,7 @@ _SPEC.loader.exec_module(v6)
 # Calibration used throughout the paper. Both entries MUST be passed
 # explicitly: the engine's own defaults (mu_TM=0.70, eta=0.35) are left-overs
 # from an earlier experiment and are not the paper's calibration.
-CAL = dict(mu_TM=0.50, eta=0.40)
+CAL = dict(mu_TM=0.50, eta=0.40, wP_mode="fixed", wage_slack="market")
 OMEGAS = (0.02, 0.05, 0.10, 0.20, 0.30, 0.50)
 FLOOR = 0.30
 

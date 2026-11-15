@@ -19,7 +19,8 @@ import double_task_sim_v12_endogenous_omega as v12
 import dynamic_threshold as dt
 
 par = v12.Params(eta=0.40, mu_TM=0.50, T=200, tau=0.15, pE=0.45,
-                 phi_max=0.02, retrain=0.0)
+                 phi_max=0.02, retrain=0.0,
+                 wP_mode="fixed", wage_slack="market")
 r = v12.simulate_v12(par)
 om, skill, sL, C = r['omega'], r['skill'], r['sL'], r['C']
 
@@ -42,7 +43,8 @@ for t in (10, 20, 30, 40, 60, 80):
 print("\n=== bisection: pE that defends consumption (minC >= Cmin) ===")
 def minC_of(pE):
     p = v12.Params(eta=0.40, mu_TM=0.50, tau=0.15, pE=pE,
-                   phi_max=0.02, retrain=0.0)
+                   phi_max=0.02, retrain=0.0,
+                   wP_mode="fixed", wage_slack="market")
     rr = v12.simulate_v12(p)
     return float(np.min(rr['C'][10:])), rr['Cmin']
 
@@ -59,7 +61,8 @@ print(f"pE* (consumption floor, minC = Cmin) = {pE_star:.6f}")
 
 # at pE*, is the real BEB reached?
 p = v12.Params(eta=0.40, mu_TM=0.50, tau=0.15, pE=pE_star,
-               phi_max=0.02, retrain=0.0)
+               phi_max=0.02, retrain=0.0,
+               wP_mode="fixed", wage_slack="market")
 rr = v12.simulate_v12(p)
 real_at_star = dt.first_real_crossing(rr['omega'], rr['skill'])
 print(f"  at pE*: real BEB crossing = {real_at_star} (consumption defended "
@@ -68,7 +71,8 @@ print(f"  at pE*: real BEB crossing = {real_at_star} (consumption defended "
 print("\n=== outcomes on either side of pE* ===")
 for pE in [pE_star - 0.05, pE_star, pE_star + 0.05]:
     p = v12.Params(eta=0.40, mu_TM=0.50, tau=0.15, pE=pE,
-                   phi_max=0.02, retrain=0.0)
+                   phi_max=0.02, retrain=0.0,
+                   wP_mode="fixed", wage_slack="market")
     rr = v12.simulate_v12(p)
     print(f"pE={pE:6.3f} outcome={rr['outcome']:11s} crash_type={rr['crash_type']:6s} "
           f"minC={np.min(rr['C'][10:]):.4f} sL_end={rr['sL'][-1]:.4f}")

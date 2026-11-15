@@ -19,8 +19,8 @@ Outputs:
     figures/output/graphical_abstract.png   (3200 x 1600 px, 2x)
     figures/output/graphical_abstract.pdf   (single vector page)
 
-All figures quoted in the infographic (min_t C_t = 0.415 > C^min = 0.30 on the
-full-absorption path, the fiscal gate at g_A = 0.097 under tau = 0.15, and the
+All figures quoted in the infographic (min_t C_t = 0.530 > C^min = 0.30 on the
+full-absorption path, the fiscal gate at g_A = 0.110 under tau = 0.15, and the
 social-gate plateau near g_A = 0.14) are produced by the engines in
 ``simulation/`` and cross-checked by ``analysis/check_ga_panel.py``.
 """

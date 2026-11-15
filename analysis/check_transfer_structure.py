@@ -25,7 +25,8 @@ FLOOR = 0.30
 
 def run(label, mu_TM, alpha_s):
     par = v6.Params(eta=0.40, tau=0.16, pE=0.0, phi_max=0.65,
-                    mu_TM=mu_TM, alpha_s=alpha_s)
+                    mu_TM=mu_TM, alpha_s=alpha_s,
+                    wP_mode="fixed", wage_slack="market")
     r = v6.run_case(par)
     print("%-30s outcome=%-11s crash=%-6s minC=%.4f" % (
         label, r["outcome"], r["crash_type"], r["minC"]))

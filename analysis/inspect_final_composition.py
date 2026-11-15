@@ -12,7 +12,8 @@ configs = {
 }
 print("config      market_jobs  public_jobs  unemployed   (sum)")
 for name, cfg in configs.items():
-    p = v12.Params(eta=0.40, mu_TM=0.50, T=200, **cfg)
+    p = v12.Params(eta=0.40, mu_TM=0.50, T=200, wP_mode="fixed",
+                   wage_slack="market", **cfg)
     r = v12.simulate_v12(p)
     mj, pj, un = r["sL"][-1], r["EP"][-1], r["Urem"][-1]
     print(f"{name:10s}  {mj:.3f}        {pj:.3f}        {un:.3f}    ({mj+pj+un:.3f})")

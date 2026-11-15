@@ -22,7 +22,8 @@ for eng, mod, sim in [("exog", v6, v6.simulate_v6), ("endog", v12, v12.simulate_
     first_smooth = None
     for pe in np.arange(0.40, 0.501, 0.005):
         par = mod.Params(eta=0.40, mu_TM=0.50, omega=0.05, tau=0.15,
-                         pE=float(pe), phi_max=0.02, retrain=0.0)
+                         pE=float(pe), phi_max=0.02, retrain=0.0,
+                         wP_mode="fixed", wage_slack="market")
         r = sim(par)
         ok = (r['outcome'] == 'smooth') or (r['outcome'] == 'not_reached' and r['crash_type'] == 'none')
         if ok and first_smooth is None:

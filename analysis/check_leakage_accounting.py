@@ -21,7 +21,8 @@ _spec = importlib.util.spec_from_file_location(
 v12 = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(v12)
 
-par = v12.Params(eta=0.40, tau=0.15, pE=0.45, phi_max=0.02)
+par = v12.Params(eta=0.40, tau=0.15, pE=0.45, phi_max=0.02,
+                 wP_mode="fixed", wage_slack="market")
 r = v12.simulate_v12(par)
 
 cap = r["cap_inc"]

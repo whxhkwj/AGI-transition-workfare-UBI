@@ -26,7 +26,8 @@ import numpy as np
 
 def evaluate(p_E, mu_TM, alpha_s):
     par = v6.Params(eta=0.40, tau=0.16, phi_max=0.65, pE=p_E,
-                    mu_TM=mu_TM, alpha_s=alpha_s)
+                    mu_TM=mu_TM, alpha_s=alpha_s,
+                    wP_mode="fixed", wage_slack="market")
     r = v6.simulate_v6(par)
     w = v6.welfare(r, par)
     spend = r["TM"].sum() + par.wP * r["EP"].sum()

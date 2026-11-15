@@ -37,7 +37,7 @@ for tau in taus:
         for pm in phis:
             tot += 1
             p = Params(tau=tau, pE=pe, phi_max=pm, retrain=0.0, omega=0.05,
-                       eta=0.40, mu_TM=0.50)
+                       eta=0.40, mu_TM=0.50, wP_mode="fixed", wage_slack="market")
             cache[(tau, pe, pm)] = (p, simulate_v6(p))
 
 print('grid size = %d' % tot)

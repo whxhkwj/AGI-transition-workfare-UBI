@@ -29,7 +29,7 @@ v6 = _load("v6", f"{SIM}/double_task_sim_v6.py")
 
 def run(alpha, pE, tau, phi):
     par = v6.Params(eta=0.40, mu_TM=0.50, tau=tau, pE=pE, phi_max=phi,
-                    alpha_s=alpha)
+                    alpha_s=alpha, wP_mode="fixed", wage_slack="market")
     out = v6.simulate_v6(par)
     return out["outcome"], out["crash_type"], float(np.min(out["C"][10:]))
 

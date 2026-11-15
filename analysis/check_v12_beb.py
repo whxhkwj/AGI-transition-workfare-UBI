@@ -24,7 +24,8 @@ configs = {
 
 print("config        outcome      minC      real BEB crossing (eff=omega*skill)")
 for name, cfg in configs.items():
-    par = v12.Params(eta=0.40, mu_TM=0.50, T=200, **cfg)
+    par = v12.Params(eta=0.40, mu_TM=0.50, T=200, wP_mode="fixed",
+                     wage_slack="market", **cfg)
     r = v12.simulate_v12(par)
     real_t = dt.first_real_crossing(r['omega'], r['skill'])
     minC = float(np.min(r['C'][10:]))
@@ -32,7 +33,8 @@ for name, cfg in configs.items():
 
 print("\n--- omega trajectory (every 20 periods) ---")
 for name, cfg in configs.items():
-    par = v12.Params(eta=0.40, mu_TM=0.50, T=200, **cfg)
+    par = v12.Params(eta=0.40, mu_TM=0.50, T=200, wP_mode="fixed",
+                     wage_slack="market", **cfg)
     r = v12.simulate_v12(par)
     traj = " ".join(f"{r['omega'][j]:.3f}" for j in range(0, 200, 20))
     print(f"{name:12s}: {traj}")
@@ -41,7 +43,8 @@ print("\n=== sweep pE (public employment), retrain=0, phi_max=0.30 ===")
 print(" pE     outcome      minC    real BEB")
 for pE in [0.0, 0.15, 0.30, 0.45, 0.60, 0.75, 0.90]:
     par = v12.Params(eta=0.40, mu_TM=0.50, T=200, tau=0.15, pE=pE,
-                     phi_max=0.30, retrain=0.0)
+                     phi_max=0.30, retrain=0.0,
+                     wP_mode="fixed", wage_slack="market")
     r = v12.simulate_v12(par)
     print(f"{pE:5.2f} {r['outcome']:10s} {np.min(r['C'][10:]):.4f}   "
           f"t={dt.first_real_crossing(r['omega'], r['skill'])}")
@@ -50,7 +53,8 @@ print("\n=== sweep retrain (skill retention) at fixed pE=0.45 ===")
 print(" retrain  outcome      minC    real BEB")
 for rt in [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]:
     par = v12.Params(eta=0.40, mu_TM=0.50, T=200, tau=0.15, pE=0.45,
-                     phi_max=0.30, retrain=rt)
+                     phi_max=0.30, retrain=rt,
+                     wP_mode="fixed", wage_slack="market")
     r = v12.simulate_v12(par)
     print(f"{rt:6.2f} {r['outcome']:10s} {np.min(r['C'][10:]):.4f}   "
           f"t={dt.first_real_crossing(r['omega'], r['skill'])}")

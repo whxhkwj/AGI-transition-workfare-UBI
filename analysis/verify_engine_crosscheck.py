@@ -13,7 +13,8 @@ configs = {
     "strong":    dict(tau=0.15, pE=0.80, phi_max=0.65, retrain=0.8),
 }
 for name, cfg in configs.items():
-    p = v12.Params(eta=0.40, mu_TM=0.50, T=200, **cfg)
+    p = v12.Params(eta=0.40, mu_TM=0.50, T=200, wP_mode="fixed",
+                   wage_slack="market", **cfg)
     r = v12.simulate_v12(p)
     It, Nt, nlab = r["It"], r["Nt"], r["nlab"]
     om, sk = r["omega"], r["skill"]

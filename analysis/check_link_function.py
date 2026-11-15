@@ -41,7 +41,7 @@ def _corner_path(link):
     par = engine.Params(eta=0.40, mu_TM=0.50, T=80,
                         omega_mode="endogenous", omega=0.05,
                         tau=0.15, pE=0.45, phi_max=0.02, retrain=0.0,
-                        **extra)
+                        wP_mode="fixed", wage_slack="market", **extra)
     return engine.simulate_unified(par)
 
 

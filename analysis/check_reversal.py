@@ -19,7 +19,8 @@ import double_task_sim_v12_endogenous_omega as v12
 import dynamic_threshold as dt
 
 p = v12.Params(eta=0.40, mu_TM=0.50, T=200,
-               tau=0.15, pE=0.80, phi_max=0.65, retrain=0.8)
+               tau=0.15, pE=0.80, phi_max=0.65, retrain=0.8,
+               wP_mode="fixed", wage_slack="market")
 r = v12.simulate_v12(p)
 sL, om = r['sL'], r['omega']
 real_t = dt.first_real_crossing(om, r['skill'])
@@ -33,7 +34,8 @@ for t in (1, 20, 40, 80, 120, 160, 198):
 
 # contrast with no-policy absorption
 pn = v12.Params(eta=0.40, mu_TM=0.50, T=200,
-                tau=0.05, pE=0.0, phi_max=0.15, retrain=0.0)
+                tau=0.05, pE=0.0, phi_max=0.15, retrain=0.0,
+                wP_mode="fixed", wage_slack="market")
 rn = v12.simulate_v12(pn)
 print(f"\nno-policy sL_end={rn['sL'][-1]:.4f} (absorbed), "
       f"strong sL_end={sL[-1]:.4f} (positive equilibrium)")

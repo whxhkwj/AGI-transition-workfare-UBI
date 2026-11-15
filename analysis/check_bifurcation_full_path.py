@@ -29,7 +29,8 @@ _spec = importlib.util.spec_from_file_location(
 v12 = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(v12)
 
-_STRONG = dict(tau=0.15, pE=0.80, phi_max=0.65, retrain=0.8)
+_STRONG = dict(tau=0.15, pE=0.80, phi_max=0.65, retrain=0.8,
+               wP_mode="fixed", wage_slack="market")
 THRESH = 0.5667
 
 

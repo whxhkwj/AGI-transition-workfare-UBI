@@ -17,7 +17,8 @@ def load(name, f):
 v6 = load('v6', 'double_task_sim_v6.py')
 v12 = load('v12', 'double_task_sim_v12_endogenous_omega.py')
 
-BASE = dict(eta=0.40, mu_TM=0.50, omega=0.05, tau=0.15, pE=0.45, retrain=0.0)
+BASE = dict(eta=0.40, mu_TM=0.50, omega=0.05, tau=0.15, pE=0.45, retrain=0.0,
+            wP_mode="fixed", wage_slack="market")
 PHIS = [0.02, 0.001, 0.0]
 
 print("%-12s %-8s %-11s %-6s %-12s" % ("engine", "phi_max", "outcome", "crash", "minC"))

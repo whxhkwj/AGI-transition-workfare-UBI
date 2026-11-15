@@ -19,7 +19,9 @@ cases = {
 }
 for name, kw in cases.items():
     try:
-        rr = v12.simulate_v12(v12.Params(eta=0.40, mu_TM=0.50, T=80, **kw))
+        rr = v12.simulate_v12(v12.Params(eta=0.40, mu_TM=0.50, T=80,
+                                         wP_mode="fixed", wage_slack="market",
+                                         **kw))
         print("%-26s outcome=%-12s minC=%.6f  sL_end=%.4f" % (name, rr["outcome"], float(np.min(rr["C"]), ), rr["sL"][-1]))
     except Exception as e:
         print("%-26s FAILED: %s" % (name, e))

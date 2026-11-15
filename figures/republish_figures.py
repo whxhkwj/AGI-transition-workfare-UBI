@@ -98,7 +98,7 @@ v6 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(v6)
 
 
 def P(**kw):
-    base = dict(eta=0.40, mu_TM=0.50)
+    base = dict(eta=0.40, mu_TM=0.50, wP_mode="fixed", wage_slack="market")
     base.update(kw)
     return v6.Params(**base)
 

@@ -29,7 +29,8 @@ _spec = importlib.util.spec_from_file_location(
 v12 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(v12)
 
 HORIZON = 200
-COMMON = dict(eta=0.40, mu_TM=0.50, T=HORIZON)
+COMMON = dict(eta=0.40, mu_TM=0.50, T=HORIZON,
+              wP_mode="fixed", wage_slack="market")
 REGIMES = {
     'no policy': dict(COMMON, tau=0.05, pE=0.00, phi_max=0.15, retrain=0.0),
     'corner':    dict(COMMON, tau=0.15, pE=0.45, phi_max=0.02, retrain=0.0),

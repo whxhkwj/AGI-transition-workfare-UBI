@@ -26,7 +26,8 @@ _spec.loader.exec_module(v6)
 omegas = [0.02, 0.05, 0.10, 0.20, 0.30, 0.50]
 outcomes = []
 for w in omegas:
-    par = v6.Params(eta=0.40, tau=0.15, pE=0.45, phi_max=0.02, omega=w)
+    par = v6.Params(eta=0.40, tau=0.15, pE=0.45, phi_max=0.02, omega=w,
+                    wP_mode="fixed", wage_slack="market")
     r = v6.simulate_v6(par)
     outcomes.append(r["outcome"])
 

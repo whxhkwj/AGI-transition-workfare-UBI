@@ -54,7 +54,8 @@ high_reachable = 0
 for i in range(N_DRAW):
     par = Params(pe_policy="full_absorption", tau=0.15, mu_TM=mu_d[i],
                  alpha_s=alpha_d[i], phi_max=phi_d[i], eta=eta_d[i],
-                 wP=wp_d[i], gA=ga_d[i])
+                 wP=wp_d[i], gA=ga_d[i],
+                 wP_mode="fixed", wage_slack="market")
     r = simulate_unified(par)
     key = r["outcome"]
     classes[key] = classes.get(key, 0) + 1

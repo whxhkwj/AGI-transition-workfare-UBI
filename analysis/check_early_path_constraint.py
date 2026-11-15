@@ -27,7 +27,8 @@ _spec.loader.exec_module(v12)
 
 
 def run(label, **kw):
-    par = v12.Params(eta=0.40, mu_TM=0.50, **kw)
+    par = v12.Params(eta=0.40, mu_TM=0.50, wP_mode="fixed",
+                     wage_slack="market", **kw)
     r = v12.simulate_v12(par)
     ew = par.early_window
     print("%-22s outcome=%-11s crash=%-10s minC_early=%.4f min_sL_early=%.4f" % (

@@ -45,7 +45,8 @@ MU_FINE = np.round(np.arange(0.80, 0.999, 0.01), 2)
 def run(tau, ga, mu, share):
     par = unified.Params(eta=0.40, mu_TM=mu, phi_max=0.02,
                          pe_policy="full_absorption", tau=tau, gA=ga,
-                         transfer_budget_share=share)
+                         transfer_budget_share=share,
+                         wP_mode="fixed", wage_slack="market")
     r = unified.simulate_unified(par)
     w = unified.welfare(r, par)
     return dict(minC=float(np.min(r["C"][1:])), outcome=r["outcome"],

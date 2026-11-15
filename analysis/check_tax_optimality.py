@@ -31,7 +31,8 @@ def welfare_optimum(eta, t):
     rows = []
     for tau in TAU_GRID:
         par = u.Params(eta=eta, mu_TM=0.50, T=t, tau=float(tau),
-                       pE=0.45, phi_max=0.02, retrain=0.0)
+                       pE=0.45, phi_max=0.02, retrain=0.0,
+                       wP_mode="fixed", wage_slack="market")
         r = u.simulate_unified(par)
         w = u.welfare(r, par)
         rows.append((float(tau), r['outcome'], w['total']))

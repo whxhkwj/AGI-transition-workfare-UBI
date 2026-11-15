@@ -65,7 +65,8 @@ print("\n=== long horizon T=200, corner policy ===")
 for name, cfg in [('no policy', dict(tau=0.05, pE=0.0, phi_max=0.15, retrain=0.0)),
                   ('corner', dict(tau=0.15, pE=0.45, phi_max=0.02, retrain=0.0)),
                   ('strong', dict(tau=0.15, pE=0.80, phi_max=0.65, retrain=0.8))]:
-    p = v12.Params(eta=0.40, mu_TM=0.50, T=200, **cfg)
+    p = v12.Params(eta=0.40, mu_TM=0.50, T=200, wP_mode="fixed",
+                   wage_slack="market", **cfg)
     r = v12.simulate_v12(p)
     sL = r['sL']
     print(f"{name:10s} outcome={r['outcome']:11s} sL_end={sL[-1]:.4f} "
