@@ -5,15 +5,8 @@ __pycache__/
 venv/
 _logs/
 
-# LaTeX auxiliary files from a local build of paper/
-paper/*.aux
-paper/*.log
-paper/*.out
-paper/*.bbl
-paper/*.blg
-paper/*.synctex.gz
-paper/*.spl
-paper/*.toc
+# generated figure outputs (rebuilt by scripts in figures/)
+figures/output/
 
 # editor / OS
 .vscode/

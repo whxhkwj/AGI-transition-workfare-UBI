@@ -19,9 +19,8 @@ against the values printed in the paper.
 ```
 simulation/   the unified engine (one physical law); v6/v12 are thin wrappers
 analysis/     one script per number in the paper; each prints the value it checks
-figures/      the eight manuscript figures and the graphical abstract
-paper/        LaTeX source, compiled PDF, cover letter, graphical abstract,
-              and the standalone online appendix (supplementary.tex/.pdf)
+figures/      figure and graphical-abstract source scripts; outputs land in
+              figures/output/ (git-ignored, rebuilt by the scripts)
 ```
 
 Nothing in the repository depends on an absolute path: every script resolves
@@ -34,19 +33,6 @@ Python 3.9 or later, and
 ```
 pip install -r requirements.txt      # numpy, matplotlib, sympy
 ```
-
-`paper/` additionally needs pdfLaTeX. `elsarticle.cls` is shipped in `paper/`,
-so the build also works on a TeX distribution that does not carry it:
-
-```bash
-cd paper
-pdflatex manuscript.tex
-pdflatex manuscript.tex      # second pass for cross-references
-```
-
-The result is the submitted PDF: 52 pages, no errors, no undefined references.
-A separate online appendix (`supplementary.tex`, 6 pages) is built the same way.
-This was verified from a clean copy of the repository on TeX Live 2022.
 
 ## Quick check
 
@@ -161,14 +147,13 @@ returns `minC`, `total` and the decomposition.
 ### Figures
 
 ```bash
-python figures/republish_figures.py             # six fast-subsystem figures -> paper/figures (about 2 min)
-python figures/make_fig_global_bifurcation.py   # two global bifurcation figures -> paper/figures
-python figures/make_graphical_abstract.py       # renders figures/graphical_abstract.html -> paper/, 3200 x 1600 px + single-page vector PDF
+python figures/republish_figures.py             # six fast-subsystem figures -> figures/output (about 2 min)
+python figures/make_fig_global_bifurcation.py   # two global bifurcation figures -> figures/output
+python figures/make_graphical_abstract.py       # renders figures/graphical_abstract.html -> figures/output, 3200 x 1600 px + single-page vector PDF
 ```
 
 The eight figures read the same engine and calibration as the manuscript and write
-into `paper/`, so `paper/manuscript.tex` picks them up directly through
-`\graphicspath{{figures/}}`. The graphical abstract is an infographic rendered
+into `figures/output/`. The graphical abstract is an infographic rendered
 from `figures/graphical_abstract.html` with headless Chromium via Playwright
 (set `CHROMIUM_PATH` to a system browser); every number it quotes is
 cross-checked by `analysis/check_ga_panel.py`.

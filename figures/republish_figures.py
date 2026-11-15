@@ -91,7 +91,8 @@ GREY   = "#666666"
 FILLGR = "#D8D8D8"
 
 SIM = _SIMDIR
-OUT = _os.path.join(_ROOT, "paper", "figures")
+OUT = _os.path.join(_HERE, "output")
+_os.makedirs(OUT, exist_ok=True)
 _spec = importlib.util.spec_from_file_location("v6", os.path.join(SIM, "double_task_sim_v6.py"))
 v6 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(v6)
 

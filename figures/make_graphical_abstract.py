@@ -16,8 +16,8 @@ Requirements beyond the simulation stack:
 The environment variable CHROMIUM_PATH overrides the browser executable.
 
 Outputs:
-    paper/graphical_abstract.png   (3200 x 1600 px, 2x)
-    paper/graphical_abstract.pdf   (single vector page)
+    figures/output/graphical_abstract.png   (3200 x 1600 px, 2x)
+    figures/output/graphical_abstract.pdf   (single vector page)
 
 All figures quoted in the infographic (min_t C_t = 0.415 > C^min = 0.30 on the
 full-absorption path, the fiscal gate at g_A = 0.097 under tau = 0.15, and the
@@ -29,7 +29,7 @@ import os as _os
 _HERE = _os.path.dirname(_os.path.abspath(__file__))
 _ROOT = _os.path.dirname(_HERE)
 _HTML = _os.path.join(_HERE, "graphical_abstract.html")
-_OUT = _os.path.join(_ROOT, "paper")
+_OUT = _os.path.join(_HERE, "output")
 
 # Default to a system Chromium when present; override with CHROMIUM_PATH.
 _CHROMIUM = _os.environ.get(
@@ -44,6 +44,7 @@ def main():
     from pathlib import Path
     from playwright.sync_api import sync_playwright
 
+    _os.makedirs(_OUT, exist_ok=True)
     url = Path(_HTML).resolve().as_uri()
     launch_kwargs = {"args": ["--no-sandbox", "--disable-gpu"]}
     if _CHROMIUM:
@@ -74,7 +75,7 @@ def main():
         browser.close()
 
     print("rendered graphical abstract, body height %d px" % height)
-    print(" -> paper/graphical_abstract.png, paper/graphical_abstract.pdf")
+    print(" -> figures/output/graphical_abstract.png, figures/output/graphical_abstract.pdf")
 
 
 if __name__ == "__main__":

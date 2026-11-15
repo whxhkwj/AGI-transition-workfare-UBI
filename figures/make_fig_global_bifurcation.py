@@ -40,7 +40,8 @@ plt.rcParams.update({
 
 BLUE = "#0072B2"; ORANGE = "#E69F00"; GREEN = "#009E73"
 RED = "#D55E00"; PURPLE = "#CC79A7"; GREY = "#666666"; FILLGR = "#D8D8D8"
-OUT = _os.path.join(_ROOT, "paper", "figures")
+OUT = _os.path.join(_HERE, "output")
+_os.makedirs(OUT, exist_ok=True)
 
 
 def save(fig, stem):
