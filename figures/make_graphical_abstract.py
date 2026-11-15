@@ -19,8 +19,9 @@ Outputs:
     paper/graphical_abstract.png   (3200 x 1600 px, 2x)
     paper/graphical_abstract.pdf   (single vector page)
 
-All figures quoted in the infographic (min_t C_t = 0.357 > C^min = 0.30, the
-critical re-absorption rate omega_c, g_A = 10%) are produced by the engines in
+All figures quoted in the infographic (min_t C_t = 0.415 > C^min = 0.30 on the
+full-absorption path, the fiscal gate at g_A = 0.097 under tau = 0.15, and the
+social-gate plateau near g_A = 0.14) are produced by the engines in
 ``simulation/`` and cross-checked by ``analysis/check_ga_panel.py``.
 """
 import os as _os
