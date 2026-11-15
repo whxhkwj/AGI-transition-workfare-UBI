@@ -66,6 +66,9 @@ class Params(v4.Params):
         # ---- 论文权威标定（覆盖 v4 遗留默认 .35/.70）----
         self.eta = 0.40             # 资本税增长抑制
         self.mu_TM = 0.50           # 转移支付的总消费 MPC
+        # Capital-owner propensity to consume out of after-tax capital income.
+        # 0.0 (default): all after-tax capital income leaks, no recycling (baseline).
+        self.mpc_cap = 0.0
         # ---- 统一内生复职率字段 ----
         self.omega_mode = "endogenous"
         self.omega0 = 0.05          # 无政策、初始能力基线（= 外生标定值）
@@ -270,7 +273,10 @@ def simulate_unified(par):
         i_arr[t] = max(0.0, par.rn + pi[t])
         rd[t] = i_arr[t] - pi[t]
         # 家庭资产负债表：净借贷统一决策，受授信硬上限约束；无消费截断。
+        # Recycle a fraction mpc_cap of after-tax capital income into household
+        # demand (Plan A); mpc_cap=0 leaves the baseline leakage unchanged.
         Yd = (w_real[t] * LD[t] + wP_arr[t] * EP[t] + par.mu_TM * TM[t]
+              + par.mpc_cap * (cap_inc[t] - tax[t])
               - par.mu * max(0.0, rd[t]))
         D_rolled = D[t - 1] * (1 + i_arr[t])
         # Units: the consumption gap (Cfe-Yd) is a real quantity, so the desired
